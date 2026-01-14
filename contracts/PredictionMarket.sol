@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./OutcomeToken.sol";
 
 /**
@@ -14,6 +15,7 @@ import "./OutcomeToken.sol";
  * and resolved by the contract owner.
  */
 contract PredictionMarket is Ownable {
+    using SafeERC20 for IERC20;
     /// @notice Possible states for a prediction market
     enum MarketStatus {
         Open,      // Market is accepting bets
@@ -59,6 +61,18 @@ contract PredictionMarket is Ownable {
         address yesToken,
         address noToken,
         uint256 endTime
+    );
+
+    /// @notice Emitted when a user purchases outcome shares
+    /// @param marketId The market identifier
+    /// @param buyer The address of the buyer
+    /// @param outcome True for YES shares, false for NO shares
+    /// @param amount The number of shares purchased
+    event SharesPurchased(
+        uint256 indexed marketId,
+        address indexed buyer,
+        bool outcome,
+        uint256 amount
     );
 
     /**
@@ -126,5 +140,41 @@ contract PredictionMarket is Ownable {
         );
 
         return marketId;
+    }
+
+    /**
+     * @notice Allows users to purchase outcome shares in a prediction market
+     * @param marketId The ID of the market to buy shares in
+     * @param buyYes True to buy YES shares, false to buy NO shares
+     * @param amount The amount of collateral to spend (receives 1:1 shares)
+     * @dev Users must approve this contract to spend their collateral tokens first.
+     * Currently uses a simple 1:1 ratio (1 collateral token = 1 outcome share).
+     * AMM-based dynamic pricing will be implemented in a future version.
+     */
+    function buyShares(
+        uint256 marketId,
+        bool buyYes,
+        uint256 amount
+    ) external {
+        require(marketId < marketCount, "PredictionMarket: market does not exist");
+        require(amount > 0, "PredictionMarket: amount must be greater than zero");
+
+        Market storage market = markets[marketId];
+        require(market.status == MarketStatus.Open, "PredictionMarket: market is not open");
+        require(block.timestamp < market.endTime, "PredictionMarket: betting period has ended");
+
+        // Transfer collateral from user to contract
+        collateralToken.safeTransferFrom(msg.sender, address(this), amount);
+
+        // Mint outcome tokens based on user's choice
+        if (buyYes) {
+            OutcomeToken(market.yesToken).mint(msg.sender, amount);
+            market.totalYesShares += amount;
+        } else {
+            OutcomeToken(market.noToken).mint(msg.sender, amount);
+            market.totalNoShares += amount;
+        }
+
+        emit SharesPurchased(marketId, msg.sender, buyYes, amount);
     }
 }
