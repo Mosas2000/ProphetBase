@@ -257,4 +257,238 @@ describe("PredictionMarket", function () {
             ).to.be.revertedWith("PredictionMarket: market does not exist");
         });
     });
+
+    describe("Market Resolution and Claims", function () {
+        // Helper function to create a market with shares purchased
+        async function createMarketWithShares() {
+            const { predictionMarket, mockUSDC, owner, user1, user2 } = await loadFixture(deployPredictionMarketFixture);
+
+            // Create a market
+            const question = "Will ETH hit $5k?";
+            const duration = 7 * 24 * 60 * 60; // 7 days
+            await predictionMarket.connect(owner).createMarket(question, duration);
+
+            // User1 buys YES shares
+            const yesAmount = 100n * 10n ** 6n;
+            await mockUSDC.connect(user1).approve(await predictionMarket.getAddress(), yesAmount);
+            await predictionMarket.connect(user1).buyShares(0, true, yesAmount);
+
+            // User2 buys NO shares
+            const noAmount = 200n * 10n ** 6n;
+            await mockUSDC.connect(user2).approve(await predictionMarket.getAddress(), noAmount);
+            await predictionMarket.connect(user2).buyShares(0, false, noAmount);
+
+            return { predictionMarket, mockUSDC, owner, user1, user2, duration };
+        }
+
+        describe("Market Resolution", function () {
+            it("Should allow owner to resolve market after endTime", async function () {
+                const { predictionMarket, owner, duration } = await createMarketWithShares();
+
+                // Fast-forward time past market end
+                await time.increase(duration + 1);
+
+                // Resolve market
+                await predictionMarket.connect(owner).resolveMarket(0, true);
+
+                const market = await predictionMarket.markets(0);
+                expect(market.status).to.equal(1); // MarketStatus.Resolved
+                expect(market.outcome).to.equal(true);
+                expect(market.resolutionTime).to.be.greaterThan(0);
+            });
+
+            it("Should not allow non-owner to resolve market", async function () {
+                const { predictionMarket, user1, duration } = await createMarketWithShares();
+
+                // Fast-forward time past market end
+                await time.increase(duration + 1);
+
+                await expect(
+                    predictionMarket.connect(user1).resolveMarket(0, true)
+                ).to.be.revertedWithCustomError(predictionMarket, "OwnableUnauthorizedAccount");
+            });
+
+            it("Should not allow resolving before endTime", async function () {
+                const { predictionMarket, owner } = await createMarketWithShares();
+
+                // Try to resolve immediately without waiting
+                await expect(
+                    predictionMarket.connect(owner).resolveMarket(0, true)
+                ).to.be.revertedWith("PredictionMarket: betting period has not ended");
+            });
+
+            it("Should not allow resolving already resolved market", async function () {
+                const { predictionMarket, owner, duration } = await createMarketWithShares();
+
+                // Fast-forward time and resolve
+                await time.increase(duration + 1);
+                await predictionMarket.connect(owner).resolveMarket(0, true);
+
+                // Try to resolve again
+                await expect(
+                    predictionMarket.connect(owner).resolveMarket(0, false)
+                ).to.be.revertedWith("PredictionMarket: market is not open");
+            });
+
+            it("Should emit MarketResolved event", async function () {
+                const { predictionMarket, owner, duration } = await createMarketWithShares();
+
+                // Fast-forward time past market end
+                await time.increase(duration + 1);
+
+                const currentTime = await time.latest();
+
+                await expect(predictionMarket.connect(owner).resolveMarket(0, true))
+                    .to.emit(predictionMarket, "MarketResolved")
+                    .withArgs(0, true, currentTime + 1);
+            });
+        });
+
+        describe("Claiming Winnings", function () {
+            it("Should allow winner to claim winnings (YES wins)", async function () {
+                const { predictionMarket, mockUSDC, owner, user1, duration } = await createMarketWithShares();
+
+                // Fast-forward and resolve with YES winning
+                await time.increase(duration + 1);
+                await predictionMarket.connect(owner).resolveMarket(0, true);
+
+                const market = await predictionMarket.markets(0);
+                const yesToken = await ethers.getContractAt("OutcomeToken", market.yesToken);
+                const initialBalance = await yesToken.balanceOf(user1.address);
+
+                // User1 claims winnings
+                const initialUSDC = await mockUSDC.balanceOf(user1.address);
+                await expect(predictionMarket.connect(user1).claimWinnings(0))
+                    .to.emit(predictionMarket, "WinningsClaimed")
+                    .withArgs(0, user1.address, initialBalance);
+
+                // Verify payout
+                expect(await mockUSDC.balanceOf(user1.address)).to.equal(initialUSDC + initialBalance);
+            });
+
+            it("Should allow winner to claim winnings (NO wins)", async function () {
+                const { predictionMarket, mockUSDC, owner, user2, duration } = await createMarketWithShares();
+
+                // Fast-forward and resolve with NO winning
+                await time.increase(duration + 1);
+                await predictionMarket.connect(owner).resolveMarket(0, false);
+
+                const market = await predictionMarket.markets(0);
+                const noToken = await ethers.getContractAt("OutcomeToken", market.noToken);
+                const initialBalance = await noToken.balanceOf(user2.address);
+
+                // User2 claims winnings
+                const initialUSDC = await mockUSDC.balanceOf(user2.address);
+                await expect(predictionMarket.connect(user2).claimWinnings(0))
+                    .to.emit(predictionMarket, "WinningsClaimed")
+                    .withArgs(0, user2.address, initialBalance);
+
+                // Verify payout
+                expect(await mockUSDC.balanceOf(user2.address)).to.equal(initialUSDC + initialBalance);
+            });
+
+            it("Should burn winning tokens when claiming", async function () {
+                const { predictionMarket, owner, user1, duration } = await createMarketWithShares();
+
+                // Fast-forward and resolve with YES winning
+                await time.increase(duration + 1);
+                await predictionMarket.connect(owner).resolveMarket(0, true);
+
+                const market = await predictionMarket.markets(0);
+                const yesToken = await ethers.getContractAt("OutcomeToken", market.yesToken);
+
+                // Verify user has tokens before claiming
+                const balanceBefore = await yesToken.balanceOf(user1.address);
+                expect(balanceBefore).to.be.greaterThan(0);
+
+                // Claim winnings
+                await predictionMarket.connect(user1).claimWinnings(0);
+
+                // Verify tokens were burned
+                expect(await yesToken.balanceOf(user1.address)).to.equal(0);
+            });
+
+            it("Should transfer correct collateral amount", async function () {
+                const { predictionMarket, mockUSDC, owner, user1, duration } = await createMarketWithShares();
+
+                // Fast-forward and resolve with YES winning
+                await time.increase(duration + 1);
+                await predictionMarket.connect(owner).resolveMarket(0, true);
+
+                const market = await predictionMarket.markets(0);
+                const yesToken = await ethers.getContractAt("OutcomeToken", market.yesToken);
+                const winningShares = await yesToken.balanceOf(user1.address);
+
+                const initialUSDC = await mockUSDC.balanceOf(user1.address);
+
+                // Claim winnings
+                await predictionMarket.connect(user1).claimWinnings(0);
+
+                // Verify 1:1 payout ratio
+                const finalUSDC = await mockUSDC.balanceOf(user1.address);
+                expect(finalUSDC - initialUSDC).to.equal(winningShares);
+            });
+
+            it("Should not allow claiming before resolution", async function () {
+                const { predictionMarket, user1 } = await createMarketWithShares();
+
+                // Try to claim from open market
+                await expect(
+                    predictionMarket.connect(user1).claimWinnings(0)
+                ).to.be.revertedWith("PredictionMarket: market is not resolved");
+            });
+
+            it("Should not allow claiming with zero balance", async function () {
+                const { predictionMarket, owner } = await loadFixture(deployPredictionMarketFixture);
+
+                // Create market and resolve without buying shares
+                const question = "Will BTC hit $100k?";
+                const duration = 7 * 24 * 60 * 60;
+                await predictionMarket.connect(owner).createMarket(question, duration);
+
+                await time.increase(duration + 1);
+                await predictionMarket.connect(owner).resolveMarket(0, true);
+
+                const [, user1] = await ethers.getSigners();
+
+                // Try to claim without holding shares
+                await expect(
+                    predictionMarket.connect(user1).claimWinnings(0)
+                ).to.be.revertedWith("PredictionMarket: no winning shares to claim");
+            });
+
+            it("Should not allow loser to claim", async function () {
+                const { predictionMarket, owner, user2, duration } = await createMarketWithShares();
+
+                // Fast-forward and resolve with YES winning (user2 bought NO shares)
+                await time.increase(duration + 1);
+                await predictionMarket.connect(owner).resolveMarket(0, true);
+
+                // User2 (who bought NO shares) tries to claim
+                await expect(
+                    predictionMarket.connect(user2).claimWinnings(0)
+                ).to.be.revertedWith("PredictionMarket: no winning shares to claim");
+            });
+
+            it("Should update market total shares after claiming", async function () {
+                const { predictionMarket, owner, user1, duration } = await createMarketWithShares();
+
+                // Fast-forward and resolve with YES winning
+                await time.increase(duration + 1);
+                await predictionMarket.connect(owner).resolveMarket(0, true);
+
+                const marketBefore = await predictionMarket.markets(0);
+                const totalYesBefore = marketBefore.totalYesShares;
+
+                const yesToken = await ethers.getContractAt("OutcomeToken", marketBefore.yesToken);
+                const userBalance = await yesToken.balanceOf(user1.address);
+
+                // Claim winnings
+                await predictionMarket.connect(user1).claimWinnings(0);
+
+                const marketAfter = await predictionMarket.markets(0);
+                expect(marketAfter.totalYesShares).to.equal(totalYesBefore - userBalance);
+            });
+        });
+    });
 });
