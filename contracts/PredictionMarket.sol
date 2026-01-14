@@ -85,6 +85,16 @@ contract PredictionMarket is Ownable {
         uint256 resolutionTime
     );
 
+    /// @notice Emitted when a user claims their winnings
+    /// @param marketId The market identifier
+    /// @param claimer The address claiming winnings
+    /// @param amount The amount of collateral claimed
+    event WinningsClaimed(
+        uint256 indexed marketId,
+        address indexed claimer,
+        uint256 amount
+    );
+
     /**
      * @notice Initializes the PredictionMarket contract
      * @param _collateralToken The ERC20 token to use as collateral
@@ -212,5 +222,48 @@ contract PredictionMarket is Ownable {
         market.resolutionTime = block.timestamp;
 
         emit MarketResolved(marketId, outcome, block.timestamp);
+    }
+
+    /**
+     * @notice Allows winners to claim their rewards after market resolution
+     * @param marketId The ID of the market to claim winnings from
+     * @return payout The amount of collateral tokens claimed
+     * @dev Users must hold winning outcome tokens to claim. Currently uses a simple
+     * 1:1 payout ratio (1 winning share = 1 collateral token). The winning tokens
+     * are burned when claimed. Losing shares have no value and cannot be redeemed.
+     */
+    function claimWinnings(uint256 marketId) external returns (uint256) {
+        require(marketId < marketCount, "PredictionMarket: market does not exist");
+
+        Market storage market = markets[marketId];
+        require(market.status == MarketStatus.Resolved, "PredictionMarket: market is not resolved");
+
+        // Determine the winning token based on the outcome
+        address winningToken = market.outcome ? market.yesToken : market.noToken;
+        OutcomeToken token = OutcomeToken(winningToken);
+
+        // Get user's winning token balance
+        uint256 balance = token.balanceOf(msg.sender);
+        require(balance > 0, "PredictionMarket: no winning shares to claim");
+
+        // Burn the winning tokens from the user
+        token.burn(msg.sender, balance);
+
+        // Calculate payout (1:1 ratio for now)
+        uint256 payout = balance;
+
+        // Update market's total shares
+        if (market.outcome) {
+            market.totalYesShares -= balance;
+        } else {
+            market.totalNoShares -= balance;
+        }
+
+        // Transfer collateral to user
+        collateralToken.safeTransfer(msg.sender, payout);
+
+        emit WinningsClaimed(marketId, msg.sender, payout);
+
+        return payout;
     }
 }
