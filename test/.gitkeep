@@ -1,0 +1,22 @@
+# Test Files
+
+This directory will contain all test files for the ProphetBase smart contracts.
+
+## Testing Framework
+
+Tests are written using:
+- Hardhat's testing framework
+- Chai for assertions
+- Ethers.js for blockchain interactions
+- TypeScript for type safety
+
+## Running Tests
+
+```bash
+npm test
+```
+
+For coverage:
+```bash
+npm run test:coverage
+```

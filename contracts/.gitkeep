@@ -1,0 +1,11 @@
+# Contracts
+
+This directory will contain all Solidity smart contracts for the ProphetBase prediction market protocol.
+
+## Structure
+
+Smart contracts will be organized by functionality:
+- Core prediction market logic
+- Market resolution mechanisms
+- Token handling
+- Access control and governance

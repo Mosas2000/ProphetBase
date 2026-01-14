@@ -1,0 +1,20 @@
+# Deployment Scripts
+
+This directory contains deployment scripts for ProphetBase smart contracts.
+
+## Usage
+
+Deploy to Base Sepolia testnet:
+```bash
+npm run deploy:sepolia
+```
+
+Deploy to Base mainnet:
+```bash
+npm run deploy:base
+```
+
+Deploy to local Hardhat network:
+```bash
+npm run deploy:local
+```
