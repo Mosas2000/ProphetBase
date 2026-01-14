@@ -75,6 +75,16 @@ contract PredictionMarket is Ownable {
         uint256 amount
     );
 
+    /// @notice Emitted when a market is resolved
+    /// @param marketId The market identifier
+    /// @param outcome The final outcome (true = YES wins, false = NO wins)
+    /// @param resolutionTime The timestamp when the market was resolved
+    event MarketResolved(
+        uint256 indexed marketId,
+        bool outcome,
+        uint256 resolutionTime
+    );
+
     /**
      * @notice Initializes the PredictionMarket contract
      * @param _collateralToken The ERC20 token to use as collateral
@@ -176,5 +186,31 @@ contract PredictionMarket is Ownable {
         }
 
         emit SharesPurchased(marketId, msg.sender, buyYes, amount);
+    }
+
+    /**
+     * @notice Resolves a prediction market with the final outcome
+     * @param marketId The ID of the market to resolve
+     * @param outcome The final outcome (true = YES wins, false = NO wins)
+     * @dev Only the contract owner can resolve markets. The market must be open and
+     * the betting period must have ended. In future versions, this will be replaced
+     * with oracle-based resolution for trustless outcomes.
+     */
+    function resolveMarket(
+        uint256 marketId,
+        bool outcome
+    ) external onlyOwner {
+        require(marketId < marketCount, "PredictionMarket: market does not exist");
+
+        Market storage market = markets[marketId];
+        require(market.status == MarketStatus.Open, "PredictionMarket: market is not open");
+        require(block.timestamp >= market.endTime, "PredictionMarket: betting period has not ended");
+
+        // Update market state
+        market.status = MarketStatus.Resolved;
+        market.outcome = outcome;
+        market.resolutionTime = block.timestamp;
+
+        emit MarketResolved(marketId, outcome, block.timestamp);
     }
 }
