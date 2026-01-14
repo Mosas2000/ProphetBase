@@ -2,6 +2,8 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./OutcomeToken.sol";
 
 /**
  * @title PredictionMarket
@@ -41,9 +43,88 @@ contract PredictionMarket is Ownable {
     /// @notice Total number of markets created
     uint256 public marketCount;
 
+    /// @notice The ERC20 token used as collateral for all markets
+    /// @dev Users must deposit this token to purchase outcome shares
+    IERC20 public immutable collateralToken;
+
+    /// @notice Emitted when a new prediction market is created
+    /// @param marketId The unique identifier for the market
+    /// @param question The prediction question
+    /// @param yesToken Address of the YES outcome token
+    /// @param noToken Address of the NO outcome token
+    /// @param endTime Timestamp when betting closes
+    event MarketCreated(
+        uint256 indexed marketId,
+        string question,
+        address yesToken,
+        address noToken,
+        uint256 endTime
+    );
+
     /**
      * @notice Initializes the PredictionMarket contract
+     * @param _collateralToken The ERC20 token to use as collateral
      * @dev Sets the contract deployer as the initial owner
      */
-    constructor() Ownable(msg.sender) {}
+    constructor(address _collateralToken) Ownable(msg.sender) {
+        require(_collateralToken != address(0), "PredictionMarket: collateral token cannot be zero address");
+        collateralToken = IERC20(_collateralToken);
+    }
+
+    /**
+     * @notice Creates a new prediction market
+     * @param question The prediction question (e.g., "Will ETH hit $5k by end of 2026?")
+     * @param duration Time in seconds until betting closes
+     * @return marketId The unique identifier for the newly created market
+     * @dev Only the contract owner can create markets. Deploys two OutcomeToken contracts
+     * for YES and NO outcomes.
+     */
+    function createMarket(
+        string calldata question,
+        uint256 duration
+    ) external onlyOwner returns (uint256) {
+        require(bytes(question).length > 0, "PredictionMarket: question cannot be empty");
+        require(duration > 0, "PredictionMarket: duration must be greater than zero");
+
+        uint256 marketId = marketCount;
+        uint256 endTime = block.timestamp + duration;
+
+        // Deploy YES and NO outcome tokens
+        OutcomeToken yesToken = new OutcomeToken(
+            string.concat("ProphetBase YES - ", question),
+            "YES",
+            address(this)
+        );
+        
+        OutcomeToken noToken = new OutcomeToken(
+            string.concat("ProphetBase NO - ", question),
+            "NO",
+            address(this)
+        );
+
+        // Create and store the market
+        markets[marketId] = Market({
+            question: question,
+            endTime: endTime,
+            resolutionTime: 0,
+            status: MarketStatus.Open,
+            outcome: false,
+            yesToken: address(yesToken),
+            noToken: address(noToken),
+            totalYesShares: 0,
+            totalNoShares: 0
+        });
+
+        marketCount++;
+
+        emit MarketCreated(
+            marketId,
+            question,
+            address(yesToken),
+            address(noToken),
+            endTime
+        );
+
+        return marketId;
+    }
 }
