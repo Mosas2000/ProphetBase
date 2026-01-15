@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { formatDistanceToNow } from 'date-fns'
+import BuySharesModal from './BuySharesModal'
 
 /**
  * Market status enum
@@ -25,8 +26,6 @@ export interface MarketCardProps {
     totalYesShares?: bigint
     totalNoShares?: bigint
     outcome?: boolean
-    onBuyYes?: () => void
-    onBuyNo?: () => void
 }
 
 /**
@@ -42,11 +41,11 @@ export default function MarketCard({
     totalYesShares = BigInt(0),
     totalNoShares = BigInt(0),
     outcome,
-    onBuyYes,
-    onBuyNo,
 }: MarketCardProps) {
     const [isExpanded, setIsExpanded] = useState(false)
     const [timeLeft, setTimeLeft] = useState('')
+    const [isBuyModalOpen, setIsBuyModalOpen] = useState(false)
+    const [selectedShareType, setSelectedShareType] = useState<'YES' | 'NO'>('YES')
 
     const endDate = new Date(Number(endTime) * 1000)
     const isExpired = endDate < new Date()
@@ -204,7 +203,8 @@ export default function MarketCard({
                         <button
                             onClick={(e) => {
                                 e.stopPropagation()
-                                onBuyYes?.()
+                                setSelectedShareType('YES')
+                                setIsBuyModalOpen(true)
                             }}
                             className="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-green-500 to-green-600 px-4 py-3 font-semibold text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
                         >
@@ -218,7 +218,8 @@ export default function MarketCard({
                         <button
                             onClick={(e) => {
                                 e.stopPropagation()
-                                onBuyNo?.()
+                                setSelectedShareType('NO')
+                                setIsBuyModalOpen(true)
                             }}
                             className="group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-red-500 to-red-600 px-4 py-3 font-semibold text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
                         >
@@ -284,6 +285,15 @@ export default function MarketCard({
                     </div>
                 </div>
             </div>
+
+            {/* Buy Shares Modal */}
+            <BuySharesModal
+                isOpen={isBuyModalOpen}
+                onClose={() => setIsBuyModalOpen(false)}
+                marketId={marketId}
+                shareType={selectedShareType}
+                question={question}
+            />
         </div>
     )
 }
