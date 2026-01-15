@@ -11,6 +11,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "ProphetBase - Decentralized Prediction Markets",
   description: "Trade predictions on crypto events with ProphetBase on Base mainnet",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
