@@ -1,0 +1,13 @@
+{
+  "base": [
+    {
+      "network": "base",
+      "contractAddress": "0x798e104BfAefC785bCDB63B58E0b620707773DAA",
+      "deployer": "0xb378f49E4814c140B14382605280361ff6384152",
+      "timestamp": "2026-01-14T16:34:39.602Z",
+      "usdcAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "transactionHash": "0x8c9085d133df3cc18c2a2e660d6e7b36fca25f8a3157130b252f7c20a01e6a93",
+      "blockNumber": 40809566
+    }
+  ]
+}
