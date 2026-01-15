@@ -2,6 +2,7 @@
 
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
+import MarketList from '@/components/MarketList'
 
 export default function Home() {
   const { isConnected } = useAccount()
@@ -47,9 +48,9 @@ export default function Home() {
           {isConnected ? (
             <div className="flex flex-col items-center gap-4">
               <div className="flex gap-4">
-                <button className="rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105">
+                <a href="#markets" className="rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105">
                   Browse Markets
-                </button>
+                </a>
                 <button className="rounded-lg border-2 border-gray-300 bg-white px-8 py-3 font-semibold text-gray-700 transition-all hover:border-gray-400 hover:bg-gray-50">
                   Create Market
                 </button>
@@ -62,6 +63,13 @@ export default function Home() {
             </div>
           )}
         </div>
+
+        {/* Markets Section - Only show when connected */}
+        {isConnected && (
+          <div id="markets" className="py-12">
+            <MarketList />
+          </div>
+        )}
 
         {/* Features */}
         <div className="grid gap-8 pb-20 sm:grid-cols-3">
