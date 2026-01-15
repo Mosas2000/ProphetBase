@@ -1,0 +1,18 @@
+{
+  "markets": [
+    {
+      "marketId": "0",
+      "question": "Will ETH reach $5000 by February 1st, 2026?",
+      "endTime": "2026-01-30T00:04:45.000Z",
+      "endTimeUnix": 1769731485,
+      "status": "Open",
+      "yesTokenAddress": "0xAff8A8d0271282976f356aF9F8Aaaee0FC1c4be2",
+      "noTokenAddress": "0xdafc8Ef2f6BB141868DF4c84C6cAf07b4CB381b4",
+      "contractAddress": "0x798e104BfAefC785bCDB63B58E0b620707773DAA",
+      "transactionHash": "0x4b53cde17d28bbf6e70f1e3f037ad369b73ad73c75c1c307aa986af0c50529d5",
+      "blockNumber": 40823069,
+      "createdAt": "2026-01-15T00:04:45.527Z",
+      "network": "base"
+    }
+  ]
+}
