@@ -77,14 +77,45 @@ export default function MarketList() {
         args: [BigInt(4)],
     })
 
+    // Transform raw contract data into Market objects
+    const transformMarketData = (data: any): Market | undefined => {
+        if (!data) return undefined
+        // Contract returns: [question, endTime, resolutionTime, status, outcome, yesToken, noToken, totalYesShares, totalNoShares]
+        return {
+            question: data[0],
+            endTime: data[1],
+            resolutionTime: data[2],
+            status: Number(data[3]),
+            outcome: data[4],
+            yesToken: data[5],
+            noToken: data[6],
+            totalYesShares: data[7],
+            totalNoShares: data[8],
+        }
+    }
+
     // Collect all markets and filter out undefined
     const allMarkets = [
-        market0.data,
-        market1.data,
-        market2.data,
-        market3.data,
-        market4.data,
+        transformMarketData(market0.data),
+        transformMarketData(market1.data),
+        transformMarketData(market2.data),
+        transformMarketData(market3.data),
+        transformMarketData(market4.data),
     ].filter((m): m is Market => m !== undefined)
+
+    // Debug: Log market data
+    console.log('📊 Market Data Debug:', {
+        marketCount: marketCount ? Number(marketCount) : 0,
+        allMarketsLength: allMarkets.length,
+        markets: allMarkets.map((m, i) => ({
+            id: i,
+            question: m.question,
+            status: Number(m.status),
+            endTime: Number(m.endTime),
+            yesToken: m.yesToken,
+            noToken: m.noToken,
+        }))
+    })
 
     // Check if any query is loading
     const isLoading = isLoadingCount ||
@@ -161,20 +192,27 @@ export default function MarketList() {
 
             {/* Market Grid */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {allMarkets.map((market, index) => (
-                    <MarketCard
-                        key={index}
-                        marketId={index}
-                        question={market.question}
-                        endTime={market.endTime}
-                        yesToken={market.yesToken}
-                        noToken={market.noToken}
-                        status={market.status}
-                        totalYesShares={market.totalYesShares}
-                        totalNoShares={market.totalNoShares}
-                        outcome={market.outcome}
-                    />
-                ))}
+                {allMarkets.map((market, index) => {
+                    console.log(`🎯 Rendering MarketCard #${index}:`, {
+                        question: market.question,
+                        status: Number(market.status),
+                        endTime: market.endTime,
+                    })
+                    return (
+                        <MarketCard
+                            key={index}
+                            marketId={index}
+                            question={market.question}
+                            endTime={market.endTime}
+                            yesToken={market.yesToken}
+                            noToken={market.noToken}
+                            status={Number(market.status)}
+                            totalYesShares={market.totalYesShares}
+                            totalNoShares={market.totalNoShares}
+                            outcome={market.outcome}
+                        />
+                    )
+                })}
             </div>
         </div>
     )

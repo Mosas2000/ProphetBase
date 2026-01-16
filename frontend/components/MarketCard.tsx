@@ -47,6 +47,15 @@ export default function MarketCard({
     const [isBuyModalOpen, setIsBuyModalOpen] = useState(false)
     const [selectedShareType, setSelectedShareType] = useState<'YES' | 'NO'>('YES')
 
+    // Debug: Log props received
+    console.log(`🎴 MarketCard #${marketId} Props:`, {
+        question,
+        status,
+        statusType: typeof status,
+        endTime: Number(endTime),
+        endTimeType: typeof endTime,
+    })
+
     const endDate = new Date(Number(endTime) * 1000)
     const isExpired = endDate < new Date()
 
@@ -96,26 +105,37 @@ export default function MarketCard({
         return () => clearInterval(interval)
     }, [endDate, isExpired])
 
-    // Status badge configuration
-    const statusConfig = {
-        [MarketStatus.Open]: {
-            label: isExpired ? 'Awaiting Resolution' : 'Live',
-            color: isExpired ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700',
-            dot: isExpired ? 'bg-yellow-500' : 'bg-green-500',
-        },
-        [MarketStatus.Resolved]: {
-            label: 'Resolved',
-            color: 'bg-blue-100 text-blue-700',
-            dot: 'bg-blue-500',
-        },
-        [MarketStatus.Cancelled]: {
-            label: 'Cancelled',
-            color: 'bg-gray-100 text-gray-700',
-            dot: 'bg-gray-500',
-        },
+    // Status badge configuration function
+    const getStatusInfo = (status: number) => {
+        switch (status) {
+            case 0: // Open
+                return {
+                    label: 'Open',
+                    color: 'bg-green-100 text-green-700 border-green-200',
+                    dot: 'bg-green-500'
+                }
+            case 1: // Resolved  
+                return {
+                    label: 'Resolved',
+                    color: 'bg-blue-100 text-blue-700 border-blue-200',
+                    dot: 'bg-blue-500'
+                }
+            case 2: // Cancelled
+                return {
+                    label: 'Cancelled',
+                    color: 'bg-gray-100 text-gray-700 border-gray-200',
+                    dot: 'bg-gray-500'
+                }
+            default:
+                return {
+                    label: 'Unknown',
+                    color: 'bg-gray-100 text-gray-700 border-gray-200',
+                    dot: 'bg-gray-500'
+                }
+        }
     }
 
-    const statusInfo = statusConfig[status]
+    const statusInfo = getStatusInfo(status)
 
     return (
         <div
@@ -258,7 +278,7 @@ export default function MarketCard({
                         </div>
 
                         {/* Token Addresses */}
-                        <details className="text-xs">
+                        <details className="text-xs" onClick={(e) => e.stopPropagation()}>
                             <summary className="cursor-pointer text-gray-500 hover:text-gray-700 font-medium">
                                 Token Addresses
                             </summary>
