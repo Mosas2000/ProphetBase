@@ -95,8 +95,8 @@ function PositionCard({ position }: { position: UserPosition }) {
     return (
         <div
             className={`rounded-xl border-2 bg-white p-6 shadow-sm transition-all hover:shadow-md ${position.isWinning && isResolved
-                    ? 'border-green-300 bg-gradient-to-br from-green-50/50 to-white'
-                    : 'border-gray-200'
+                ? 'border-green-300 bg-gradient-to-br from-green-50/50 to-white'
+                : 'border-gray-200'
                 }`}
         >
             {/* Header */}
@@ -211,60 +211,177 @@ export default function UserPositions() {
         functionName: 'marketCount',
     })
 
-    // Generate market IDs
-    const marketIds = marketCount ? Array.from({ length: Number(marketCount) }, (_, i) => i) : []
-
-    // Fetch all markets
-    const marketQueries = marketIds.map((id) =>
-        useReadContract({
-            address: PREDICTION_MARKET_ADDRESS,
-            abi: PREDICTION_MARKET_ABI,
-            functionName: 'markets',
-            args: [BigInt(id)],
-        })
-    )
-
-    // Fetch YES token balances for all markets
-    const yesBalanceQueries = marketIds.map((id) => {
-        const market = marketQueries[id]?.data as Market | undefined
-        return useReadContract({
-            address: market?.yesToken as `0x${string}` | undefined,
-            abi: ERC20_ABI,
-            functionName: 'balanceOf',
-            args: address ? [address] : undefined,
-            query: {
-                enabled: !!address && !!market?.yesToken,
-            },
-        })
+    // Hardcoded individual market queries (no hooks in loops!)
+    const market0 = useReadContract({
+        address: PREDICTION_MARKET_ADDRESS,
+        abi: PREDICTION_MARKET_ABI,
+        functionName: 'markets',
+        args: [BigInt(0)],
     })
 
-    // Fetch NO token balances for all markets
-    const noBalanceQueries = marketIds.map((id) => {
-        const market = marketQueries[id]?.data as Market | undefined
-        return useReadContract({
-            address: market?.noToken as `0x${string}` | undefined,
-            abi: ERC20_ABI,
-            functionName: 'balanceOf',
-            args: address ? [address] : undefined,
-            query: {
-                enabled: !!address && !!market?.noToken,
-            },
-        })
+    const market1 = useReadContract({
+        address: PREDICTION_MARKET_ADDRESS,
+        abi: PREDICTION_MARKET_ABI,
+        functionName: 'markets',
+        args: [BigInt(1)],
     })
+
+    const market2 = useReadContract({
+        address: PREDICTION_MARKET_ADDRESS,
+        abi: PREDICTION_MARKET_ABI,
+        functionName: 'markets',
+        args: [BigInt(2)],
+    })
+
+    const market3 = useReadContract({
+        address: PREDICTION_MARKET_ADDRESS,
+        abi: PREDICTION_MARKET_ABI,
+        functionName: 'markets',
+        args: [BigInt(3)],
+    })
+
+    const market4 = useReadContract({
+        address: PREDICTION_MARKET_ADDRESS,
+        abi: PREDICTION_MARKET_ABI,
+        functionName: 'markets',
+        args: [BigInt(4)],
+    })
+
+    // Hardcoded YES token balance queries for each market
+    const yes0Balance = useReadContract({
+        address: (market0.data as Market | undefined)?.yesToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market0.data as Market | undefined)?.yesToken,
+        },
+    })
+
+    const yes1Balance = useReadContract({
+        address: (market1.data as Market | undefined)?.yesToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market1.data as Market | undefined)?.yesToken,
+        },
+    })
+
+    const yes2Balance = useReadContract({
+        address: (market2.data as Market | undefined)?.yesToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market2.data as Market | undefined)?.yesToken,
+        },
+    })
+
+    const yes3Balance = useReadContract({
+        address: (market3.data as Market | undefined)?.yesToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market3.data as Market | undefined)?.yesToken,
+        },
+    })
+
+    const yes4Balance = useReadContract({
+        address: (market4.data as Market | undefined)?.yesToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market4.data as Market | undefined)?.yesToken,
+        },
+    })
+
+    // Hardcoded NO token balance queries for each market
+    const no0Balance = useReadContract({
+        address: (market0.data as Market | undefined)?.noToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market0.data as Market | undefined)?.noToken,
+        },
+    })
+
+    const no1Balance = useReadContract({
+        address: (market1.data as Market | undefined)?.noToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market1.data as Market | undefined)?.noToken,
+        },
+    })
+
+    const no2Balance = useReadContract({
+        address: (market2.data as Market | undefined)?.noToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market2.data as Market | undefined)?.noToken,
+        },
+    })
+
+    const no3Balance = useReadContract({
+        address: (market3.data as Market | undefined)?.noToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market3.data as Market | undefined)?.noToken,
+        },
+    })
+
+    const no4Balance = useReadContract({
+        address: (market4.data as Market | undefined)?.noToken as `0x${string}` | undefined,
+        abi: ERC20_ABI,
+        functionName: 'balanceOf',
+        args: address ? [address] : undefined,
+        query: {
+            enabled: !!address && !!(market4.data as Market | undefined)?.noToken,
+        },
+    })
+
+    // Collect all markets and balances
+    const allMarketData = [
+        { market: market0.data as Market | undefined, yesBalance: yes0Balance.data as bigint | undefined, noBalance: no0Balance.data as bigint | undefined, id: 0 },
+        { market: market1.data as Market | undefined, yesBalance: yes1Balance.data as bigint | undefined, noBalance: no1Balance.data as bigint | undefined, id: 1 },
+        { market: market2.data as Market | undefined, yesBalance: yes2Balance.data as bigint | undefined, noBalance: no2Balance.data as bigint | undefined, id: 2 },
+        { market: market3.data as Market | undefined, yesBalance: yes3Balance.data as bigint | undefined, noBalance: no3Balance.data as bigint | undefined, id: 3 },
+        { market: market4.data as Market | undefined, yesBalance: yes4Balance.data as bigint | undefined, noBalance: no4Balance.data as bigint | undefined, id: 4 },
+    ]
 
     // Check loading state
     const isLoading =
         isLoadingCount ||
-        marketQueries.some((q) => q.isLoading) ||
-        yesBalanceQueries.some((q) => q.isLoading) ||
-        noBalanceQueries.some((q) => q.isLoading)
+        market0.isLoading ||
+        market1.isLoading ||
+        market2.isLoading ||
+        market3.isLoading ||
+        market4.isLoading ||
+        yes0Balance.isLoading ||
+        yes1Balance.isLoading ||
+        yes2Balance.isLoading ||
+        yes3Balance.isLoading ||
+        yes4Balance.isLoading ||
+        no0Balance.isLoading ||
+        no1Balance.isLoading ||
+        no2Balance.isLoading ||
+        no3Balance.isLoading ||
+        no4Balance.isLoading
 
     // Build user positions
-    const positions: UserPosition[] = marketIds
-        .map((id) => {
-            const market = marketQueries[id]?.data as Market | undefined
-            const yesShares = (yesBalanceQueries[id]?.data as bigint) || BigInt(0)
-            const noShares = (noBalanceQueries[id]?.data as bigint) || BigInt(0)
+    const positions: UserPosition[] = allMarketData
+        .map(({ market, yesBalance, noBalance, id }) => {
+            const yesShares = yesBalance || BigInt(0)
+            const noShares = noBalance || BigInt(0)
 
             if (!market || (yesShares === BigInt(0) && noShares === BigInt(0))) {
                 return null
