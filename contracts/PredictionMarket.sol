@@ -2,6 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./OutcomeToken.sol";
@@ -14,8 +15,18 @@ import "./OutcomeToken.sol";
  * and trade shares representing their predictions. Markets can be created, traded on,
  * and resolved by the contract owner.
  */
-contract PredictionMarket is Ownable {
+contract PredictionMarket is Ownable, Pausable {
     using SafeERC20 for IERC20;
+    
+    /// @notice Market categories for classification
+    enum Category {
+        DeFi,      // Decentralized Finance
+        Crypto,    // Cryptocurrency prices/events
+        Politics,  // Political events
+        Sports,    // Sports outcomes
+        Other      // Miscellaneous
+    }
+    
     /// @notice Possible states for a prediction market
     enum MarketStatus {
         Open,      // Market is accepting bets
@@ -37,6 +48,7 @@ contract PredictionMarket is Ownable {
         address noToken;          // Address of the NO outcome token contract
         uint256 totalYesShares;   // Total YES shares minted
         uint256 totalNoShares;    // Total NO shares minted
+        Category category;        // Market category
     }
 
     /// @notice Mapping from market ID to Market struct
@@ -44,6 +56,18 @@ contract PredictionMarket is Ownable {
 
     /// @notice Total number of markets created
     uint256 public marketCount;
+    
+    /// @notice Fee percentage (2%)
+    uint256 public constant FEE_PERCENTAGE = 2;
+    
+    /// @notice Total fees collected across all markets
+    uint256 public totalFeesCollected;
+    
+    /// @notice Fees collected per market
+    mapping(uint256 => uint256) public feesCollected;
+    
+    /// @notice Markets by category for filtering
+    mapping(Category => uint256[]) private marketsByCategory;
 
     /// @notice The ERC20 token used as collateral for all markets
     /// @dev Users must deposit this token to purchase outcome shares
@@ -55,12 +79,14 @@ contract PredictionMarket is Ownable {
     /// @param yesToken Address of the YES outcome token
     /// @param noToken Address of the NO outcome token
     /// @param endTime Timestamp when betting closes
+    /// @param category Market category
     event MarketCreated(
         uint256 indexed marketId,
         string question,
         address yesToken,
         address noToken,
-        uint256 endTime
+        uint256 endTime,
+        Category category
     );
 
     /// @notice Emitted when a user purchases outcome shares
@@ -68,9 +94,23 @@ contract PredictionMarket is Ownable {
     /// @param buyer The address of the buyer
     /// @param outcome True for YES shares, false for NO shares
     /// @param amount The number of shares purchased
+    /// @param fee The fee collected
     event SharesPurchased(
         uint256 indexed marketId,
         address indexed buyer,
+        bool outcome,
+        uint256 amount,
+        uint256 fee
+    );
+    
+    /// @notice Emitted when a user sells outcome shares
+    /// @param marketId The market identifier
+    /// @param seller The address of the seller
+    /// @param outcome True for YES shares, false for NO shares
+    /// @param amount The number of shares sold
+    event SharesSold(
+        uint256 indexed marketId,
+        address indexed seller,
         bool outcome,
         uint256 amount
     );
@@ -94,6 +134,14 @@ contract PredictionMarket is Ownable {
         address indexed claimer,
         uint256 amount
     );
+    
+    /// @notice Emitted when fees are withdrawn
+    /// @param owner The contract owner
+    /// @param amount The amount withdrawn
+    event FeesWithdrawn(
+        address indexed owner,
+        uint256 amount
+    );
 
     /**
      * @notice Initializes the PredictionMarket contract
@@ -115,7 +163,8 @@ contract PredictionMarket is Ownable {
      */
     function createMarket(
         string calldata question,
-        uint256 duration
+        uint256 duration,
+        Category category
     ) external onlyOwner returns (uint256) {
         require(bytes(question).length > 0, "PredictionMarket: question cannot be empty");
         require(duration > 0, "PredictionMarket: duration must be greater than zero");
@@ -146,8 +195,12 @@ contract PredictionMarket is Ownable {
             yesToken: address(yesToken),
             noToken: address(noToken),
             totalYesShares: 0,
-            totalNoShares: 0
+            totalNoShares: 0,
+            category: category
         });
+        
+        // Add to category mapping
+        marketsByCategory[category].push(marketId);
 
         marketCount++;
 
@@ -156,7 +209,8 @@ contract PredictionMarket is Ownable {
             question,
             address(yesToken),
             address(noToken),
-            endTime
+            endTime,
+            category
         );
 
         return marketId;
@@ -175,7 +229,7 @@ contract PredictionMarket is Ownable {
         uint256 marketId,
         bool buyYes,
         uint256 amount
-    ) external {
+    ) external whenNotPaused {
         require(marketId < marketCount, "PredictionMarket: market does not exist");
         require(amount > 0, "PredictionMarket: amount must be greater than zero");
 
@@ -183,19 +237,69 @@ contract PredictionMarket is Ownable {
         require(market.status == MarketStatus.Open, "PredictionMarket: market is not open");
         require(block.timestamp < market.endTime, "PredictionMarket: betting period has ended");
 
+        // Calculate fee (2%)
+        uint256 fee = (amount * FEE_PERCENTAGE) / 100;
+        uint256 netAmount = amount - fee;
+        
+        // Collect fees
+        feesCollected[marketId] += fee;
+        totalFeesCollected += fee;
+
         // Transfer collateral from user to contract
         collateralToken.safeTransferFrom(msg.sender, address(this), amount);
 
-        // Mint outcome tokens based on user's choice
+        // Mint outcome tokens based on user's choice (using net amount)
         if (buyYes) {
-            OutcomeToken(market.yesToken).mint(msg.sender, amount);
-            market.totalYesShares += amount;
+            OutcomeToken(market.yesToken).mint(msg.sender, netAmount);
+            market.totalYesShares += netAmount;
         } else {
-            OutcomeToken(market.noToken).mint(msg.sender, amount);
-            market.totalNoShares += amount;
+            OutcomeToken(market.noToken).mint(msg.sender, netAmount);
+            market.totalNoShares += netAmount;
         }
 
-        emit SharesPurchased(marketId, msg.sender, buyYes, amount);
+        emit SharesPurchased(marketId, msg.sender, buyYes, netAmount, fee);
+    }
+    
+    /**
+     * @notice Allows users to sell their outcome shares before market resolution
+     * @param marketId The ID of the market
+     * @param sellYes True to sell YES shares, false to sell NO shares
+     * @param amount The amount of shares to sell
+     * @dev Burns the user's outcome tokens and returns collateral 1:1
+     */
+    function sellShares(
+        uint256 marketId,
+        bool sellYes,
+        uint256 amount
+    ) external whenNotPaused {
+        require(marketId < marketCount, "PredictionMarket: market does not exist");
+        require(amount > 0, "PredictionMarket: amount must be greater than zero");
+
+        Market storage market = markets[marketId];
+        require(market.status == MarketStatus.Open, "PredictionMarket: market is not open");
+        require(block.timestamp < market.endTime, "PredictionMarket: betting period has not ended");
+
+        // Get the appropriate token
+        address tokenAddress = sellYes ? market.yesToken : market.noToken;
+        OutcomeToken token = OutcomeToken(tokenAddress);
+        
+        // Check user has enough tokens
+        require(token.balanceOf(msg.sender) >= amount, "PredictionMarket: insufficient token balance");
+
+        // Burn the user's tokens
+        token.burn(msg.sender, amount);
+        
+        // Update market totals
+        if (sellYes) {
+            market.totalYesShares -= amount;
+        } else {
+            market.totalNoShares -= amount;
+        }
+
+        // Transfer collateral back to user (1:1 ratio)
+        collateralToken.safeTransfer(msg.sender, amount);
+
+        emit SharesSold(marketId, msg.sender, sellYes, amount);
     }
 
     /**
@@ -265,5 +369,44 @@ contract PredictionMarket is Ownable {
         emit WinningsClaimed(marketId, msg.sender, payout);
 
         return payout;
+    }
+    
+    /**
+     * @notice Get all markets in a specific category
+     * @param category The category to filter by
+     * @return Array of market IDs in the category
+     */
+    function getMarketsByCategory(Category category) external view returns (uint256[] memory) {
+        return marketsByCategory[category];
+    }
+    
+    /**
+     * @notice Withdraw collected fees (owner only)
+     * @dev Transfers all collected fees to the contract owner
+     */
+    function withdrawFees() external onlyOwner {
+        uint256 amount = totalFeesCollected;
+        require(amount > 0, "PredictionMarket: no fees to withdraw");
+        
+        totalFeesCollected = 0;
+        collateralToken.safeTransfer(owner(), amount);
+        
+        emit FeesWithdrawn(owner(), amount);
+    }
+    
+    /**
+     * @notice Pause the contract (owner only)
+     * @dev Prevents buying and selling shares when paused
+     */
+    function pause() external onlyOwner {
+        _pause();
+    }
+    
+    /**
+     * @notice Unpause the contract (owner only)
+     * @dev Resumes normal operations
+     */
+    function unpause() external onlyOwner {
+        _unpause();
     }
 }
