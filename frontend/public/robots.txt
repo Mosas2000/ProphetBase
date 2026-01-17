@@ -1,0 +1,13 @@
+# ProphetBase Robots.txt
+# https://prophetbase.vercel.app/robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://prophetbase.vercel.app/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
