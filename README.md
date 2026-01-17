@@ -86,6 +86,33 @@ Verify contracts on Basescan:
 npx hardhat verify --network base <CONTRACT_ADDRESS> <CONSTRUCTOR_ARGS>
 ```
 
+### Creating Markets
+
+Create a single market:
+```bash
+npm run create-market:base
+```
+
+Create multiple markets at once:
+```bash
+npm run create-markets:base
+```
+
+To customize the markets being created, edit `scripts/create-additional-markets.ts` and modify the `marketsToCreate` array:
+
+```typescript
+const marketsToCreate: MarketConfig[] = [
+    { 
+        question: "Your question here?", 
+        duration: 30 * 24 * 60 * 60 // Duration in seconds
+    },
+    // Add more markets...
+];
+```
+
+All created markets are automatically saved to `markets.json` for easy reference.
+
+
 ## Project Structure
 
 ```
