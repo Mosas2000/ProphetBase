@@ -1,0 +1,70 @@
+{
+    "buildCommand": "cd frontend && npm run build",
+    "outputDirectory": "frontend/.next",
+    "framework": "nextjs",
+    "installCommand": "cd frontend && npm install",
+    "devCommand": "cd frontend && npm run dev",
+    "env": {
+        "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID": {
+            "description": "WalletConnect Project ID from cloud.walletconnect.com",
+            "value": ""
+        },
+        "NEXT_PUBLIC_PREDICTION_MARKET_ADDRESS": {
+            "description": "Deployed PredictionMarket contract address on Base",
+            "value": "0x798e104BfAefC785bCDB63B58E0b620707773DAA"
+        },
+        "NEXT_PUBLIC_USDC_ADDRESS": {
+            "description": "USDC token address on Base mainnet",
+            "value": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+        },
+        "NEXT_PUBLIC_ENABLE_ANALYTICS": {
+            "description": "Enable Vercel Analytics",
+            "value": "true"
+        }
+    },
+    "regions": [
+        "iad1"
+    ],
+    "functions": {
+        "app/api/**/*.ts": {
+            "runtime": "edge"
+        }
+    },
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
+                },
+                {
+                    "key": "X-Frame-Options",
+                    "value": "DENY"
+                },
+                {
+                    "key": "X-XSS-Protection",
+                    "value": "1; mode=block"
+                },
+                {
+                    "key": "Referrer-Policy",
+                    "value": "strict-origin-when-cross-origin"
+                }
+            ]
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/sitemap.xml",
+            "destination": "/api/sitemap"
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/markets",
+            "destination": "/",
+            "permanent": true
+        }
+    ],
+    "crons": []
+}
