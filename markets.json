@@ -13,6 +13,48 @@
       "blockNumber": 40823069,
       "createdAt": "2026-01-15T00:04:45.527Z",
       "network": "base"
+    },
+    {
+      "marketId": "0",
+      "question": "Will ETH reach $5000 by February 1st, 2026?",
+      "endTime": "2026-01-30T00:04:45.000Z",
+      "endTimeUnix": 1769731485,
+      "status": "Open",
+      "yesTokenAddress": "0xAff8A8d0271282976f356aF9F8Aaaee0FC1c4be2",
+      "noTokenAddress": "0xdafc8Ef2f6BB141868DF4c84C6cAf07b4CB381b4",
+      "contractAddress": "0x798e104BfAefC785bCDB63B58E0b620707773DAA",
+      "transactionHash": "0x928f9eca856825a25dc163df1894139744f1aa4f5f9dfd6268b11a9315f6b615",
+      "blockNumber": 40894814,
+      "createdAt": "2026-01-16T15:56:14.686Z",
+      "network": "base"
+    },
+    {
+      "marketId": "1",
+      "question": "Will Bitcoin reach $150k by March 1st, 2026?",
+      "endTime": "2026-02-15T15:56:15.000Z",
+      "endTimeUnix": 1771170975,
+      "status": "Open",
+      "yesTokenAddress": "0x106579b253e9DDA80a2Cc751c43Eb1a1885005b5",
+      "noTokenAddress": "0xfA2F120EFd5B4C3C2FF7e8CEbd93CF52f1648799",
+      "contractAddress": "0x798e104BfAefC785bCDB63B58E0b620707773DAA",
+      "transactionHash": "0xc41319da948c46297710e89565cf71f794d38687dd7150654676b8059e4bcf0d",
+      "blockNumber": 40894817,
+      "createdAt": "2026-01-16T15:56:21.364Z",
+      "network": "base"
+    },
+    {
+      "marketId": "3",
+      "question": "Will Coinbase launch a token in Q1 2026?",
+      "endTime": "2026-03-17T15:56:27.000Z",
+      "endTimeUnix": 1773762987,
+      "status": "Open",
+      "yesTokenAddress": "0x171E28F940793642Ea47be495E36a087868a9A89",
+      "noTokenAddress": "0xab5e44e29496ABd002618D28911f399Dc5A13Dfb",
+      "contractAddress": "0x798e104BfAefC785bCDB63B58E0b620707773DAA",
+      "transactionHash": "0xd258797227ba1f484cf49849c0831ff4c6c475fdb1a27202c68442b1e47e79a2",
+      "blockNumber": 40894820,
+      "createdAt": "2026-01-16T15:56:28.303Z",
+      "network": "base"
     }
   ]
 }
