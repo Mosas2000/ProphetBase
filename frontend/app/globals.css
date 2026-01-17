@@ -190,3 +190,193 @@ a:hover {
   background-color: rgba(37, 99, 235, 0.2);
   color: var(--foreground);
 }
+
+/* ===== ENHANCED BUTTON STYLES ===== */
+
+/* Primary button with smooth transitions */
+.btn-primary {
+  @apply relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 px-6 py-3 font-semibold text-white shadow-md;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover:not(:disabled) {
+  @apply shadow-xl;
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-primary:disabled {
+  @apply cursor-not-allowed opacity-50;
+  transform: none;
+}
+
+/* Secondary button */
+.btn-secondary {
+  @apply relative overflow-hidden rounded-xl border-2 border-gray-300 bg-white px-6 py-3 font-semibold text-gray-700 shadow-sm;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  @apply border-gray-400 bg-gray-50 shadow-md;
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-secondary:disabled {
+  @apply cursor-not-allowed opacity-50;
+  transform: none;
+}
+
+/* Success button (YES shares) */
+.btn-success {
+  @apply relative overflow-hidden rounded-xl bg-gradient-to-r from-green-500 to-green-600 px-6 py-3 font-semibold text-white shadow-md;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-success:hover:not(:disabled) {
+  @apply shadow-xl;
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-success:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-success:disabled {
+  @apply cursor-not-allowed opacity-50;
+  transform: none;
+}
+
+/* Danger button (NO shares) */
+.btn-danger {
+  @apply relative overflow-hidden rounded-xl bg-gradient-to-r from-red-500 to-red-600 px-6 py-3 font-semibold text-white shadow-md;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-danger:hover:not(:disabled) {
+  @apply shadow-xl;
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-danger:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-danger:disabled {
+  @apply cursor-not-allowed opacity-50;
+  transform: none;
+}
+
+/* Button shimmer effect on hover */
+@keyframes shimmer-button {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+}
+
+.btn-shimmer:hover::after {
+  animation: shimmer-button 0.6s ease-in-out;
+}
+
+/* Focus states for accessibility */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-success:focus-visible,
+.btn-danger:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.5);
+  outline-offset: 2px;
+}
+
+/* Loading state for buttons */
+.btn-loading {
+  @apply cursor-wait opacity-75;
+  pointer-events: none;
+}
+
+.btn-loading::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Ripple effect on click */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+}
+
+.btn-ripple:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+/* Smooth color transitions */
+.transition-colors-smooth {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Scale on hover utility */
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-scale:active {
+  transform: scale(0.95);
+}
+
+/* Glow effect on hover */
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+}
