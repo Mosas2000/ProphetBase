@@ -55,6 +55,76 @@
       "blockNumber": 40894820,
       "createdAt": "2026-01-16T15:56:28.303Z",
       "network": "base"
+    },
+    {
+      "marketId": "0",
+      "question": "Will Bitcoin reach $150k by March 1st, 2026?",
+      "endTime": "2026-02-17T04:09:39.000Z",
+      "endTimeUnix": 1771301379,
+      "status": "Open",
+      "yesTokenAddress": "0x3926618654EA798876C8a7b33B9B8FECFDB842AE",
+      "noTokenAddress": "0x90e111Fe8bA3E1a8664C94f0B528865CAcb1Ed01",
+      "contractAddress": "0x27177c0edc143CA33119fafD907e8600deF5Ba74",
+      "transactionHash": "0xfb50c05350057cca507d8a2201e7cf685a610669055ce0ccc6ac7cc3303bcda7",
+      "blockNumber": 40960017,
+      "createdAt": "2026-01-18T04:09:41.108Z",
+      "network": "base"
+    },
+    {
+      "marketId": "1",
+      "question": "Will Base TVL exceed $10B by February 15th, 2026?",
+      "endTime": "2026-02-07T04:09:41.000Z",
+      "endTimeUnix": 1770437381,
+      "status": "Open",
+      "yesTokenAddress": "0x4a0957B717CF3507c450CD03ca607Cc1a58E5161",
+      "noTokenAddress": "0xd307eC65A8A7463876A547769E544776396E237A",
+      "contractAddress": "0x27177c0edc143CA33119fafD907e8600deF5Ba74",
+      "transactionHash": "0x42e8f2bc42be5cd2209f6e67366d5087f92ff2e9bacb1537154fd75565a0cee5",
+      "blockNumber": 40960020,
+      "createdAt": "2026-01-18T04:09:46.938Z",
+      "network": "base"
+    },
+    {
+      "marketId": "2",
+      "question": "Will Coinbase launch a token in Q1 2026?",
+      "endTime": "2026-03-19T04:09:47.000Z",
+      "endTimeUnix": 1773893387,
+      "status": "Open",
+      "yesTokenAddress": "0x1dBc720aC3D5b42Dd42B3d44218Aee9Be4FbAB6C",
+      "noTokenAddress": "0xc92a34af415C64081da7f1c8f452C68068Ee685b",
+      "contractAddress": "0x27177c0edc143CA33119fafD907e8600deF5Ba74",
+      "transactionHash": "0x2338474468c2c42632180e4a4d89ae46efedf16af75f61a18a366ad1aca7d3fe",
+      "blockNumber": 40960086,
+      "createdAt": "2026-01-18T04:11:58.454Z",
+      "network": "base"
+    },
+    {
+      "marketId": "3",
+      "question": "Will Bitcoin reach $150k by March 1st, 2026?",
+      "endTime": "2026-02-17T04:11:59.000Z",
+      "endTimeUnix": 1771301519,
+      "status": "Open",
+      "yesTokenAddress": "0x60BDD9AF22e1f9104aD5F4734071F5fC7eE4E3CA",
+      "noTokenAddress": "0x2805eD5E716740784405250c16C609bF31111BC0",
+      "contractAddress": "0x27177c0edc143CA33119fafD907e8600deF5Ba74",
+      "transactionHash": "0x7dfdfb746d7b2892f1f4184a3ff1d832ef666e1851acc17dab2b08a693e656d5",
+      "blockNumber": 40960089,
+      "createdAt": "2026-01-18T04:12:04.789Z",
+      "network": "base"
+    },
+    {
+      "marketId": "4",
+      "question": "Will Base TVL exceed $10B by February 15th, 2026?",
+      "endTime": "2026-02-07T04:12:05.000Z",
+      "endTimeUnix": 1770437525,
+      "status": "Open",
+      "yesTokenAddress": "0xf9ad0c7cFbFbfbDF6182E051b5B5F4fc2590dd8D",
+      "noTokenAddress": "0x96Ba440307D309B15f6bddB44b68c0057535a862",
+      "contractAddress": "0x27177c0edc143CA33119fafD907e8600deF5Ba74",
+      "transactionHash": "0x6fd7f8acd09f56ccf958d7390e0a41cef94df060c307b7c0353033061258e033",
+      "blockNumber": 40960092,
+      "createdAt": "2026-01-18T04:12:11.035Z",
+      "network": "base"
     }
   ]
 }
