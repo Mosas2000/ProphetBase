@@ -8,6 +8,7 @@ import * as path from "path";
 interface MarketConfig {
     question: string;
     duration: number; // Duration in seconds
+    category: number; // Category enum: 0=DeFi, 1=Crypto, 2=Politics, 3=Sports, 4=Other
 }
 
 /**
@@ -38,8 +39,18 @@ async function main() {
         const balance = await ethers.provider.getBalance(signer.address);
         console.log("Account balance:", ethers.formatEther(balance), "ETH\n");
 
-        // Connect to the deployed PredictionMarket contract
-        const PREDICTION_MARKET_ADDRESS = "0x798e104BfAefC785bCDB63B58E0b620707773DAA";
+        // Read contract address from deployments.json
+        const deploymentsPath = path.join(__dirname, "..", "deployments.json");
+        let PREDICTION_MARKET_ADDRESS = "0x27177c0edc143CA33119fafD907e8600deF5Ba74"; // Default fallback
+
+        if (fs.existsSync(deploymentsPath)) {
+            const deploymentsData = JSON.parse(fs.readFileSync(deploymentsPath, "utf8"));
+            if (deploymentsData.base && deploymentsData.base.length > 0) {
+                // Get the most recent deployment
+                PREDICTION_MARKET_ADDRESS = deploymentsData.base[deploymentsData.base.length - 1].contractAddress;
+            }
+        }
+
         console.log("Connecting to PredictionMarket at:", PREDICTION_MARKET_ADDRESS);
 
         // Get the contract factory and attach to deployed address
@@ -47,25 +58,31 @@ async function main() {
         const predictionMarket = PredictionMarket.attach(PREDICTION_MARKET_ADDRESS);
 
         // Define array of markets to create
+        // Categories: 0=DeFi, 1=Crypto, 2=Politics, 3=Sports, 4=Other
         const marketsToCreate: MarketConfig[] = [
             {
                 question: "Will Bitcoin reach $150k by March 1st, 2026?",
-                duration: 30 * 24 * 60 * 60 // 30 days
+                duration: 30 * 24 * 60 * 60, // 30 days
+                category: 1 // Crypto
             },
             {
                 question: "Will Base TVL exceed $10B by February 15th, 2026?",
-                duration: 20 * 24 * 60 * 60 // 20 days
+                duration: 20 * 24 * 60 * 60, // 20 days
+                category: 0 // DeFi
             },
             {
                 question: "Will Coinbase launch a token in Q1 2026?",
-                duration: 60 * 24 * 60 * 60 // 60 days
+                duration: 60 * 24 * 60 * 60, // 60 days
+                category: 1 // Crypto
             }
         ];
 
         console.log(`\n📊 Planning to create ${marketsToCreate.length} markets:\n`);
+        const categoryNames = ["DeFi", "Crypto", "Politics", "Sports", "Other"];
         marketsToCreate.forEach((market, index) => {
             const endDate = new Date(Date.now() + market.duration * 1000);
             console.log(`${index + 1}. ${market.question}`);
+            console.log(`   Category: ${categoryNames[market.category]}`);
             console.log(`   Duration: ${market.duration / (24 * 60 * 60)} days`);
             console.log(`   End Date: ${endDate.toISOString()}\n`);
         });
@@ -82,13 +99,15 @@ async function main() {
 
             try {
                 console.log("📋 Question:", marketConfig.question);
+                console.log("📁 Category:", categoryNames[marketConfig.category]);
                 console.log("⏱️  Duration:", marketConfig.duration, "seconds");
 
                 // Create the market
                 console.log("\n🚀 Submitting transaction...");
                 const tx = await predictionMarket.createMarket(
                     marketConfig.question,
-                    marketConfig.duration
+                    marketConfig.duration,
+                    marketConfig.category
                 );
                 console.log("Transaction hash:", tx.hash);
 
