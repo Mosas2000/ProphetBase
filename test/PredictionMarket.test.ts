@@ -59,7 +59,7 @@ describe("PredictionMarket", function () {
             const question = "Will ETH hit $5k by end of 2026?";
             const duration = 7 * 24 * 60 * 60; // 7 days in seconds
 
-            await expect(predictionMarket.connect(owner).createMarket(question, duration))
+            await expect(predictionMarket.connect(owner).createMarket(question, duration, 0))
                 .to.emit(predictionMarket, "MarketCreated");
 
             expect(await predictionMarket.marketCount()).to.equal(1);
@@ -71,7 +71,7 @@ describe("PredictionMarket", function () {
             const question = "Will BTC reach $100k?";
             const duration = 30 * 24 * 60 * 60; // 30 days
 
-            await predictionMarket.connect(owner).createMarket(question, duration);
+            await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
             const market = await predictionMarket.markets(0);
 
@@ -97,7 +97,7 @@ describe("PredictionMarket", function () {
             const duration = 7 * 24 * 60 * 60;
 
             await expect(
-                predictionMarket.connect(user1).createMarket(question, duration)
+                predictionMarket.connect(user1).createMarket(question, duration, 0)
             ).to.be.revertedWithCustomError(predictionMarket, "OwnableUnauthorizedAccount");
         });
 
@@ -107,7 +107,7 @@ describe("PredictionMarket", function () {
             const duration = 7 * 24 * 60 * 60;
 
             await expect(
-                predictionMarket.connect(owner).createMarket("", duration)
+                predictionMarket.connect(owner).createMarket("", duration, 0)
             ).to.be.revertedWith("PredictionMarket: question cannot be empty");
         });
 
@@ -117,7 +117,7 @@ describe("PredictionMarket", function () {
             const question = "Will ETH hit $5k?";
 
             await expect(
-                predictionMarket.connect(owner).createMarket(question, 0)
+                predictionMarket.connect(owner).createMarket(question, 0, 0)
             ).to.be.revertedWith("PredictionMarket: duration must be greater than zero");
         });
     });
@@ -129,21 +129,23 @@ describe("PredictionMarket", function () {
             // Create a market
             const question = "Will ETH hit $5k?";
             const duration = 7 * 24 * 60 * 60;
-            await predictionMarket.connect(owner).createMarket(question, duration);
+            await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
             const market = await predictionMarket.markets(0);
             const yesToken = await ethers.getContractAt("OutcomeToken", market.yesToken);
 
             // User approves and buys YES shares
             const buyAmount = 100n * 10n ** 6n; // 100 USDC
+            const fee = (buyAmount * 2n) / 100n; // 2% fee
+            const netAmount = buyAmount - fee;
             await mockUSDC.connect(user1).approve(await predictionMarket.getAddress(), buyAmount);
 
             await expect(predictionMarket.connect(user1).buyShares(0, true, buyAmount))
                 .to.emit(predictionMarket, "SharesPurchased")
-                .withArgs(0, user1.address, true, buyAmount);
+                .withArgs(0, user1.address, true, netAmount, fee);
 
-            // Verify user received YES tokens
-            expect(await yesToken.balanceOf(user1.address)).to.equal(buyAmount);
+            // Verify user received YES tokens (net amount after fee)
+            expect(await yesToken.balanceOf(user1.address)).to.equal(netAmount);
         });
 
         it("Should allow users to buy NO shares", async function () {
@@ -152,21 +154,23 @@ describe("PredictionMarket", function () {
             // Create a market
             const question = "Will BTC reach $100k?";
             const duration = 30 * 24 * 60 * 60;
-            await predictionMarket.connect(owner).createMarket(question, duration);
+            await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
             const market = await predictionMarket.markets(0);
             const noToken = await ethers.getContractAt("OutcomeToken", market.noToken);
 
             // User approves and buys NO shares
             const buyAmount = 200n * 10n ** 6n; // 200 USDC
+            const fee = (buyAmount * 2n) / 100n; // 2% fee
+            const netAmount = buyAmount - fee;
             await mockUSDC.connect(user1).approve(await predictionMarket.getAddress(), buyAmount);
 
             await expect(predictionMarket.connect(user1).buyShares(0, false, buyAmount))
                 .to.emit(predictionMarket, "SharesPurchased")
-                .withArgs(0, user1.address, false, buyAmount);
+                .withArgs(0, user1.address, false, netAmount, fee);
 
-            // Verify user received NO tokens
-            expect(await noToken.balanceOf(user1.address)).to.equal(buyAmount);
+            // Verify user received NO tokens (net amount after fee)
+            expect(await noToken.balanceOf(user1.address)).to.equal(netAmount);
         });
 
         it("Should transfer collateral when buying shares", async function () {
@@ -175,7 +179,7 @@ describe("PredictionMarket", function () {
             // Create a market
             const question = "Will ETH hit $10k?";
             const duration = 7 * 24 * 60 * 60;
-            await predictionMarket.connect(owner).createMarket(question, duration);
+            await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
             const buyAmount = 500n * 10n ** 6n; // 500 USDC
             const initialUserBalance = await mockUSDC.balanceOf(user1.address);
@@ -196,7 +200,7 @@ describe("PredictionMarket", function () {
             // Create a market
             const question = "Will SOL hit $500?";
             const duration = 14 * 24 * 60 * 60;
-            await predictionMarket.connect(owner).createMarket(question, duration);
+            await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
             const buyAmount1 = 100n * 10n ** 6n;
             const buyAmount2 = 200n * 10n ** 6n;
@@ -210,8 +214,10 @@ describe("PredictionMarket", function () {
             await predictionMarket.connect(user2).buyShares(0, false, buyAmount2);
 
             const market = await predictionMarket.markets(0);
-            expect(market.totalYesShares).to.equal(buyAmount1);
-            expect(market.totalNoShares).to.equal(buyAmount2);
+            const fee1 = (buyAmount1 * 2n) / 100n;
+            const fee2 = (buyAmount2 * 2n) / 100n;
+            expect(market.totalYesShares).to.equal(buyAmount1 - fee1);
+            expect(market.totalNoShares).to.equal(buyAmount2 - fee2);
         });
 
         it("Should not allow buying after market ends", async function () {
@@ -220,7 +226,7 @@ describe("PredictionMarket", function () {
             // Create a market with short duration
             const question = "Will ETH hit $5k?";
             const duration = 60; // 1 minute
-            await predictionMarket.connect(owner).createMarket(question, duration);
+            await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
             // Fast-forward time past market end
             await time.increase(duration + 1);
@@ -240,7 +246,7 @@ describe("PredictionMarket", function () {
             // Create a market
             const question = "Will BTC hit $100k?";
             const duration = 7 * 24 * 60 * 60;
-            await predictionMarket.connect(owner).createMarket(question, duration);
+            await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
             await expect(
                 predictionMarket.connect(user1).buyShares(0, true, 0)
@@ -266,7 +272,7 @@ describe("PredictionMarket", function () {
             // Create a market
             const question = "Will ETH hit $5k?";
             const duration = 7 * 24 * 60 * 60; // 7 days
-            await predictionMarket.connect(owner).createMarket(question, duration);
+            await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
             // User1 buys YES shares
             const yesAmount = 100n * 10n ** 6n;
@@ -444,7 +450,7 @@ describe("PredictionMarket", function () {
                 // Create market and resolve without buying shares
                 const question = "Will BTC hit $100k?";
                 const duration = 7 * 24 * 60 * 60;
-                await predictionMarket.connect(owner).createMarket(question, duration);
+                await predictionMarket.connect(owner).createMarket(question, duration, 0);
 
                 await time.increase(duration + 1);
                 await predictionMarket.connect(owner).resolveMarket(0, true);
