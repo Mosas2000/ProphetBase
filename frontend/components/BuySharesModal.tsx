@@ -3,13 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useAccount, useBalance, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { parseUnits, formatUnits } from 'viem'
-import { PREDICTION_MARKET_ABI, ERC20_ABI } from '@/lib/abi'
-
-/**
- * Contract addresses on Base mainnet
- */
-const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' as const
-const PREDICTION_MARKET_ADDRESS = '0x798e104BfAefC785bCDB63B58E0b620707773DAA' as const
+import { PREDICTION_MARKET_ABI, PREDICTION_MARKET_ADDRESS, USDC_ADDRESS, ERC20_ABI } from '@/lib/contracts'
 const USDC_DECIMALS = 6
 
 /**
@@ -328,10 +322,10 @@ export default function BuySharesModal({
                             <div className="space-y-3">
                                 <div className="flex items-center gap-3">
                                     <div className={`flex h-8 w-8 items-center justify-center rounded-full ${needsApproval
-                                            ? txState === 'approving'
-                                                ? 'bg-blue-500 text-white'
-                                                : 'bg-gray-200 text-gray-600'
-                                            : 'bg-green-500 text-white'
+                                        ? txState === 'approving'
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-gray-200 text-gray-600'
+                                        : 'bg-green-500 text-white'
                                         }`}>
                                         {!needsApproval ? (
                                             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -350,8 +344,8 @@ export default function BuySharesModal({
 
                                 <div className="flex items-center gap-3">
                                     <div className={`flex h-8 w-8 items-center justify-center rounded-full ${txState === 'buying'
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-gray-200 text-gray-600'
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-gray-200 text-gray-600'
                                         }`}>
                                         {txState === 'buying' ? (
                                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
