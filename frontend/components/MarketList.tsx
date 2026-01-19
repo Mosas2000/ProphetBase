@@ -67,20 +67,6 @@ export default function MarketList() {
         args: [BigInt(2)],
     })
 
-    const market3 = useReadContract({
-        address: PREDICTION_MARKET_ADDRESS,
-        abi: PREDICTION_MARKET_ABI,
-        functionName: 'markets',
-        args: [BigInt(3)],
-    })
-
-    const market4 = useReadContract({
-        address: PREDICTION_MARKET_ADDRESS,
-        abi: PREDICTION_MARKET_ABI,
-        functionName: 'markets',
-        args: [BigInt(4)],
-    })
-
     // Transform raw contract data into Market objects
     const transformMarketData = (data: any): Market | undefined => {
         if (!data) return undefined
@@ -103,8 +89,6 @@ export default function MarketList() {
         transformMarketData(market0.data),
         transformMarketData(market1.data),
         transformMarketData(market2.data),
-        transformMarketData(market3.data),
-        transformMarketData(market4.data),
     ].filter((m): m is Market => m !== undefined)
 
     // Filter markets based on search query and status
@@ -136,9 +120,7 @@ export default function MarketList() {
     const isLoading = isLoadingCount ||
         market0.isLoading ||
         market1.isLoading ||
-        market2.isLoading ||
-        market3.isLoading ||
-        market4.isLoading
+        market2.isLoading
 
     // Loading state
     if (isLoading) {
@@ -184,7 +166,7 @@ export default function MarketList() {
     }
 
     const count = Number(marketCount)
-    const showingLimited = count > 5
+    const showingLimited = count > 3
 
     return (
         <div className="space-y-6">
@@ -271,7 +253,7 @@ export default function MarketList() {
             {showingLimited && (
                 <div className="rounded-lg bg-blue-50 border border-blue-200 p-4">
                     <p className="text-sm text-blue-800">
-                        📌 Showing first 5 markets only. More markets available - pagination coming soon!
+                        📌 Showing first 3 markets only. More markets available - pagination coming soon!
                     </p>
                 </div>
             )}
