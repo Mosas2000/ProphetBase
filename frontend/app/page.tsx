@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useReadContract } from 'wagmi'
+import { PREDICTION_MARKET_ADDRESS, PREDICTION_MARKET_ABI } from '@/lib/contracts'
 import MarketList from '@/components/MarketList'
 import UserPositions from '@/components/UserPositions'
 import StatsDashboard from '@/components/StatsDashboard'
@@ -195,8 +197,8 @@ export default function Home() {
           {/* Stats Dashboard */}
           <div className="mb-12 sm:mb-16">
             <StatsDashboard
-              totalMarkets={1}
-              activeMarkets={1}
+              totalMarkets={3}
+              activeMarkets={3}
               totalVolume="0"
               totalUsers={0}
             />
@@ -281,8 +283,8 @@ export default function Home() {
                 document.getElementById('markets')?.scrollIntoView({ behavior: 'smooth' })
               }}
               className={`flex flex-col items-center gap-1 rounded-lg px-4 py-3 transition-colors ${activeTab === 'markets'
-                  ? 'bg-blue-50 text-blue-600'
-                  : 'text-gray-600 hover:bg-gray-50'
+                ? 'bg-blue-50 text-blue-600'
+                : 'text-gray-600 hover:bg-gray-50'
                 }`}
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -297,8 +299,8 @@ export default function Home() {
                 document.getElementById('positions')?.scrollIntoView({ behavior: 'smooth' })
               }}
               className={`flex flex-col items-center gap-1 rounded-lg px-4 py-3 transition-colors ${activeTab === 'positions'
-                  ? 'bg-blue-50 text-blue-600'
-                  : 'text-gray-600 hover:bg-gray-50'
+                ? 'bg-blue-50 text-blue-600'
+                : 'text-gray-600 hover:bg-gray-50'
                 }`}
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
