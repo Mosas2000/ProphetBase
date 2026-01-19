@@ -28,7 +28,7 @@ export default function Footer() {
                     {/* Right side - Links */}
                     <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
                         <a
-                            href="https://basescan.org/address/0x798e104BfAefC785bCDB63B58E0b620707773DAA"
+                            href="https://basescan.org/address/0x27177c0edc143CA33119fafD907e8600deF5Ba74"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-1 text-gray-600 hover:text-gray-900 transition-colors"
