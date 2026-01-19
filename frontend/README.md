@@ -141,11 +141,11 @@ frontend/
 
 ## Contract Information
 
-- **PredictionMarket**: `0x798e104BfAefC785bCDB63B58E0b620707773DAA`
+- **PredictionMarket**: `0x27177c0edc143CA33119fafD907e8600deF5Ba74`
 - **USDC (Base)**: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
 - **Network**: Base Mainnet (chainId: 8453)
 
-View on [Basescan](https://basescan.org/address/0x798e104BfAefC785bCDB63B58E0b620707773DAA)
+View on [Basescan](https://basescan.org/address/0x27177c0edc143CA33119fafD907e8600deF5Ba74)
 
 ## Key Features
 
@@ -226,7 +226,7 @@ Pre-configured ABIs and contract addresses for:
 - [wagmi Documentation](https://wagmi.sh)
 - [RainbowKit Documentation](https://www.rainbowkit.com)
 - [Base Network](https://base.org)
-- [ProphetBase Contract on Basescan](https://basescan.org/address/0x798e104BfAefC785bCDB63B58E0b620707773DAA)
+- [ProphetBase Contract on Basescan](https://basescan.org/address/0x27177c0edc143CA33119fafD907e8600deF5Ba74)
 - [WalletConnect Cloud](https://cloud.walletconnect.com/)
 
 ## Contributing
