@@ -14,19 +14,19 @@ export default function AdminPanel() {
     const { data: ownerAddress } = useReadContract({
         address: PREDICTION_MARKET_ADDRESS,
         abi: PREDICTION_MARKET_ABI,
-        functionName: 'owner',
+        functionName: 'owner' as any,
     })
 
     const { data: totalFees } = useReadContract({
         address: PREDICTION_MARKET_ADDRESS,
         abi: PREDICTION_MARKET_ABI,
-        functionName: 'totalFeesCollected',
+        functionName: 'totalFeesCollected' as any,
     })
 
     const { data: isPaused } = useReadContract({
         address: PREDICTION_MARKET_ADDRESS,
         abi: PREDICTION_MARKET_ABI,
-        functionName: 'paused',
+        functionName: 'paused' as any,
     })
 
     const { data: marketCount } = useReadContract({
@@ -45,7 +45,7 @@ export default function AdminPanel() {
     }, [])
 
     // Return null if not owner
-    if (mounted && address?.toLowerCase() !== ownerAddress?.toLowerCase()) {
+    if (mounted && address?.toLowerCase() !== (ownerAddress as string)?.toLowerCase()) {
         return null
     }
 
@@ -63,7 +63,8 @@ export default function AdminPanel() {
             withdrawFees({
                 address: PREDICTION_MARKET_ADDRESS,
                 abi: PREDICTION_MARKET_ABI,
-                functionName: 'withdrawFees',
+                functionName: 'withdrawFees' as any,
+                args: [] as any,
             })
             dismissToast(toastId)
             showSuccess('Fees withdrawn successfully!')
@@ -80,13 +81,15 @@ export default function AdminPanel() {
                 unpauseContract({
                     address: PREDICTION_MARKET_ADDRESS,
                     abi: PREDICTION_MARKET_ABI,
-                    functionName: 'unpause',
+                    functionName: 'unpause' as any,
+                    args: [] as any,
                 })
             } else {
                 pauseContract({
                     address: PREDICTION_MARKET_ADDRESS,
                     abi: PREDICTION_MARKET_ABI,
-                    functionName: 'pause',
+                    functionName: 'pause' as any,
+                    args: [] as any,
                 })
             }
             dismissToast(toastId)
@@ -103,7 +106,7 @@ export default function AdminPanel() {
             resolveMarket({
                 address: PREDICTION_MARKET_ADDRESS,
                 abi: PREDICTION_MARKET_ABI,
-                functionName: 'resolveMarket',
+                functionName: 'resolveMarket' as any,
                 args: [BigInt(marketId), outcome],
             })
             dismissToast(toastId)
@@ -184,8 +187,8 @@ export default function AdminPanel() {
                         onClick={handlePause}
                         disabled={isPausing || isUnpausing}
                         className={`rounded-lg px-6 py-3 font-semibold text-white ${isPaused
-                                ? 'bg-green-600 hover:bg-green-700'
-                                : 'bg-red-600 hover:bg-red-700'
+                            ? 'bg-green-600 hover:bg-green-700'
+                            : 'bg-red-600 hover:bg-red-700'
                             } disabled:cursor-not-allowed disabled:opacity-50`}
                     >
                         {isPausing || isUnpausing ? 'Processing...' : isPaused ? 'Unpause Contract' : 'Pause Contract'}

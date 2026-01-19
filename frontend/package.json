@@ -16,6 +16,8 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hot-toast": "^2.4.1",
+    "react-jazzicon": "^1.0.4",
+    "recharts": "^3.6.0",
     "viem": "^2.44.2",
     "wagmi": "^2.19.5"
   },

@@ -50,7 +50,7 @@ export default function MarketDetailPage() {
         )
     }
 
-    const [question, endTime, resolutionTime, status, outcome, yesToken, noToken, totalYesShares, totalNoShares, category] = marketData as any[]
+    const [question, endTime, resolutionTime, status, outcome, yesToken, noToken, totalYesShares, totalNoShares, category] = Array.from(marketData as any)
 
     const totalShares = Number(totalYesShares) + Number(totalNoShares)
     const yesPercentage = totalShares > 0 ? (Number(totalYesShares) / totalShares) * 100 : 50
@@ -96,7 +96,7 @@ export default function MarketDetailPage() {
                                 {getStatusBadge()}
                                 <CategoryBadge categoryId={Number(category)} />
                             </div>
-                            <h1 className="mb-4 text-3xl font-bold text-gray-900 sm:text-4xl">{question}</h1>
+                            <h1 className="mb-4 text-3xl font-bold text-gray-900 sm:text-4xl">{String(question)}</h1>
                             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                                 <span>Market #{marketId}</span>
                                 <span>•</span>
@@ -104,7 +104,7 @@ export default function MarketDetailPage() {
                             </div>
                         </div>
                         <div className="flex gap-2">
-                            <ShareButton marketId={marketId} question={question} />
+                            <ShareButton marketId={marketId} question={String(question)} />
                         </div>
                     </div>
 
@@ -211,7 +211,7 @@ export default function MarketDetailPage() {
                 onClose={() => setBuyModalOpen(false)}
                 marketId={marketId}
                 shareType={selectedOutcome}
-                question={question}
+                question={String(question)}
             />
         </div>
     )

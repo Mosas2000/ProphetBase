@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'use'
+import { useState } from 'react'
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { PREDICTION_MARKET_ABI, PREDICTION_MARKET_ADDRESS } from '@/lib/contracts'
 import { showSuccess, showError, showLoading, dismissToast } from '@/lib/toast'
@@ -88,7 +88,7 @@ export default function MarketCreationForm({ onSuccess, className = '' }: Market
                 address: PREDICTION_MARKET_ADDRESS,
                 abi: PREDICTION_MARKET_ABI,
                 functionName: 'createMarket',
-                args: [formData.question, BigInt(durationInSeconds), Number(formData.category)],
+                args: [formData.question, BigInt(durationInSeconds), Number(formData.category)] as any,
             })
         } catch (err: any) {
             dismissToast(toastId)
@@ -166,8 +166,8 @@ export default function MarketCreationForm({ onSuccess, className = '' }: Market
                                         }
                                     }}
                                     className={`rounded-lg border-2 px-4 py-3 text-sm font-medium transition-colors ${formData.duration === preset.value && preset.value !== 'custom'
-                                            ? 'border-blue-500 bg-blue-50 text-blue-700'
-                                            : 'border-gray-200 text-gray-700 hover:border-gray-300'
+                                        ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                        : 'border-gray-200 text-gray-700 hover:border-gray-300'
                                         }`}
                                 >
                                     {preset.label}
@@ -207,8 +207,8 @@ export default function MarketCreationForm({ onSuccess, className = '' }: Market
                                     type="button"
                                     onClick={() => setFormData({ ...formData, category: String(cat.id) })}
                                     className={`flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition-colors ${formData.category === String(cat.id)
-                                            ? 'border-blue-500 bg-blue-50'
-                                            : 'border-gray-200 hover:border-gray-300'
+                                        ? 'border-blue-500 bg-blue-50'
+                                        : 'border-gray-200 hover:border-gray-300'
                                         }`}
                                 >
                                     <span className="text-2xl">{cat.icon}</span>

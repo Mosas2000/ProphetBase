@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Jazzicon from '@jazzicon/react'
+import Jazzicon from 'react-jazzicon'
 import { formatDistanceToNow } from 'date-fns'
 
 interface Activity {
@@ -186,7 +186,7 @@ export default function ActivityFeed({ className = '' }: { className?: string })
                     <div key={activity.id} className="flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-gray-50">
                         {/* Avatar */}
                         <div className="flex-shrink-0">
-                            <Jazzicon address={activity.user} size={40} />
+                            <Jazzicon seed={parseInt(activity.user.slice(2, 10), 16)} diameter={40} />
                         </div>
 
                         {/* Content */}

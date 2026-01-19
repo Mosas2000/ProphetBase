@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Jazzicon from '@jazzicon/react'
+import Jazzicon from 'react-jazzicon'
 
 type TimePeriod = '24H' | '7D' | 'ALL'
 
@@ -68,8 +68,8 @@ export default function Leaderboard({ currentUserAddress, className = '' }: Lead
                             key={period}
                             onClick={() => setTimePeriod(period)}
                             className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${timePeriod === period
-                                    ? 'bg-white text-blue-600 shadow-sm'
-                                    : 'text-gray-600 hover:text-gray-900'
+                                ? 'bg-white text-blue-600 shadow-sm'
+                                : 'text-gray-600 hover:text-gray-900'
                                 }`}
                         >
                             {period}
@@ -98,8 +98,8 @@ export default function Leaderboard({ currentUserAddress, className = '' }: Lead
                                 <tr
                                     key={entry.address}
                                     className={`transition-colors ${isCurrentUser
-                                            ? 'bg-blue-50 font-medium'
-                                            : 'hover:bg-gray-50'
+                                        ? 'bg-blue-50 font-medium'
+                                        : 'hover:bg-gray-50'
                                         }`}
                                 >
                                     {/* Rank */}
@@ -117,7 +117,7 @@ export default function Leaderboard({ currentUserAddress, className = '' }: Lead
                                     {/* Trader */}
                                     <td className="py-4 pr-4">
                                         <div className="flex items-center gap-3">
-                                            <Jazzicon address={entry.address} size={32} />
+                                            <Jazzicon seed={parseInt(entry.address.slice(2, 10), 16)} diameter={32} />
                                             <div>
                                                 <p className="text-sm font-medium text-gray-900">
                                                     {entry.address.slice(0, 6)}...{entry.address.slice(-4)}
@@ -148,10 +148,10 @@ export default function Leaderboard({ currentUserAddress, className = '' }: Lead
                                             <div className="mt-1 h-1.5 w-16 ml-auto overflow-hidden rounded-full bg-gray-200">
                                                 <div
                                                     className={`h-full ${entry.winRate >= 70
-                                                            ? 'bg-green-500'
-                                                            : entry.winRate >= 50
-                                                                ? 'bg-yellow-500'
-                                                                : 'bg-red-500'
+                                                        ? 'bg-green-500'
+                                                        : entry.winRate >= 50
+                                                            ? 'bg-yellow-500'
+                                                            : 'bg-red-500'
                                                         }`}
                                                     style={{ width: `${entry.winRate}%` }}
                                                 />
