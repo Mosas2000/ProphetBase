@@ -1,0 +1,48 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./frontend
+          vercel-args: '--prod'
+
+  deploy-contracts:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[deploy-contracts]')
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Compile contracts
+        run: npx hardhat compile
+      
+      - name: Deploy to Base
+        run: npx hardhat run scripts/deploy.ts --network baseMainnet
+        env:
+          PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          BASE_RPC_URL: ${{ secrets.BASE_RPC_URL }}
+      
+      - name: Verify contracts
+        run: npx hardhat verify --network baseMainnet
+        env:
+          BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
