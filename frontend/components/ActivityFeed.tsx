@@ -1,216 +1,131 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Jazzicon from 'react-jazzicon'
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import { formatDistanceToNow } from 'date-fns'
 
-interface Activity {
-    id: string
-    type: 'market_created' | 'shares_purchased' | 'market_resolved' | 'winnings_claimed'
-    user: string
-    marketId: number
+interface ActivityEvent {
+    id: number
+    type: 'buy_yes' | 'buy_no' | 'resolution' | 'creation'
     marketQuestion: string
+    user: string
     amount?: string
-    outcome?: boolean
-    timestamp: number
+    timestamp: Date
 }
 
-// Mock data generator (will be replaced with real event data)
-const generateMockActivities = (): Activity[] => {
-    const activities: Activity[] = []
-    const now = Date.now()
-
-    const mockAddresses = [
-        '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
-        '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199',
-        '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
-    ]
-
-    const mockQuestions = [
-        'Will ETH hit $5k by end of 2026?',
-        'Will BTC reach $100k?',
-        'Will Base TVL exceed $10B?',
-    ]
-
-    for (let i = 0; i < 10; i++) {
-        const types: Activity['type'][] = ['market_created', 'shares_purchased', 'market_resolved', 'winnings_claimed']
-        const type = types[Math.floor(Math.random() * types.length)]
-
-        activities.push({
-            id: `activity-${i}`,
-            type,
-            user: mockAddresses[Math.floor(Math.random() * mockAddresses.length)],
-            marketId: Math.floor(Math.random() * 3),
-            marketQuestion: mockQuestions[Math.floor(Math.random() * mockQuestions.length)],
-            amount: type === 'shares_purchased' || type === 'winnings_claimed' ? `${(Math.random() * 1000).toFixed(2)}` : undefined,
-            outcome: type === 'shares_purchased' ? Math.random() > 0.5 : type === 'market_resolved' ? Math.random() > 0.5 : undefined,
-            timestamp: now - Math.random() * 3600000, // Random time within last hour
-        })
+// Mock Data
+const MOCK_EVENTS: ActivityEvent[] = [
+    {
+        id: 1,
+        type: 'buy_yes',
+        marketQuestion: 'Will Bitcoin hit $100k?',
+        user: '0x1234...5678',
+        amount: '1,000 Yes',
+        timestamp: new Date(Date.now() - 1000 * 60 * 5)
+    },
+    {
+        id: 2,
+        type: 'buy_no',
+        marketQuestion: 'Will ETH flip BTC?',
+        user: '0x8765...4321',
+        amount: '500 No',
+        timestamp: new Date(Date.now() - 1000 * 60 * 15)
+    },
+    {
+        id: 3,
+        type: 'creation',
+        marketQuestion: 'Will Coinbase re-list XRP?',
+        user: '0x9999...9999',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60)
+    },
+    {
+        id: 4,
+        type: 'resolution',
+        marketQuestion: 'Spot ETH ETF Approved?',
+        user: '0xAdmin...0000',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2)
     }
-
-    return activities.sort((a, b) => b.timestamp - a.timestamp)
-}
+]
 
 export default function ActivityFeed({ className = '' }: { className?: string }) {
-    const [activities, setActivities] = useState<Activity[]>([])
-    const [mounted, setMounted] = useState(false)
+    const [events, setEvents] = useState<ActivityEvent[]>([])
 
     useEffect(() => {
-        setMounted(true)
-        setActivities(generateMockActivities())
-
-        // Auto-refresh every 30 seconds
-        const interval = setInterval(() => {
-            setActivities(generateMockActivities())
-        }, 30000)
-
-        return () => clearInterval(interval)
+        setEvents(MOCK_EVENTS)
     }, [])
 
-    const getActivityIcon = (type: Activity['type']) => {
+    const getEventIcon = (type: ActivityEvent['type']) => {
         switch (type) {
-            case 'market_created':
-                return (
-                    <div className="rounded-full bg-blue-100 p-2">
-                        <svg className="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                    </div>
-                )
-            case 'shares_purchased':
-                return (
-                    <div className="rounded-full bg-green-100 p-2">
-                        <svg className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                        </svg>
-                    </div>
-                )
-            case 'market_resolved':
-                return (
-                    <div className="rounded-full bg-purple-100 p-2">
-                        <svg className="h-4 w-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                )
-            case 'winnings_claimed':
-                return (
-                    <div className="rounded-full bg-yellow-100 p-2">
-                        <svg className="h-4 w-4 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                )
+            case 'buy_yes':
+                return <span className="text-green-500 bg-green-100 dark:bg-green-900/30 p-1 rounded text-xs">✅</span>
+            case 'buy_no':
+                return <span className="text-red-500 bg-red-100 dark:bg-red-900/30 p-1 rounded text-xs">❌</span>
+            case 'creation':
+                return <span className="text-blue-500 bg-blue-100 dark:bg-blue-900/30 p-1 rounded text-xs">✨</span>
+            case 'resolution':
+                return <span className="text-purple-500 bg-purple-100 dark:bg-purple-900/30 p-1 rounded text-xs">⚖️</span>
         }
     }
 
-    const getActivityText = (activity: Activity) => {
-        const shortAddress = `${activity.user.slice(0, 6)}...${activity.user.slice(-4)}`
-
-        switch (activity.type) {
-            case 'market_created':
-                return (
-                    <>
-                        <span className="font-semibold text-gray-900">{shortAddress}</span> created a new market
-                    </>
-                )
-            case 'shares_purchased':
-                return (
-                    <>
-                        <span className="font-semibold text-gray-900">{shortAddress}</span> bought{' '}
-                        <span className={`font-semibold ${activity.outcome ? 'text-green-600' : 'text-red-600'}`}>
-                            {activity.outcome ? 'YES' : 'NO'}
-                        </span>{' '}
-                        shares for <span className="font-semibold text-gray-900">${activity.amount}</span>
-                    </>
-                )
-            case 'market_resolved':
-                return (
-                    <>
-                        Market resolved:{' '}
-                        <span className={`font-semibold ${activity.outcome ? 'text-green-600' : 'text-red-600'}`}>
-                            {activity.outcome ? 'YES' : 'NO'}
-                        </span>{' '}
-                        wins
-                    </>
-                )
-            case 'winnings_claimed':
-                return (
-                    <>
-                        <span className="font-semibold text-gray-900">{shortAddress}</span> claimed{' '}
-                        <span className="font-semibold text-gray-900">${activity.amount}</span>
-                    </>
-                )
+    const getEventText = (event: ActivityEvent) => {
+        switch (event.type) {
+            case 'buy_yes':
+                return <span className="text-gray-600 dark:text-gray-300">bought <span className="font-semibold text-green-600">{event.amount}</span> in</span>
+            case 'buy_no':
+                return <span className="text-gray-600 dark:text-gray-300">bought <span className="font-semibold text-red-600">{event.amount}</span> in</span>
+            case 'creation':
+                return <span className="text-gray-600 dark:text-gray-300">created market</span>
+            case 'resolution':
+                return <span className="text-gray-600 dark:text-gray-300">resolved market</span>
         }
-    }
-
-    if (!mounted) {
-        return (
-            <div className={`rounded-xl border border-gray-200 bg-white p-6 ${className}`}>
-                <div className="mb-4 h-6 w-32 animate-pulse rounded bg-gray-200" />
-                <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                        <div key={i} className="flex items-start gap-3">
-                            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200" />
-                            <div className="flex-1 space-y-2">
-                                <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200" />
-                                <div className="h-3 w-1/2 animate-pulse rounded bg-gray-200" />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        )
     }
 
     return (
-        <div className={`rounded-xl border border-gray-200 bg-white p-6 ${className}`}>
+        <div className={`card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 ${className}`}>
             {/* Header */}
-            <div className="mb-6 flex items-center justify-between">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
                 <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
-                    <p className="text-sm text-gray-500">Live market updates</p>
+                    <h3 className="font-bold text-gray-900 dark:text-white">Live Activity</h3>
+                    <p className="text-xs text-secondary hidden sm:block">Real-time market updates</p>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <div className="relative flex h-2 w-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                    </div>
-                    <span>Live</span>
+                <div className="flex items-center gap-2 text-xs text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+                    <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span className="font-medium">Live</span>
                 </div>
             </div>
 
-            {/* Activity List */}
-            <div className="space-y-4">
-                {activities.map((activity) => (
-                    <div key={activity.id} className="flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-gray-50">
-                        {/* Avatar */}
-                        <div className="flex-shrink-0">
-                            <Jazzicon seed={parseInt(activity.user.slice(2, 10), 16)} diameter={40} />
-                        </div>
+            {/* List */}
+            <div className="divide-y divide-gray-100 dark:divide-gray-800 max-h-[400px] overflow-y-auto scrollbar-hide">
+                {events.map((event) => (
+                    <div key={event.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors animate-fade-in group cursor-default">
+                        <div className="flex items-start space-x-3">
+                            <div className="flex-shrink-0 pt-1">
+                                <Jazzicon diameter={32} seed={jsNumberForAddress(event.user)} />
+                            </div>
 
-                        {/* Content */}
-                        <div className="min-w-0 flex-1">
-                            <div className="flex items-start gap-2">
-                                {getActivityIcon(activity.type)}
-                                <div className="min-w-0 flex-1">
-                                    <p className="text-sm text-gray-700">{getActivityText(activity)}</p>
-                                    <p className="mt-1 truncate text-xs text-gray-500">{activity.marketQuestion}</p>
-                                    <p className="mt-1 text-xs text-gray-400">
-                                        {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
+                            <div className="flex-1 min-w-0">
+                                <div className="flex justify-between items-start">
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate group-hover:text-blue-600 transition-colors">
+                                        {event.user}
                                     </p>
+                                    <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">
+                                        {formatDistanceToNow(event.timestamp, { addSuffix: true })}
+                                    </span>
+                                </div>
+
+                                <div className="text-sm mt-0.5 leading-snug">
+                                    {getEventText(event)}
+                                </div>
+                                <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mt-1 truncate">
+                                    {event.marketQuestion}
                                 </div>
                             </div>
                         </div>
                     </div>
                 ))}
-            </div>
-
-            {/* Footer Note */}
-            <div className="mt-4 rounded-lg bg-blue-50 p-3">
-                <p className="text-xs text-blue-700">
-                    📡 <strong>Note:</strong> Activity feed shows mock data. Real-time updates will be implemented with event indexing.
-                </p>
             </div>
         </div>
     )

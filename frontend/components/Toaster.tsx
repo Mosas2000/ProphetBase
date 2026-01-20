@@ -32,32 +32,34 @@ export default function Toaster() {
                     style: {
                         background: '#10b981',
                         color: '#fff',
+                        iconTheme: {
+                            primary: '#00D395',
+                            secondary: '#fff',
+                        },
+                        style: {
+                            borderLeft: '4px solid #00D395',
+                        }
                     },
-                    iconTheme: {
-                        primary: '#fff',
-                        secondary: '#10b981',
+                    error: {
+                        iconTheme: {
+                            primary: '#FF4444',
+                            secondary: '#fff',
+                        },
+                        style: {
+                            borderLeft: '4px solid #FF4444',
+                        }
                     },
-                },
-                // Error toast styling
-                error: {
-                    duration: 5000,
-                    style: {
-                        background: '#ef4444',
-                        color: '#fff',
-                    },
-                    iconTheme: {
-                        primary: '#fff',
-                        secondary: '#ef4444',
-                    },
-                },
-                // Loading toast styling
-                loading: {
-                    style: {
-                        background: '#3b82f6',
-                        color: '#fff',
-                    },
-                },
+                    loading: {
+                        style: {
+                            borderLeft: '4px solid #0052FF',
+                        }
+                    }
+                }
+            }
+            containerStyle={{
+                bottom: 24,
+                right: 24,
             }}
         />
-    )
+    );
 }

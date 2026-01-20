@@ -1,7 +1,6 @@
-'use client'
-
 import { useState, useEffect } from 'react'
 import { formatDistanceToNow } from 'date-fns'
+import Link from 'next/link'
 import BuySharesModal from './BuySharesModal'
 
 /**
@@ -29,7 +28,7 @@ export interface MarketCardProps {
 }
 
 /**
- * Professional MarketCard with Base brand colors
+ * Professional MarketCard with Base branding and smooth animations
  */
 export default function MarketCard({
     marketId,
@@ -46,6 +45,7 @@ export default function MarketCard({
     const [timeLeft, setTimeLeft] = useState('')
     const [isBuyModalOpen, setIsBuyModalOpen] = useState(false)
     const [selectedShareType, setSelectedShareType] = useState<'YES' | 'NO'>('YES')
+    const [isHovered, setIsHovered] = useState(false)
 
     const endDate = new Date(Number(endTime) * 1000)
     const isExpired = endDate < new Date()
@@ -96,28 +96,28 @@ export default function MarketCard({
     // Status badge configuration
     const getStatusInfo = (status: number) => {
         switch (status) {
-            case 0: // Open
+            case MarketStatus.Open:
                 return {
                     label: 'Open',
-                    color: 'bg-green-100 text-green-700',
+                    color: 'bg-green-50 text-green-700',
                     dot: 'bg-green-500'
                 }
-            case 1: // Resolved  
+            case MarketStatus.Resolved:
                 return {
                     label: 'Resolved',
-                    color: 'bg-blue-100 text-blue-700',
+                    color: 'bg-blue-50 text-blue-700',
                     dot: 'bg-blue-500'
                 }
-            case 2: // Cancelled
+            case MarketStatus.Cancelled:
                 return {
                     label: 'Cancelled',
-                    color: 'bg-gray-100 text-gray-700',
+                    color: 'bg-gray-50 text-gray-700',
                     dot: 'bg-gray-500'
                 }
             default:
                 return {
                     label: 'Unknown',
-                    color: 'bg-gray-100 text-gray-700',
+                    color: 'bg-gray-50 text-gray-700',
                     dot: 'bg-gray-500'
                 }
         }
@@ -126,167 +126,146 @@ export default function MarketCard({
     const statusInfo = getStatusInfo(status)
 
     return (
-        <div
-            className="group relative overflow-hidden rounded-xl border border-[#E5E7EB] bg-white shadow-sm transition-all duration-200 hover:shadow-lg hover:border-[#0052FF]/20 cursor-pointer"
-            onClick={() => setIsExpanded(!isExpanded)}
-        >
-            <div className="relative p-6">
-                {/* Header */}
-                <div className="mb-4 flex items-start justify-between gap-3">
-                    <div className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${statusInfo.color}`}>
-                        <span className={`h-1.5 w-1.5 rounded-full ${statusInfo.dot}`} />
-                        {statusInfo.label}
+        <>
+            <div
+                className={`
+                    group relative flex flex-col h-full bg-white rounded-xl border border-gray-200 
+                    transition-all duration-300 ease-spring overflow-hidden cursor-pointer
+                    hover:shadow-lg hover:-translate-y-1 hover:border-blue-200
+                    ${isHovered ? 'shadow-glow' : ''}
+                `}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onClick={() => setIsExpanded(!isExpanded)}
+            >
+                {/* Main Content */}
+                <div className="p-5 flex-1 flex flex-col">
+                    {/* Header */}
+                    <div className="flex justify-between items-start mb-4">
+                        <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusInfo.color}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${statusInfo.dot}`}></span>
+                            {statusInfo.label}
+                        </div>
+                        <span className="text-xs text-gray-400 font-mono">#{marketId}</span>
                     </div>
-                    <span className="text-xs text-[#6B7280] font-mono">#{marketId}</span>
+
+                    {/* Question */}
+                    <h3 className="text-lg font-bold text-gray-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">
+                        {question}
+                    </h3>
+
+                    {/* Timer & Volume */}
+                    {status === MarketStatus.Open && (
+                        <div className="flex items-center space-x-4 text-xs text-gray-500 mb-6 font-medium">
+                            <div className="flex items-center bg-gray-50 px-2 py-1 rounded-md border border-gray-100">
+                                <svg className="w-3.5 h-3.5 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {timeLeft}
+                            </div>
+                            <div className="flex items-center">
+                                <svg className="w-3.5 h-3.5 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                                {totalShares.toLocaleString()} Vol
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Probability Bars */}
+                    {status === MarketStatus.Open && !isExpired && (
+                        <div className="mt-auto space-y-3">
+                            <div className="flex justify-between items-end text-sm font-medium">
+                                <span className="text-green-600">YES {yesProbability.toFixed(0)}%</span>
+                                <span className="text-red-500">NO {noProbability.toFixed(0)}%</span>
+                            </div>
+
+                            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden flex">
+                                <div
+                                    style={{ width: `${yesProbability}%` }}
+                                    className="h-full bg-green-500 transition-all duration-500"
+                                />
+                                <div
+                                    style={{ width: `${noProbability}%` }}
+                                    className="h-full bg-red-500 transition-all duration-500"
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Action Buttons (Visible on Open & Active) */}
+                    {status === MarketStatus.Open && !isExpired && (
+                        <div className="grid grid-cols-2 gap-3 mt-5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 h-0 group-hover:h-auto overflow-hidden">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    setSelectedShareType('YES')
+                                    setIsBuyModalOpen(true)
+                                }}
+                                className="btn-success py-2 text-sm shadow-sm hover:shadow-md"
+                            >
+                                Buy YES
+                            </button>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    setSelectedShareType('NO')
+                                    setIsBuyModalOpen(true)
+                                }}
+                                className="btn-danger py-2 text-sm shadow-sm hover:shadow-md"
+                            >
+                                Buy NO
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Resolved Outcome */}
+                    {status === MarketStatus.Resolved && outcome !== undefined && (
+                        <div className={`mt-4 rounded-lg p-3 text-center border ${outcome ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                            <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Winning Outcome</div>
+                            <div className={`text-xl font-bold ${outcome ? 'text-green-700' : 'text-red-700'}`}>
+                                {outcome ? 'YES' : 'NO'}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                {/* Question */}
-                <h3 className="mb-4 text-lg font-bold text-[#1A1B1F] leading-tight line-clamp-2 group-hover:text-[#0052FF] transition-colors">
-                    {question}
-                </h3>
-
-                {/* Countdown Timer */}
-                {status === MarketStatus.Open && (
-                    <div className="mb-4 flex items-center justify-between rounded-lg bg-[#FAFBFC] border border-[#E5E7EB] p-3">
-                        <div className="flex items-center gap-2">
-                            <svg className="h-4 w-4 text-[#6B7280]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span className="text-sm text-[#6B7280]">
-                                {isExpired ? 'Ended' : 'Ends in'}
-                            </span>
-                        </div>
-                        <span className="text-sm font-semibold text-[#1A1B1F]">{timeLeft}</span>
-                    </div>
-                )}
-
-                {/* Probability Visualization */}
-                {status === MarketStatus.Open && !isExpired && (
-                    <div className="mb-4 space-y-3">
-                        {/* Probability Bars */}
-                        <div className="flex gap-1 h-2 rounded-full overflow-hidden bg-[#F3F4F6]">
-                            <div
-                                className="bg-[#00D395] transition-all duration-500"
-                                style={{ width: `${yesProbability}%` }}
-                            />
-                            <div
-                                className="bg-[#FF4444] transition-all duration-500"
-                                style={{ width: `${noProbability}%` }}
-                            />
-                        </div>
-
-                        {/* Probability Labels */}
-                        <div className="flex justify-between text-sm">
-                            <div className="flex items-center gap-1.5">
-                                <span className="font-semibold text-[#00D395]">{yesProbability.toFixed(0)}%</span>
-                                <span className="text-[#6B7280]">YES</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                                <span className="text-[#6B7280]">NO</span>
-                                <span className="font-semibold text-[#FF4444]">{noProbability.toFixed(0)}%</span>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Resolved Outcome */}
-                {status === MarketStatus.Resolved && outcome !== undefined && (
-                    <div className={`mb-4 rounded-lg p-4 text-center ${outcome ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-                        <div className="text-sm font-medium text-[#6B7280] mb-1">Resolved Outcome</div>
-                        <div className={`text-2xl font-bold ${outcome ? 'text-green-700' : 'text-red-700'}`}>
-                            {outcome ? 'YES' : 'NO'}
-                        </div>
-                    </div>
-                )}
-
-                {/* Action Buttons */}
-                {status === MarketStatus.Open && !isExpired && (
-                    <div className="grid grid-cols-2 gap-3">
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                setSelectedShareType('YES')
-                                setIsBuyModalOpen(true)
-                            }}
-                            className="rounded-lg bg-[#0052FF] px-4 py-3 font-semibold text-white shadow-sm transition-all hover:bg-[#0033CC] hover:shadow-md active:scale-[0.98]"
-                        >
-                            <div className="flex items-center justify-center gap-2">
-                                <span>Buy YES</span>
-                                <span className="text-xs opacity-75">{yesProbability.toFixed(0)}%</span>
-                            </div>
-                        </button>
-
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                setSelectedShareType('NO')
-                                setIsBuyModalOpen(true)
-                            }}
-                            className="rounded-lg bg-[#FF4444] px-4 py-3 font-semibold text-white shadow-sm transition-all hover:bg-[#DD2222] hover:shadow-md active:scale-[0.98]"
-                        >
-                            <div className="flex items-center justify-center gap-2">
-                                <span>Buy NO</span>
-                                <span className="text-xs opacity-75">{noProbability.toFixed(0)}%</span>
-                            </div>
-                        </button>
-                    </div>
-                )}
-
-                {/* Claim Winnings Button */}
-                {status === MarketStatus.Resolved && (
-                    <button className="w-full rounded-lg bg-[#0052FF] px-4 py-3 font-semibold text-white shadow-sm transition-all hover:bg-[#0033CC] hover:shadow-md active:scale-[0.98]">
-                        Claim Winnings
-                    </button>
-                )}
-
-                {/* Expanded Details */}
+                {/* Expanded Details Section */}
                 {isExpanded && (
-                    <div className="mt-4 space-y-3 border-t border-[#E5E7EB] pt-4 fade-in">
-                        <div className="text-sm">
-                            <div className="flex justify-between mb-2">
-                                <span className="text-[#6B7280]">Market ID:</span>
-                                <span className="font-mono font-medium text-[#1A1B1F]">#{marketId}</span>
+                    <div className="px-5 pb-5 border-t border-gray-100 pt-4 bg-gray-50/50 animate-fade-in">
+                        <div className="grid grid-cols-2 gap-4 text-xs mb-3">
+                            <div>
+                                <span className="block text-gray-500 mb-0.5">Start Date</span>
+                                <span className="font-medium text-gray-900">{new Date().toLocaleDateString()}</span>
                             </div>
-                            <div className="flex justify-between mb-2">
-                                <span className="text-[#6B7280]">End Date:</span>
-                                <span className="font-medium text-[#1A1B1F]">{endDate.toLocaleDateString()}</span>
-                            </div>
-                            <div className="flex justify-between mb-2">
-                                <span className="text-[#6B7280]">Total Volume:</span>
-                                <span className="font-medium text-[#1A1B1F]">{totalShares.toLocaleString()} shares</span>
+                            <div>
+                                <span className="block text-gray-500 mb-0.5">End Date</span>
+                                <span className="font-medium text-gray-900">{endDate.toLocaleDateString()}</span>
                             </div>
                         </div>
 
-                        {/* Token Addresses */}
-                        <details className="text-xs" onClick={(e) => e.stopPropagation()}>
-                            <summary className="cursor-pointer text-[#6B7280] hover:text-[#0052FF] font-medium">
-                                Token Addresses
+                        <details className="text-xs group/details" onClick={(e) => e.stopPropagation()}>
+                            <summary className="cursor-pointer text-blue-600 hover:text-blue-700 font-medium flex items-center">
+                                <span>Contract Details</span>
+                                <svg className="w-3 h-3 ml-1 transition-transform group-open/details:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
                             </summary>
-                            <div className="mt-2 space-y-1.5 rounded-lg bg-[#FAFBFC] border border-[#E5E7EB] p-3">
+                            <div className="mt-2 space-y-2 p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
                                 <div>
-                                    <span className="font-semibold text-[#00D395]">YES:</span>{' '}
-                                    <span className="font-mono text-[#6B7280] break-all">{yesToken}</span>
+                                    <span className="block text-gray-500 mb-0.5">YES Token</span>
+                                    <code className="block bg-gray-50 px-2 py-1 rounded border border-gray-100 font-mono text-[10px] break-all text-gray-600">{yesToken}</code>
                                 </div>
                                 <div>
-                                    <span className="font-semibold text-[#FF4444]">NO:</span>{' '}
-                                    <span className="font-mono text-[#6B7280] break-all">{noToken}</span>
+                                    <span className="block text-gray-500 mb-0.5">NO Token</span>
+                                    <code className="block bg-gray-50 px-2 py-1 rounded border border-gray-100 font-mono text-[10px] break-all text-gray-600">{noToken}</code>
                                 </div>
                             </div>
                         </details>
                     </div>
                 )}
-
-                {/* Expand Indicator */}
-                <div className="mt-3 flex justify-center">
-                    <div className={`text-[#6B7280] transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                </div>
             </div>
 
-            {/* Buy Shares Modal */}
             <BuySharesModal
                 isOpen={isBuyModalOpen}
                 onClose={() => setIsBuyModalOpen(false)}
@@ -294,6 +273,6 @@ export default function MarketCard({
                 shareType={selectedShareType}
                 question={question}
             />
-        </div>
+        </>
     )
 }
