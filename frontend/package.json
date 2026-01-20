@@ -19,7 +19,7 @@
     "react-jazzicon": "^1.0.4",
     "recharts": "^3.6.0",
     "viem": "^2.44.2",
-    "wagmi": "^2.19.5"
+    "wagmi": "^3.3.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
