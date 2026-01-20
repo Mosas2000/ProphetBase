@@ -1,0 +1,23 @@
+# Code owners for ProphetBase
+
+# Default owners for everything
+* @Mosas2000
+
+# Frontend
+/frontend/ @Mosas2000
+
+# Smart contracts
+/contracts/ @Mosas2000
+/scripts/ @Mosas2000
+/test/ @Mosas2000
+
+# Documentation
+/docs/ @Mosas2000
+*.md @Mosas2000
+
+# CI/CD
+/.github/ @Mosas2000
+
+# Configuration
+*.config.* @Mosas2000
+*.json @Mosas2000
