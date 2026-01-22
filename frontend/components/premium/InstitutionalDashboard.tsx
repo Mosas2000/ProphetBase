@@ -16,8 +16,12 @@ export default function InstitutionalDashboard() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Institutional Dashboard</h1>
-        <p className="text-gray-600">High-volume trading and analytics for institutions</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Institutional Dashboard
+        </h1>
+        <p className="text-gray-600">
+          High-volume trading and analytics for institutions
+        </p>
       </div>
 
       {/* Key Metrics */}
@@ -36,19 +40,27 @@ export default function InstitutionalDashboard() {
         </div>
         <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-purple-500">
           <p className="text-sm text-gray-600 mb-1">Total Trades</p>
-          <p className="text-2xl font-bold text-purple-600">{stats.totalTrades}</p>
+          <p className="text-2xl font-bold text-purple-600">
+            {stats.totalTrades}
+          </p>
         </div>
         <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-yellow-500">
           <p className="text-sm text-gray-600 mb-1">Success Rate</p>
-          <p className="text-2xl font-bold text-yellow-600">{stats.successRate}%</p>
+          <p className="text-2xl font-bold text-yellow-600">
+            {stats.successRate}%
+          </p>
         </div>
         <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-red-500">
           <p className="text-sm text-gray-600 mb-1">Total Accounts</p>
-          <p className="text-2xl font-bold text-red-600">{stats.totalAccounts}</p>
+          <p className="text-2xl font-bold text-red-600">
+            {stats.totalAccounts}
+          </p>
         </div>
         <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-indigo-500">
           <p className="text-sm text-gray-600 mb-1">Active Traders</p>
-          <p className="text-2xl font-bold text-indigo-600">{stats.activeTraders}</p>
+          <p className="text-2xl font-bold text-indigo-600">
+            {stats.activeTraders}
+          </p>
         </div>
       </div>
 
@@ -58,7 +70,9 @@ export default function InstitutionalDashboard() {
           {/* Volume Chart */}
           <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-500">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Trading Volume</h2>
+              <h2 className="text-xl font-bold text-gray-900">
+                Trading Volume
+              </h2>
               <select
                 value={timeframe}
                 onChange={(e) => setTimeframe(e.target.value)}
@@ -79,7 +93,9 @@ export default function InstitutionalDashboard() {
 
           {/* Custom Reports */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Custom Reports</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              Custom Reports
+            </h2>
             <div className="grid grid-cols-2 gap-4">
               {[
                 { name: 'Daily Summary', icon: '📅', color: 'blue' },
@@ -103,7 +119,9 @@ export default function InstitutionalDashboard() {
         <div className="space-y-6">
           {/* Priority Execution */}
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border-2 border-blue-500">
-            <h3 className="font-bold text-blue-900 mb-3">⚡ Priority Execution</h3>
+            <h3 className="font-bold text-blue-900 mb-3">
+              ⚡ Priority Execution
+            </h3>
             <p className="text-sm text-blue-800 mb-4">
               Your orders are prioritized for fastest execution
             </p>
@@ -121,8 +139,12 @@ export default function InstitutionalDashboard() {
 
           {/* Dedicated Support */}
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border-2 border-green-500">
-            <h3 className="font-bold text-green-900 mb-3">🎯 Dedicated Support</h3>
-            <p className="text-sm text-green-800 mb-4">24/7 institutional support team</p>
+            <h3 className="font-bold text-green-900 mb-3">
+              🎯 Dedicated Support
+            </h3>
+            <p className="text-sm text-green-800 mb-4">
+              24/7 institutional support team
+            </p>
             <button className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700">
               Contact Support
             </button>
@@ -130,7 +152,9 @@ export default function InstitutionalDashboard() {
 
           {/* Account Manager */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="font-bold text-gray-900 mb-4">Your Account Manager</h3>
+            <h3 className="font-bold text-gray-900 mb-4">
+              Your Account Manager
+            </h3>
             <div className="flex items-center gap-3 mb-3">
               <div className="text-4xl">👤</div>
               <div>

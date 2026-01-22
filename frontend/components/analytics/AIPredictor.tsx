@@ -38,28 +38,43 @@ export default function AIPredictor() {
         'Historical halving cycle pattern suggests bull market',
         'Macro economic conditions favorable for risk assets',
         'On-chain metrics show accumulation by long-term holders',
-        'Decreased exchange reserves indicate supply squeeze'
-      ]
+        'Decreased exchange reserves indicate supply squeeze',
+      ],
     },
     factors: [
       { name: 'Market Sentiment', impact: 85, direction: 'positive' },
       { name: 'On-Chain Metrics', impact: 78, direction: 'positive' },
       { name: 'Macroeconomic', impact: 62, direction: 'positive' },
       { name: 'Technical Analysis', impact: 71, direction: 'positive' },
-      { name: 'Regulatory Environment', impact: 45, direction: 'neutral' }
+      { name: 'Regulatory Environment', impact: 45, direction: 'neutral' },
     ],
     historicalAccuracy: 68.3,
     similarMarkets: [
-      { id: '38', question: 'BTC reaches $75k by Q3 2024', outcome: 'YES', similarity: 92 },
-      { id: '25', question: 'BTC above $50k by end of 2023', outcome: 'YES', similarity: 85 },
-      { id: '89', question: 'ETH reaches $5k before BTC $100k', outcome: 'NO', similarity: 78 }
-    ]
+      {
+        id: '38',
+        question: 'BTC reaches $75k by Q3 2024',
+        outcome: 'YES',
+        similarity: 92,
+      },
+      {
+        id: '25',
+        question: 'BTC above $50k by end of 2023',
+        outcome: 'YES',
+        similarity: 85,
+      },
+      {
+        id: '89',
+        question: 'ETH reaches $5k before BTC $100k',
+        outcome: 'NO',
+        similarity: 78,
+      },
+    ],
   });
 
   const runPrediction = async () => {
     setLoading(true);
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setLoading(false);
   };
 
@@ -67,10 +82,14 @@ export default function AIPredictor() {
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-6xl">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">AI Market Predictor</h2>
-          <p className="text-sm text-gray-600">Machine learning-powered outcome predictions</p>
+          <h2 className="text-2xl font-bold text-gray-900">
+            AI Market Predictor
+          </h2>
+          <p className="text-sm text-gray-600">
+            Machine learning-powered outcome predictions
+          </p>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           <span className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium">
             🤖 AI-Powered
@@ -116,14 +135,18 @@ export default function AIPredictor() {
                 <span className="text-2xl">🤖</span>
                 <div>
                   <div className="text-sm text-gray-600">AI Prediction</div>
-                  <div className={`text-2xl font-bold ${
-                    prediction.aiPrediction.outcome === 'YES' ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <div
+                    className={`text-2xl font-bold ${
+                      prediction.aiPrediction.outcome === 'YES'
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                    }`}
+                  >
                     {prediction.aiPrediction.outcome}
                   </div>
                 </div>
               </div>
-              
+
               <div className="border-l pl-4">
                 <div className="text-sm text-gray-600">Confidence</div>
                 <div className="text-2xl font-bold text-purple-600">
@@ -153,7 +176,10 @@ export default function AIPredictor() {
           <h4 className="font-semibold text-gray-900 mb-2">AI Reasoning:</h4>
           <ul className="space-y-1">
             {prediction.aiPrediction.reasoning.map((reason, index) => (
-              <li key={index} className="flex items-start space-x-2 text-sm text-gray-700">
+              <li
+                key={index}
+                className="flex items-start space-x-2 text-sm text-gray-700"
+              >
                 <span className="text-purple-600">•</span>
                 <span>{reason}</span>
               </li>
@@ -164,31 +190,45 @@ export default function AIPredictor() {
 
       {/* Impact Factors */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Impact Factors</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Impact Factors
+        </h3>
         <div className="space-y-3">
           {prediction.factors.map((factor, index) => (
             <div key={index} className="bg-gray-50 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
                   <span className="text-xl">
-                    {factor.direction === 'positive' ? '📈' : factor.direction === 'negative' ? '📉' : '➡️'}
+                    {factor.direction === 'positive'
+                      ? '📈'
+                      : factor.direction === 'negative'
+                      ? '📉'
+                      : '➡️'}
                   </span>
-                  <span className="font-medium text-gray-900">{factor.name}</span>
+                  <span className="font-medium text-gray-900">
+                    {factor.name}
+                  </span>
                 </div>
-                <span className={`text-sm font-semibold ${
-                  factor.direction === 'positive' ? 'text-green-600' :
-                  factor.direction === 'negative' ? 'text-red-600' :
-                  'text-gray-600'
-                }`}>
+                <span
+                  className={`text-sm font-semibold ${
+                    factor.direction === 'positive'
+                      ? 'text-green-600'
+                      : factor.direction === 'negative'
+                      ? 'text-red-600'
+                      : 'text-gray-600'
+                  }`}
+                >
                   {factor.impact}% {factor.direction}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className={`h-2 rounded-full ${
-                    factor.direction === 'positive' ? 'bg-green-600' :
-                    factor.direction === 'negative' ? 'bg-red-600' :
-                    'bg-gray-600'
+                    factor.direction === 'positive'
+                      ? 'bg-green-600'
+                      : factor.direction === 'negative'
+                      ? 'bg-red-600'
+                      : 'bg-gray-600'
                   }`}
                   style={{ width: `${factor.impact}%` }}
                 />
@@ -200,16 +240,25 @@ export default function AIPredictor() {
 
       {/* Similar Markets */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Similar Historical Markets</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Similar Historical Markets
+        </h3>
         <div className="grid grid-cols-1 gap-3">
           {prediction.similarMarkets.map((market) => (
-            <div key={market.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors cursor-pointer">
+            <div
+              key={market.id}
+              className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors cursor-pointer"
+            >
               <div className="flex items-center justify-between mb-2">
                 <h4 className="font-medium text-gray-900">{market.question}</h4>
                 <div className="flex items-center space-x-2">
-                  <span className={`text-sm font-semibold ${
-                    market.outcome === 'YES' ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <span
+                    className={`text-sm font-semibold ${
+                      market.outcome === 'YES'
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                    }`}
+                  >
                     {market.outcome}
                   </span>
                   <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
@@ -226,8 +275,9 @@ export default function AIPredictor() {
       {/* Disclaimer */}
       <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
         <p className="text-xs text-yellow-800">
-          ⚠️ <strong>Disclaimer:</strong> AI predictions are for informational purposes only and should not be considered financial advice. 
-          Always conduct your own research before making trading decisions.
+          ⚠️ <strong>Disclaimer:</strong> AI predictions are for informational
+          purposes only and should not be considered financial advice. Always
+          conduct your own research before making trading decisions.
         </p>
       </div>
     </div>

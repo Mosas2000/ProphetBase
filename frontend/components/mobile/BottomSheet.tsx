@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -17,7 +17,7 @@ export default function BottomSheet({
   title,
   children,
   snapPoints = [0.25, 0.5, 0.9],
-  initialSnap = 1
+  initialSnap = 1,
 }: BottomSheetProps) {
   const [currentSnap, setCurrentSnap] = useState(initialSnap);
   const [isDragging, setIsDragging] = useState(false);
@@ -31,7 +31,7 @@ export default function BottomSheet({
     } else {
       document.body.style.overflow = '';
     }
-    
+
     return () => {
       document.body.style.overflow = '';
     };
@@ -74,10 +74,13 @@ export default function BottomSheet({
     if (!isDragging) {
       return `${snapPoints[currentSnap] * 100}%`;
     }
-    
+
     const baseHeight = snapPoints[currentSnap] * window.innerHeight;
     const offset = currentY - startY;
-    const newHeight = Math.max(0, Math.min(window.innerHeight * 0.95, baseHeight - offset));
+    const newHeight = Math.max(
+      0,
+      Math.min(window.innerHeight * 0.95, baseHeight - offset)
+    );
     return `${newHeight}px`;
   };
 
@@ -98,7 +101,7 @@ export default function BottomSheet({
         className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl z-50 transition-all"
         style={{
           height: getHeight(),
-          transitionDuration: isDragging ? '0ms' : '300ms'
+          transitionDuration: isDragging ? '0ms' : '300ms',
         }}
       >
         {/* Drag Handle */}

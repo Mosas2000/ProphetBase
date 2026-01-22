@@ -23,7 +23,7 @@ export default function NotificationCenter() {
       timestamp: Date.now() - 120000,
       isRead: false,
       actionUrl: '/market/42',
-      icon: '📊'
+      icon: '📊',
     },
     {
       id: '2',
@@ -33,17 +33,18 @@ export default function NotificationCenter() {
       timestamp: Date.now() - 300000,
       isRead: false,
       actionUrl: '/market/89',
-      icon: '🔔'
+      icon: '🔔',
     },
     {
       id: '3',
       type: 'market',
       title: 'Market Resolved',
-      message: 'Market "ETH reaches $5k" has been resolved. Check your winnings!',
+      message:
+        'Market "ETH reaches $5k" has been resolved. Check your winnings!',
       timestamp: Date.now() - 3600000,
       isRead: true,
       actionUrl: '/market/25',
-      icon: '🏆'
+      icon: '🏆',
     },
     {
       id: '4',
@@ -52,7 +53,7 @@ export default function NotificationCenter() {
       message: 'ProphetKing started following you',
       timestamp: Date.now() - 7200000,
       isRead: true,
-      icon: '👥'
+      icon: '👥',
     },
     {
       id: '5',
@@ -62,30 +63,30 @@ export default function NotificationCenter() {
       timestamp: Date.now() - 86400000,
       isRead: true,
       actionUrl: '/changelog',
-      icon: '⚡'
-    }
+      icon: '⚡',
+    },
   ]);
 
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
 
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
-  const filteredNotifications = notifications.filter(n => 
-    filter === 'all' || !n.isRead
+  const filteredNotifications = notifications.filter(
+    (n) => filter === 'all' || !n.isRead
   );
 
   const markAsRead = (id: string) => {
-    setNotifications(notifications.map(n => 
-      n.id === id ? { ...n, isRead: true } : n
-    ));
+    setNotifications(
+      notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+    );
   };
 
   const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, isRead: true })));
+    setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
   };
 
   const deleteNotification = (id: string) => {
-    setNotifications(notifications.filter(n => n.id !== id));
+    setNotifications(notifications.filter((n) => n.id !== id));
   };
 
   const clearAll = () => {
@@ -106,7 +107,7 @@ export default function NotificationCenter() {
       market: 'bg-purple-100 text-purple-700',
       price_alert: 'bg-yellow-100 text-yellow-700',
       system: 'bg-gray-100 text-gray-700',
-      social: 'bg-green-100 text-green-700'
+      social: 'bg-green-100 text-green-700',
     };
     return colors[type];
   };
@@ -124,7 +125,7 @@ export default function NotificationCenter() {
               </p>
             )}
           </div>
-          
+
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
@@ -166,12 +167,14 @@ export default function NotificationCenter() {
           <div className="p-12 text-center">
             <div className="text-6xl mb-4">🔔</div>
             <p className="text-gray-600">
-              {filter === 'unread' ? 'No unread notifications' : 'No notifications'}
+              {filter === 'unread'
+                ? 'No unread notifications'
+                : 'No notifications'}
             </p>
           </div>
         ) : (
           <div className="divide-y">
-            {filteredNotifications.map(notification => (
+            {filteredNotifications.map((notification) => (
               <div
                 key={notification.id}
                 className={`p-4 hover:bg-gray-50 transition-colors ${
@@ -196,7 +199,11 @@ export default function NotificationCenter() {
                             <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
                           )}
                         </div>
-                        <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(notification.type)}`}>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${getTypeColor(
+                            notification.type
+                          )}`}
+                        >
                           {notification.type.replace('_', ' ')}
                         </span>
                       </div>
@@ -228,7 +235,9 @@ export default function NotificationCenter() {
                         )}
                         {notification.actionUrl && (
                           <button
-                            onClick={() => window.location.href = notification.actionUrl!}
+                            onClick={() =>
+                              (window.location.href = notification.actionUrl!)
+                            }
                             className="text-xs text-blue-600 hover:text-blue-700 font-medium"
                           >
                             View →
@@ -268,24 +277,30 @@ export function NotificationSettings() {
     social: true,
     system: false,
     push: true,
-    email: false
+    email: false,
   });
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Notification Settings</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        Notification Settings
+      </h2>
 
       <div className="space-y-4">
         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
           <div>
             <h3 className="font-medium text-gray-900">Trade Notifications</h3>
-            <p className="text-sm text-gray-600">Order fills, cancellations, and updates</p>
+            <p className="text-sm text-gray-600">
+              Order fills, cancellations, and updates
+            </p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
               checked={settings.trades}
-              onChange={(e) => setSettings({ ...settings, trades: e.target.checked })}
+              onChange={(e) =>
+                setSettings({ ...settings, trades: e.target.checked })
+              }
               className="sr-only peer"
             />
             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -295,13 +310,17 @@ export function NotificationSettings() {
         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
           <div>
             <h3 className="font-medium text-gray-900">Market Updates</h3>
-            <p className="text-sm text-gray-600">Market resolutions and new markets</p>
+            <p className="text-sm text-gray-600">
+              Market resolutions and new markets
+            </p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
               checked={settings.markets}
-              onChange={(e) => setSettings({ ...settings, markets: e.target.checked })}
+              onChange={(e) =>
+                setSettings({ ...settings, markets: e.target.checked })
+              }
               className="sr-only peer"
             />
             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -311,13 +330,17 @@ export function NotificationSettings() {
         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
           <div>
             <h3 className="font-medium text-gray-900">Price Alerts</h3>
-            <p className="text-sm text-gray-600">Custom price target notifications</p>
+            <p className="text-sm text-gray-600">
+              Custom price target notifications
+            </p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
               checked={settings.priceAlerts}
-              onChange={(e) => setSettings({ ...settings, priceAlerts: e.target.checked })}
+              onChange={(e) =>
+                setSettings({ ...settings, priceAlerts: e.target.checked })
+              }
               className="sr-only peer"
             />
             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -327,13 +350,17 @@ export function NotificationSettings() {
         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
           <div>
             <h3 className="font-medium text-gray-900">Social Activity</h3>
-            <p className="text-sm text-gray-600">Followers, mentions, and messages</p>
+            <p className="text-sm text-gray-600">
+              Followers, mentions, and messages
+            </p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
               checked={settings.social}
-              onChange={(e) => setSettings({ ...settings, social: e.target.checked })}
+              onChange={(e) =>
+                setSettings({ ...settings, social: e.target.checked })
+              }
               className="sr-only peer"
             />
             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -343,7 +370,7 @@ export function NotificationSettings() {
 
       <div className="mt-8 pt-6 border-t">
         <h3 className="font-semibold text-gray-900 mb-4">Delivery Methods</h3>
-        
+
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-gray-700">Push Notifications</span>
@@ -351,7 +378,9 @@ export function NotificationSettings() {
               <input
                 type="checkbox"
                 checked={settings.push}
-                onChange={(e) => setSettings({ ...settings, push: e.target.checked })}
+                onChange={(e) =>
+                  setSettings({ ...settings, push: e.target.checked })
+                }
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -364,7 +393,9 @@ export function NotificationSettings() {
               <input
                 type="checkbox"
                 checked={settings.email}
-                onChange={(e) => setSettings({ ...settings, email: e.target.checked })}
+                onChange={(e) =>
+                  setSettings({ ...settings, email: e.target.checked })
+                }
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>

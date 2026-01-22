@@ -17,6 +17,11 @@
     "verify": "hardhat verify",
     "create-market:base": "hardhat run scripts/create-market.ts --network base",
     "create-markets:base": "hardhat run scripts/create-additional-markets.ts --network base",
+    "budget:check": "hardhat run scripts/budget/calculate-capacity.ts --network base",
+    "budget:micro": "hardhat run scripts/budget/micro-trades.ts --network base",
+    "budget:flip": "hardhat run scripts/budget/position-flip.ts --network base",
+    "budget:rapid": "hardhat run scripts/budget/rapid-micro.ts --network base",
+    "budget:mixed": "hardhat run scripts/budget/mixed-activity.ts --network base",
     "clean": "hardhat clean",
     "typechain": "hardhat typechain"
   },

@@ -14,7 +14,7 @@ export default function DataVisualizer() {
     { date: '2024-01', volume: 1200000, traders: 5600, markets: 127 },
     { date: '2024-02', volume: 1580000, traders: 6890, markets: 145 },
     { date: '2024-03', volume: 2340000, traders: 8234, markets: 168 },
-    { date: '2024-04', volume: 3120000, traders: 10456, markets: 192 }
+    { date: '2024-04', volume: 3120000, traders: 10456, markets: 192 },
   ]);
 
   const [chartType, setChartType] = useState<'line' | 'bar' | 'area'>('line');
@@ -24,7 +24,7 @@ export default function DataVisualizer() {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Data Visualizer</h2>
         <div className="flex space-x-2">
-          {(['line', 'bar', 'area'] as const).map(type => (
+          {(['line', 'bar', 'area'] as const).map((type) => (
             <button
               key={type}
               onClick={() => setChartType(type)}

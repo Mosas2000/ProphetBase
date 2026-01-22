@@ -153,14 +153,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Probability: {}", analytics.probability);
 
     Ok(())
-}`
+}`,
   };
 
   const installCommands: Record<Language, string> = {
     typescript: 'npm install @prophetbase/sdk',
     python: 'pip install prophetbase',
     go: 'go get github.com/prophetbase/go-sdk',
-    rust: 'cargo add prophetbase'
+    rust: 'cargo add prophetbase',
   };
 
   const copyToClipboard = () => {
@@ -180,7 +180,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
       {/* Language Selector */}
       <div className="flex space-x-2 mb-6">
-        {(['typescript', 'python', 'go', 'rust'] as Language[]).map(lang => (
+        {(['typescript', 'python', 'go', 'rust'] as Language[]).map((lang) => (
           <button
             key={lang}
             onClick={() => setLanguage(lang)}
@@ -190,7 +190,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            {lang === 'typescript' ? 'TypeScript' : lang.charAt(0).toUpperCase() + lang.slice(1)}
+            {lang === 'typescript'
+              ? 'TypeScript'
+              : lang.charAt(0).toUpperCase() + lang.slice(1)}
           </button>
         ))}
       </div>
@@ -273,10 +275,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
       {/* Links */}
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <div className="flex items-center space-x-6 text-sm">
-          <a href="#" className="text-blue-600 hover:underline">📖 Full Documentation</a>
-          <a href="#" className="text-blue-600 hover:underline">💬 Discord Community</a>
-          <a href="#" className="text-blue-600 hover:underline">🐛 Report Issues</a>
-          <a href="#" className="text-blue-600 hover:underline">⭐ GitHub Repository</a>
+          <a href="#" className="text-blue-600 hover:underline">
+            📖 Full Documentation
+          </a>
+          <a href="#" className="text-blue-600 hover:underline">
+            💬 Discord Community
+          </a>
+          <a href="#" className="text-blue-600 hover:underline">
+            🐛 Report Issues
+          </a>
+          <a href="#" className="text-blue-600 hover:underline">
+            ⭐ GitHub Repository
+          </a>
         </div>
       </div>
     </div>

@@ -21,12 +21,15 @@ export default function WebhookManager() {
       active: true,
       lastTriggered: new Date(Date.now() - 3600000),
       successRate: 98.5,
-      secret: 'whsec_***********************'
-    }
+      secret: 'whsec_***********************',
+    },
   ]);
 
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newWebhook, setNewWebhook] = useState({ url: '', events: [] as string[] });
+  const [newWebhook, setNewWebhook] = useState({
+    url: '',
+    events: [] as string[],
+  });
 
   const availableEvents = [
     { id: 'trade.created', label: 'Trade Created' },
@@ -34,30 +37,30 @@ export default function WebhookManager() {
     { id: 'market.created', label: 'Market Created' },
     { id: 'market.resolved', label: 'Market Resolved' },
     { id: 'user.registered', label: 'User Registered' },
-    { id: 'position.liquidated', label: 'Position Liquidated' }
+    { id: 'position.liquidated', label: 'Position Liquidated' },
   ];
 
   const toggleWebhook = (id: string) => {
-    setWebhooks(prev => prev.map(w => 
-      w.id === id ? { ...w, active: !w.active } : w
-    ));
+    setWebhooks((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, active: !w.active } : w))
+    );
   };
 
   const deleteWebhook = (id: string) => {
     if (confirm('Delete this webhook?')) {
-      setWebhooks(prev => prev.filter(w => w.id !== id));
+      setWebhooks((prev) => prev.filter((w) => w.id !== id));
     }
   };
 
   const testWebhook = async (id: string) => {
-    const webhook = webhooks.find(w => w.id === id);
+    const webhook = webhooks.find((w) => w.id === id);
     if (!webhook) return;
 
     try {
       await fetch('/api/webhooks/test', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: webhook.url })
+        body: JSON.stringify({ url: webhook.url }),
       });
       alert('Test webhook sent successfully!');
     } catch (error) {
@@ -77,10 +80,10 @@ export default function WebhookManager() {
       events: newWebhook.events,
       active: true,
       successRate: 100,
-      secret: 'whsec_' + Math.random().toString(36).substring(2)
+      secret: 'whsec_' + Math.random().toString(36).substring(2),
     };
 
-    setWebhooks(prev => [...prev, webhook]);
+    setWebhooks((prev) => [...prev, webhook]);
     setNewWebhook({ url: '', events: [] });
     setShowAddModal(false);
   };
@@ -90,7 +93,9 @@ export default function WebhookManager() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Webhook Manager</h2>
-          <p className="text-sm text-gray-600">Configure webhooks for real-time event notifications</p>
+          <p className="text-sm text-gray-600">
+            Configure webhooks for real-time event notifications
+          </p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
@@ -102,18 +107,30 @@ export default function WebhookManager() {
 
       {/* Webhooks List */}
       <div className="space-y-4">
-        {webhooks.map(webhook => (
-          <div key={webhook.id} className="border-2 border-gray-200 rounded-lg p-6">
+        {webhooks.map((webhook) => (
+          <div
+            key={webhook.id}
+            className="border-2 border-gray-200 rounded-lg p-6"
+          >
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <div className="flex items-center space-x-3 mb-2">
-                  <span className={`w-3 h-3 rounded-full ${webhook.active ? 'bg-green-500' : 'bg-gray-400'}`} />
-                  <code className="text-blue-600 font-mono text-sm">{webhook.url}</code>
+                  <span
+                    className={`w-3 h-3 rounded-full ${
+                      webhook.active ? 'bg-green-500' : 'bg-gray-400'
+                    }`}
+                  />
+                  <code className="text-blue-600 font-mono text-sm">
+                    {webhook.url}
+                  </code>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2 mb-3">
-                  {webhook.events.map(event => (
-                    <span key={event} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs">
+                  {webhook.events.map((event) => (
+                    <span
+                      key={event}
+                      className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs"
+                    >
                       {event}
                     </span>
                   ))}
@@ -122,10 +139,15 @@ export default function WebhookManager() {
                 <div className="flex items-center space-x-6 text-sm">
                   <div>
                     <span className="text-gray-600">Success Rate:</span>
-                    <span className={`ml-2 font-semibold ${
-                      webhook.successRate >= 95 ? 'text-green-600' : 
-                      webhook.successRate >= 80 ? 'text-yellow-600' : 'text-red-600'
-                    }`}>
+                    <span
+                      className={`ml-2 font-semibold ${
+                        webhook.successRate >= 95
+                          ? 'text-green-600'
+                          : webhook.successRate >= 80
+                          ? 'text-yellow-600'
+                          : 'text-red-600'
+                      }`}
+                    >
                       {webhook.successRate}%
                     </span>
                   </div>
@@ -141,7 +163,9 @@ export default function WebhookManager() {
 
                 <div className="mt-3">
                   <span className="text-gray-600 text-sm">Secret:</span>
-                  <code className="ml-2 text-xs bg-gray-100 px-2 py-1 rounded">{webhook.secret}</code>
+                  <code className="ml-2 text-xs bg-gray-100 px-2 py-1 rounded">
+                    {webhook.secret}
+                  </code>
                 </div>
               </div>
 
@@ -184,8 +208,10 @@ export default function WebhookManager() {
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 max-w-2xl w-full mx-4">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Add New Webhook</h3>
-            
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              Add New Webhook
+            </h3>
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Webhook URL
@@ -193,7 +219,9 @@ export default function WebhookManager() {
               <input
                 type="url"
                 value={newWebhook.url}
-                onChange={e => setNewWebhook(prev => ({ ...prev, url: e.target.value }))}
+                onChange={(e) =>
+                  setNewWebhook((prev) => ({ ...prev, url: e.target.value }))
+                }
                 placeholder="https://api.example.com/webhooks"
                 className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500"
               />
@@ -204,16 +232,25 @@ export default function WebhookManager() {
                 Events to Subscribe
               </label>
               <div className="grid grid-cols-2 gap-3">
-                {availableEvents.map(event => (
-                  <label key={event.id} className="flex items-center space-x-2 cursor-pointer">
+                {availableEvents.map((event) => (
+                  <label
+                    key={event.id}
+                    className="flex items-center space-x-2 cursor-pointer"
+                  >
                     <input
                       type="checkbox"
                       checked={newWebhook.events.includes(event.id)}
-                      onChange={e => {
+                      onChange={(e) => {
                         if (e.target.checked) {
-                          setNewWebhook(prev => ({ ...prev, events: [...prev.events, event.id] }));
+                          setNewWebhook((prev) => ({
+                            ...prev,
+                            events: [...prev.events, event.id],
+                          }));
                         } else {
-                          setNewWebhook(prev => ({ ...prev, events: prev.events.filter(ev => ev !== event.id) }));
+                          setNewWebhook((prev) => ({
+                            ...prev,
+                            events: prev.events.filter((ev) => ev !== event.id),
+                          }));
                         }
                       }}
                       className="w-4 h-4"

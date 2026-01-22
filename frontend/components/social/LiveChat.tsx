@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Message {
   id: string;
@@ -31,23 +31,42 @@ export default function LiveChat() {
       message: 'Just bought 1000 shares in Market #42. Bulls are running!',
       timestamp: Date.now() - 120000,
       marketId: '42',
-      reactions: { '🔥': 3, '👍': 5 }
+      reactions: { '🔥': 3, '👍': 5 },
     },
     {
       id: '2',
       userId: '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199',
       username: 'ProphetKing',
       avatar: '👑',
-      message: 'Market analysis: YES outcome has 73% probability based on current odds',
+      message:
+        'Market analysis: YES outcome has 73% probability based on current odds',
       timestamp: Date.now() - 60000,
-      reactions: { '🧠': 7, '💯': 2 }
-    }
+      reactions: { '🧠': 7, '💯': 2 },
+    },
   ]);
 
   const [rooms, setRooms] = useState<Room[]>([
-    { id: 'general', name: 'General Chat', type: 'general', unreadCount: 0, participants: 1247 },
-    { id: 'trading', name: 'Trading Signals', type: 'general', unreadCount: 3, participants: 892 },
-    { id: 'market-42', name: 'Market #42 Discussion', type: 'market', unreadCount: 0, participants: 156 }
+    {
+      id: 'general',
+      name: 'General Chat',
+      type: 'general',
+      unreadCount: 0,
+      participants: 1247,
+    },
+    {
+      id: 'trading',
+      name: 'Trading Signals',
+      type: 'general',
+      unreadCount: 3,
+      participants: 892,
+    },
+    {
+      id: 'market-42',
+      name: 'Market #42 Discussion',
+      type: 'market',
+      unreadCount: 0,
+      participants: 156,
+    },
   ]);
 
   const [currentRoom, setCurrentRoom] = useState<string>('general');
@@ -69,7 +88,7 @@ export default function LiveChat() {
       avatar: '👤',
       message: newMessage,
       timestamp: Date.now(),
-      reactions: {}
+      reactions: {},
     };
 
     setMessages([...messages, message]);
@@ -77,14 +96,16 @@ export default function LiveChat() {
   };
 
   const addReaction = (messageId: string, emoji: string) => {
-    setMessages(messages.map(msg => {
-      if (msg.id === messageId) {
-        const newReactions = { ...msg.reactions };
-        newReactions[emoji] = (newReactions[emoji] || 0) + 1;
-        return { ...msg, reactions: newReactions };
-      }
-      return msg;
-    }));
+    setMessages(
+      messages.map((msg) => {
+        if (msg.id === messageId) {
+          const newReactions = { ...msg.reactions };
+          newReactions[emoji] = (newReactions[emoji] || 0) + 1;
+          return { ...msg, reactions: newReactions };
+        }
+        return msg;
+      })
+    );
   };
 
   const formatTime = (timestamp: number) => {
@@ -99,7 +120,9 @@ export default function LiveChat() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
-          <p className="text-sm text-gray-600">Real-time community discussion</p>
+          <p className="text-sm text-gray-600">
+            Real-time community discussion
+          </p>
         </div>
         <div className="flex items-center space-x-2">
           <div className="flex items-center space-x-1">
@@ -113,7 +136,7 @@ export default function LiveChat() {
         {/* Rooms Sidebar */}
         <div className="col-span-1 space-y-2">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">Rooms</h3>
-          {rooms.map(room => (
+          {rooms.map((room) => (
             <button
               key={room.id}
               onClick={() => setCurrentRoom(room.id)}
@@ -137,7 +160,7 @@ export default function LiveChat() {
               </div>
             </button>
           ))}
-          
+
           <button className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
             + Create Room
           </button>
@@ -147,15 +170,22 @@ export default function LiveChat() {
         <div className="col-span-3 flex flex-col h-[600px]">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto space-y-4 mb-4 p-4 bg-gray-50 rounded-lg">
-            {messages.map(msg => (
-              <div key={msg.id} className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+              >
                 <div className="flex items-start space-x-3">
                   <div className="text-2xl">{msg.avatar}</div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center space-x-2">
-                        <span className="font-semibold text-gray-900">{msg.username}</span>
-                        <span className="text-xs text-gray-500">{formatTime(msg.timestamp)}</span>
+                        <span className="font-semibold text-gray-900">
+                          {msg.username}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {formatTime(msg.timestamp)}
+                        </span>
                       </div>
                       {msg.marketId && (
                         <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
@@ -163,9 +193,9 @@ export default function LiveChat() {
                         </span>
                       )}
                     </div>
-                    
+
                     <p className="text-gray-700 mb-2">{msg.message}</p>
-                    
+
                     {/* Reactions */}
                     <div className="flex items-center space-x-2">
                       {Object.entries(msg.reactions).map(([emoji, count]) => (
@@ -195,7 +225,8 @@ export default function LiveChat() {
           {/* Typing Indicator */}
           {isTyping.length > 0 && (
             <div className="text-sm text-gray-500 px-4 mb-2">
-              {isTyping.join(', ')} {isTyping.length === 1 ? 'is' : 'are'} typing...
+              {isTyping.join(', ')} {isTyping.length === 1 ? 'is' : 'are'}{' '}
+              typing...
             </div>
           )}
 

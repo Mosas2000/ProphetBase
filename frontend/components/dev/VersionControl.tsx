@@ -22,10 +22,10 @@ export default function VersionControl() {
       changes: [
         'Fixed market resolution bug',
         'Improved error handling for trades',
-        'Updated UI styling for mobile'
+        'Updated UI styling for mobile',
       ],
       breaking: false,
-      status: 'deployed'
+      status: 'deployed',
     },
     {
       version: 'v2.4.0',
@@ -35,10 +35,10 @@ export default function VersionControl() {
         'Added webhook support',
         'New analytics dashboard',
         'Performance improvements',
-        'WebSocket optimization'
+        'WebSocket optimization',
       ],
       breaking: true,
-      status: 'deployed'
+      status: 'deployed',
     },
     {
       version: 'v2.3.2',
@@ -47,10 +47,10 @@ export default function VersionControl() {
       changes: [
         'Security patch for API keys',
         'Fixed memory leak in WebSocket',
-        'Updated dependencies'
+        'Updated dependencies',
       ],
       breaking: false,
-      status: 'deployed'
+      status: 'deployed',
     },
     {
       version: 'v2.5.0-beta',
@@ -59,19 +59,23 @@ export default function VersionControl() {
       changes: [
         'New trading bot features',
         'AI-powered predictions (experimental)',
-        'Advanced charting tools'
+        'Advanced charting tools',
       ],
       breaking: true,
-      status: 'staging'
-    }
+      status: 'staging',
+    },
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'deployed': return 'bg-green-100 text-green-700';
-      case 'staging': return 'bg-yellow-100 text-yellow-700';
-      case 'development': return 'bg-blue-100 text-blue-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'deployed':
+        return 'bg-green-100 text-green-700';
+      case 'staging':
+        return 'bg-yellow-100 text-yellow-700';
+      case 'development':
+        return 'bg-blue-100 text-blue-700';
+      default:
+        return 'bg-gray-100 text-gray-700';
     }
   };
 
@@ -80,7 +84,9 @@ export default function VersionControl() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Version Control</h2>
-          <p className="text-sm text-gray-600">API version history and release management</p>
+          <p className="text-sm text-gray-600">
+            API version history and release management
+          </p>
         </div>
         <div className="text-right">
           <div className="text-sm text-gray-600">Current Version</div>
@@ -91,7 +97,7 @@ export default function VersionControl() {
       <div className="grid grid-cols-3 gap-6">
         {/* Versions List */}
         <div className="col-span-1 space-y-3">
-          {versions.map(version => (
+          {versions.map((version) => (
             <div
               key={version.version}
               onClick={() => setSelectedVersion(version)}
@@ -102,14 +108,20 @@ export default function VersionControl() {
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-gray-900">{version.version}</span>
+                <span className="font-bold text-gray-900">
+                  {version.version}
+                </span>
                 {version.breaking && (
                   <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded font-semibold">
                     BREAKING
                   </span>
                 )}
               </div>
-              <span className={`text-xs px-2 py-1 rounded font-semibold uppercase ${getStatusColor(version.status)}`}>
+              <span
+                className={`text-xs px-2 py-1 rounded font-semibold uppercase ${getStatusColor(
+                  version.status
+                )}`}
+              >
                 {version.status}
               </span>
               <p className="text-xs text-gray-500 mt-2">
@@ -133,10 +145,16 @@ export default function VersionControl() {
                       Released {selectedVersion.date.toLocaleString()}
                     </span>
                     <span className="text-gray-400">•</span>
-                    <span className="text-gray-600">by {selectedVersion.author}</span>
+                    <span className="text-gray-600">
+                      by {selectedVersion.author}
+                    </span>
                   </div>
                 </div>
-                <span className={`px-4 py-2 rounded-full font-semibold uppercase text-sm ${getStatusColor(selectedVersion.status)}`}>
+                <span
+                  className={`px-4 py-2 rounded-full font-semibold uppercase text-sm ${getStatusColor(
+                    selectedVersion.status
+                  )}`}
+                >
                   {selectedVersion.status}
                 </span>
               </div>
@@ -148,7 +166,8 @@ export default function VersionControl() {
                     <span>Breaking Changes</span>
                   </div>
                   <p className="text-sm text-red-600">
-                    This version contains breaking changes that may require code updates.
+                    This version contains breaking changes that may require code
+                    updates.
                   </p>
                 </div>
               )}
@@ -179,9 +198,11 @@ export default function VersionControl() {
               {/* Migration Guide */}
               {selectedVersion.breaking && (
                 <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-3">Migration Guide</h4>
+                  <h4 className="font-semibold text-gray-900 mb-3">
+                    Migration Guide
+                  </h4>
                   <pre className="bg-gray-900 text-gray-300 p-4 rounded text-sm overflow-x-auto">
-{`// Before (v2.3.x)
+                    {`// Before (v2.3.x)
 const trade = await client.buy({
   market: '42',
   outcome: 'YES',
@@ -228,13 +249,24 @@ const trade = await client.trading.buy({
 
       {/* Deprecation Warnings */}
       <div className="mt-6 p-6 bg-orange-50 rounded-lg border-2 border-orange-200">
-        <h3 className="font-semibold text-gray-900 mb-3">📢 Deprecation Notices</h3>
+        <h3 className="font-semibold text-gray-900 mb-3">
+          📢 Deprecation Notices
+        </h3>
         <ul className="space-y-2 text-sm">
           <li className="text-orange-700">
-            • <code className="bg-orange-100 px-2 py-1 rounded">/api/v1/legacy/markets</code> will be removed in v3.0.0 (use <code className="bg-orange-100 px-2 py-1 rounded">/api/v1/markets</code>)
+            •{' '}
+            <code className="bg-orange-100 px-2 py-1 rounded">
+              /api/v1/legacy/markets
+            </code>{' '}
+            will be removed in v3.0.0 (use{' '}
+            <code className="bg-orange-100 px-2 py-1 rounded">
+              /api/v1/markets
+            </code>
+            )
           </li>
           <li className="text-orange-700">
-            • The <code className="bg-orange-100 px-2 py-1 rounded">buy()</code> method signature will change in v2.5.0
+            • The <code className="bg-orange-100 px-2 py-1 rounded">buy()</code>{' '}
+            method signature will change in v2.5.0
           </li>
         </ul>
       </div>

@@ -7,13 +7,23 @@ export default function APITrading() {
   const [endpoint, setEndpoint] = useState('/api/markets');
   const [method, setMethod] = useState('GET');
   const [response, setResponse] = useState('');
-  const [rateLimit, setRateLimit] = useState({ used: 450, limit: 1000, reset: 3600 });
+  const [rateLimit, setRateLimit] = useState({
+    used: 450,
+    limit: 1000,
+    reset: 3600,
+  });
 
   const makeRequest = async () => {
-    setResponse(JSON.stringify({
-      success: true,
-      data: { markets: [{ id: 0, question: 'Will ETH hit $5k?' }] }
-    }, null, 2));
+    setResponse(
+      JSON.stringify(
+        {
+          success: true,
+          data: { markets: [{ id: 0, question: 'Will ETH hit $5k?' }] },
+        },
+        null,
+        2
+      )
+    );
   };
 
   return (
@@ -27,7 +37,9 @@ export default function APITrading() {
         {/* API Playground */}
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-500 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">API Playground</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              API Playground
+            </h2>
 
             {/* API Key */}
             <div className="mb-4">
@@ -81,16 +93,22 @@ export default function APITrading() {
               <div className="bg-gray-900 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs text-gray-400">Response</span>
-                  <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">200 OK</span>
+                  <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">
+                    200 OK
+                  </span>
                 </div>
-                <pre className="text-green-400 text-sm font-mono overflow-x-auto">{response}</pre>
+                <pre className="text-green-400 text-sm font-mono overflow-x-auto">
+                  {response}
+                </pre>
               </div>
             )}
           </div>
 
           {/* Code Examples */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Code Examples</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              Code Examples
+            </h2>
             <div className="space-y-4">
               {['JavaScript', 'Python', 'cURL'].map((lang) => (
                 <div key={lang} className="bg-gray-50 rounded-lg p-4">
@@ -115,12 +133,16 @@ export default function APITrading() {
               <div>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-gray-600">Usage</span>
-                  <span className="font-semibold">{rateLimit.used}/{rateLimit.limit}</span>
+                  <span className="font-semibold">
+                    {rateLimit.used}/{rateLimit.limit}
+                  </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
                     className="bg-blue-600 h-2 rounded-full"
-                    style={{ width: `${(rateLimit.used / rateLimit.limit) * 100}%` }}
+                    style={{
+                      width: `${(rateLimit.used / rateLimit.limit) * 100}%`,
+                    }}
                   />
                 </div>
               </div>
@@ -137,19 +159,27 @@ export default function APITrading() {
             <h3 className="font-bold text-gray-900 mb-4">Endpoints</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded">
-                <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded font-mono text-xs">GET</span>
+                <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded font-mono text-xs">
+                  GET
+                </span>
                 <span className="font-mono">/markets</span>
               </div>
               <div className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded">
-                <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded font-mono text-xs">POST</span>
+                <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded font-mono text-xs">
+                  POST
+                </span>
                 <span className="font-mono">/trades</span>
               </div>
               <div className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded">
-                <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded font-mono text-xs">GET</span>
+                <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded font-mono text-xs">
+                  GET
+                </span>
                 <span className="font-mono">/balances</span>
               </div>
               <div className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded">
-                <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded font-mono text-xs">PUT</span>
+                <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded font-mono text-xs">
+                  PUT
+                </span>
                 <span className="font-mono">/orders</span>
               </div>
             </div>

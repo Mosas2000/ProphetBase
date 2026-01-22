@@ -12,36 +12,36 @@ interface RateLimit {
 
 export default function RateLimits() {
   const [tier] = useState<'free' | 'pro' | 'enterprise'>('pro');
-  
+
   const limits: Record<string, RateLimit> = {
     'API Requests': {
       tier,
       requests: tier === 'free' ? 100 : tier === 'pro' ? 1000 : 999999,
       period: 'hour',
       current: 247,
-      resetAt: new Date(Date.now() + 3600000)
+      resetAt: new Date(Date.now() + 3600000),
     },
     'WebSocket Connections': {
       tier,
       requests: tier === 'free' ? 5 : tier === 'pro' ? 50 : 999,
       period: 'concurrent',
       current: 12,
-      resetAt: new Date(Date.now() + 3600000)
+      resetAt: new Date(Date.now() + 3600000),
     },
     'Webhook Deliveries': {
       tier,
       requests: tier === 'free' ? 100 : tier === 'pro' ? 5000 : 999999,
       period: 'day',
       current: 1847,
-      resetAt: new Date(Date.now() + 86400000)
+      resetAt: new Date(Date.now() + 86400000),
     },
-    'Trades': {
+    Trades: {
       tier,
       requests: tier === 'free' ? 50 : tier === 'pro' ? 500 : 999999,
       period: 'hour',
       current: 89,
-      resetAt: new Date(Date.now() + 3600000)
-    }
+      resetAt: new Date(Date.now() + 3600000),
+    },
   };
 
   const getPercentage = (current: number, max: number) => {
@@ -66,13 +66,19 @@ export default function RateLimits() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Rate Limits</h2>
-          <p className="text-sm text-gray-600">Monitor your API usage and limits</p>
+          <p className="text-sm text-gray-600">
+            Monitor your API usage and limits
+          </p>
         </div>
-        <span className={`px-4 py-2 rounded-full font-semibold text-sm ${
-          tier === 'free' ? 'bg-gray-100 text-gray-700' :
-          tier === 'pro' ? 'bg-blue-100 text-blue-700' :
-          'bg-purple-100 text-purple-700'
-        }`}>
+        <span
+          className={`px-4 py-2 rounded-full font-semibold text-sm ${
+            tier === 'free'
+              ? 'bg-gray-100 text-gray-700'
+              : tier === 'pro'
+              ? 'bg-blue-100 text-blue-700'
+              : 'bg-purple-100 text-purple-700'
+          }`}
+        >
           {tier.toUpperCase()} TIER
         </span>
       </div>
@@ -82,7 +88,7 @@ export default function RateLimits() {
         {Object.entries(limits).map(([name, limit]) => {
           const percentage = getPercentage(limit.current, limit.requests);
           const color = getColor(percentage);
-          
+
           return (
             <div key={name} className="border-2 border-gray-200 rounded-lg p-6">
               <div className="flex items-center justify-between mb-3">
@@ -97,18 +103,24 @@ export default function RateLimits() {
                   <div className="w-full bg-gray-200 rounded-full h-4">
                     <div
                       className={`h-4 rounded-full transition-all ${
-                        color === 'green' ? 'bg-green-500' :
-                        color === 'yellow' ? 'bg-yellow-500' :
-                        'bg-red-500'
+                        color === 'green'
+                          ? 'bg-green-500'
+                          : color === 'yellow'
+                          ? 'bg-yellow-500'
+                          : 'bg-red-500'
                       }`}
                       style={{ width: `${Math.min(percentage, 100)}%` }}
                     />
                   </div>
                 </div>
                 <div className="text-right min-w-[120px]">
-                  <span className="font-bold text-gray-900">{limit.current.toLocaleString()}</span>
+                  <span className="font-bold text-gray-900">
+                    {limit.current.toLocaleString()}
+                  </span>
                   <span className="text-gray-500"> / </span>
-                  <span className="text-gray-700">{limit.requests.toLocaleString()}</span>
+                  <span className="text-gray-700">
+                    {limit.requests.toLocaleString()}
+                  </span>
                 </div>
               </div>
 
@@ -116,11 +128,15 @@ export default function RateLimits() {
                 <span className="text-gray-600">
                   {percentage.toFixed(1)}% used
                 </span>
-                <span className={`font-medium ${
-                  color === 'green' ? 'text-green-600' :
-                  color === 'yellow' ? 'text-yellow-600' :
-                  'text-red-600'
-                }`}>
+                <span
+                  className={`font-medium ${
+                    color === 'green'
+                      ? 'text-green-600'
+                      : color === 'yellow'
+                      ? 'text-yellow-600'
+                      : 'text-red-600'
+                  }`}
+                >
                   {limit.requests - limit.current} remaining
                 </span>
               </div>
@@ -136,7 +152,9 @@ export default function RateLimits() {
           <div className="font-semibold text-gray-700">Feature</div>
           <div className="text-center font-semibold text-gray-700">Free</div>
           <div className="text-center font-semibold text-blue-700">Pro</div>
-          <div className="text-center font-semibold text-purple-700">Enterprise</div>
+          <div className="text-center font-semibold text-purple-700">
+            Enterprise
+          </div>
 
           <div className="text-gray-700">API Requests</div>
           <div className="text-center text-gray-600">100/hour</div>
@@ -180,8 +198,13 @@ export default function RateLimits() {
         <ul className="text-sm text-gray-700 space-y-2">
           <li>• Implement exponential backoff when approaching rate limits</li>
           <li>• Cache responses when possible to reduce API calls</li>
-          <li>• Use WebSocket subscriptions instead of polling for real-time data</li>
-          <li>• Monitor the <code className="text-blue-600">X-RateLimit-Remaining</code> header</li>
+          <li>
+            • Use WebSocket subscriptions instead of polling for real-time data
+          </li>
+          <li>
+            • Monitor the{' '}
+            <code className="text-blue-600">X-RateLimit-Remaining</code> header
+          </li>
           <li>• Batch requests when the API supports it</li>
         </ul>
       </div>

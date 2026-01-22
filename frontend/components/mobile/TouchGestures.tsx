@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface TouchGesturesProps {
   onSwipeLeft?: () => void;
@@ -23,7 +23,7 @@ export default function TouchGestures({
   onDoubleTap,
   onLongPress,
   children,
-  className = ''
+  className = '',
 }: TouchGesturesProps) {
   const elementRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0, time: 0 });
@@ -46,7 +46,7 @@ export default function TouchGestures({
     setTouchStart({
       x: touch.clientX,
       y: touch.clientY,
-      time: Date.now()
+      time: Date.now(),
     });
 
     // Handle pinch
@@ -141,8 +141,10 @@ export function TouchGesturesDemo() {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Touch Gestures Demo</h2>
-      
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        Touch Gestures Demo
+      </h2>
+
       <TouchGestures
         onSwipeLeft={() => setGesture('Swiped Left ←')}
         onSwipeRight={() => setGesture('Swiped Right →')}
@@ -156,7 +158,9 @@ export function TouchGesturesDemo() {
         onLongPress={() => setGesture('Long Pressed ⏱️')}
         className="bg-blue-50 border-2 border-blue-300 rounded-lg p-12 text-center min-h-[300px] flex items-center justify-center select-none"
       >
-        <div style={{ transform: `scale(${scale})`, transition: 'transform 0.1s' }}>
+        <div
+          style={{ transform: `scale(${scale})`, transition: 'transform 0.1s' }}
+        >
           <div className="text-4xl mb-4">👋</div>
           <p className="text-lg font-semibold text-gray-900">
             {gesture || 'Try gestures here!'}
@@ -173,8 +177,12 @@ export function TouchGesturesDemo() {
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold text-gray-900 mb-2">Gesture Info</h3>
         <div className="text-sm text-gray-700 space-y-1">
-          <p><strong>Last Gesture:</strong> {gesture || 'None'}</p>
-          <p><strong>Scale:</strong> {scale.toFixed(2)}x</p>
+          <p>
+            <strong>Last Gesture:</strong> {gesture || 'None'}
+          </p>
+          <p>
+            <strong>Scale:</strong> {scale.toFixed(2)}x
+          </p>
         </div>
       </div>
     </div>

@@ -16,33 +16,45 @@ export default function SocialSharing() {
     marketQuestion: 'Will BTC reach $100k by EOY 2024?',
     outcome: 'YES',
     profit: 2450,
-    position: 5000
+    position: 5000,
   });
 
   const [copiedText, setCopiedText] = useState<string | null>(null);
 
   const generateShareText = (platform: string) => {
     const { marketQuestion, outcome, profit, position } = shareData;
-    
+
     const baseUrl = 'https://prophetbase.com';
     const marketUrl = `${baseUrl}/market/${shareData.marketId}`;
-    
+
     switch (platform) {
       case 'twitter':
         if (profit) {
           return `Just made $${profit.toLocaleString()} profit on ProphetBase! 🚀\n\nMarket: "${marketQuestion}"\nOutcome: ${outcome}\n\nJoin me: ${marketUrl}\n\n#ProphetBase #PredictionMarkets #Crypto`;
         }
         return `Trading on ProphetBase: "${marketQuestion}"\n\nWhat's your prediction? ${marketUrl}\n\n#ProphetBase #PredictionMarkets`;
-      
+
       case 'telegram':
-        return `🎯 ProphetBase Trade Alert!\n\nMarket: ${marketQuestion}\n${profit ? `Profit: $${profit.toLocaleString()}` : `Position: $${position?.toLocaleString()}`}\nOutcome: ${outcome}\n\nCheck it out: ${marketUrl}`;
-      
+        return `🎯 ProphetBase Trade Alert!\n\nMarket: ${marketQuestion}\n${
+          profit
+            ? `Profit: $${profit.toLocaleString()}`
+            : `Position: $${position?.toLocaleString()}`
+        }\nOutcome: ${outcome}\n\nCheck it out: ${marketUrl}`;
+
       case 'discord':
-        return `**ProphetBase Trade Update**\n\nMarket: *${marketQuestion}*\n${profit ? `💰 Profit: **$${profit.toLocaleString()}**` : `📊 Position: **$${position?.toLocaleString()}**`}\n🎲 Outcome: **${outcome}**\n\n🔗 ${marketUrl}`;
-      
+        return `**ProphetBase Trade Update**\n\nMarket: *${marketQuestion}*\n${
+          profit
+            ? `💰 Profit: **$${profit.toLocaleString()}**`
+            : `📊 Position: **$${position?.toLocaleString()}**`
+        }\n🎲 Outcome: **${outcome}**\n\n🔗 ${marketUrl}`;
+
       case 'reddit':
-        return `[ProphetBase] ${profit ? 'Made' : 'Trading'} ${profit ? `$${profit.toLocaleString()} profit` : `with $${position?.toLocaleString()}`} on: "${marketQuestion}"\n\nOutcome: ${outcome}\n\nLink: ${marketUrl}`;
-      
+        return `[ProphetBase] ${profit ? 'Made' : 'Trading'} ${
+          profit
+            ? `$${profit.toLocaleString()} profit`
+            : `with $${position?.toLocaleString()}`
+        } on: "${marketQuestion}"\n\nOutcome: ${outcome}\n\nLink: ${marketUrl}`;
+
       default:
         return marketUrl;
     }
@@ -50,7 +62,9 @@ export default function SocialSharing() {
 
   const shareToTwitter = () => {
     const text = generateShareText('twitter');
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      text
+    )}`;
     window.open(url, '_blank', 'width=600,height=400');
   };
 
@@ -67,7 +81,7 @@ export default function SocialSharing() {
         await navigator.share({
           title: 'ProphetBase Trade',
           text: generateShareText('twitter'),
-          url: `https://prophetbase.com/market/${shareData.marketId}`
+          url: `https://prophetbase.com/market/${shareData.marketId}`,
         });
       } catch (err) {
         console.error('Error sharing:', err);
@@ -78,39 +92,55 @@ export default function SocialSharing() {
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Share Your Trade</h2>
-        <p className="text-sm text-gray-600">Spread the word about your predictions and profits</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Share Your Trade
+        </h2>
+        <p className="text-sm text-gray-600">
+          Spread the word about your predictions and profits
+        </p>
       </div>
 
       {/* Preview Card */}
       <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border-2 border-blue-200">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{shareData.marketQuestion}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {shareData.marketQuestion}
+            </h3>
             <div className="flex items-center space-x-4 text-sm">
               <div>
                 <span className="text-gray-600">Outcome:</span>
-                <span className={`ml-2 font-semibold ${shareData.outcome === 'YES' ? 'text-green-600' : 'text-red-600'}`}>
+                <span
+                  className={`ml-2 font-semibold ${
+                    shareData.outcome === 'YES'
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                  }`}
+                >
                   {shareData.outcome}
                 </span>
               </div>
               {shareData.profit && (
                 <div>
                   <span className="text-gray-600">Profit:</span>
-                  <span className="ml-2 font-bold text-green-600">${shareData.profit.toLocaleString()}</span>
+                  <span className="ml-2 font-bold text-green-600">
+                    ${shareData.profit.toLocaleString()}
+                  </span>
                 </div>
               )}
               {shareData.position && !shareData.profit && (
                 <div>
                   <span className="text-gray-600">Position:</span>
-                  <span className="ml-2 font-semibold">${shareData.position.toLocaleString()}</span>
+                  <span className="ml-2 font-semibold">
+                    ${shareData.position.toLocaleString()}
+                  </span>
                 </div>
               )}
             </div>
           </div>
           <div className="text-4xl">🎯</div>
         </div>
-        
+
         <div className="text-xs text-gray-500">
           prophetbase.com/market/{shareData.marketId}
         </div>
@@ -139,7 +169,9 @@ export default function SocialSharing() {
           <div className="text-left flex-1">
             <div className="font-semibold">Share on Telegram</div>
             <div className="text-xs opacity-90">
-              {copiedText === 'telegram' ? '✓ Copied!' : 'Copy formatted message'}
+              {copiedText === 'telegram'
+                ? '✓ Copied!'
+                : 'Copy formatted message'}
             </div>
           </div>
         </button>
@@ -153,7 +185,9 @@ export default function SocialSharing() {
           <div className="text-left flex-1">
             <div className="font-semibold">Share on Discord</div>
             <div className="text-xs opacity-90">
-              {copiedText === 'discord' ? '✓ Copied!' : 'Copy formatted message'}
+              {copiedText === 'discord'
+                ? '✓ Copied!'
+                : 'Copy formatted message'}
             </div>
           </div>
         </button>
@@ -175,7 +209,9 @@ export default function SocialSharing() {
 
       {/* Copy Link */}
       <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-        <label className="text-sm font-medium text-gray-700 mb-2 block">Direct Link</label>
+        <label className="text-sm font-medium text-gray-700 mb-2 block">
+          Direct Link
+        </label>
         <div className="flex items-center space-x-2">
           <input
             type="text"
@@ -205,7 +241,9 @@ export default function SocialSharing() {
 
       {/* Share Stats */}
       <div className="mt-8 pt-6 border-t">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Share Performance</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Share Performance
+        </h3>
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <div className="text-2xl font-bold text-blue-600">247</div>
@@ -224,27 +262,43 @@ export default function SocialSharing() {
 
       {/* Custom Share Templates */}
       <div className="mt-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Share Templates</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-3">
+          Share Templates
+        </h3>
         <div className="space-y-2">
           <button
             onClick={() => setShareData({ ...shareData, profit: 2450 })}
             className="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <div className="font-medium text-gray-900">🎉 Victory Post</div>
-            <div className="text-sm text-gray-600">Share your winning trade</div>
+            <div className="text-sm text-gray-600">
+              Share your winning trade
+            </div>
           </button>
           <button
-            onClick={() => setShareData({ ...shareData, profit: undefined, position: 5000 })}
+            onClick={() =>
+              setShareData({ ...shareData, profit: undefined, position: 5000 })
+            }
             className="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <div className="font-medium text-gray-900">📊 Position Update</div>
-            <div className="text-sm text-gray-600">Share your current position</div>
+            <div className="text-sm text-gray-600">
+              Share your current position
+            </div>
           </button>
           <button
-            onClick={() => setShareData({ ...shareData, profit: undefined, position: undefined })}
+            onClick={() =>
+              setShareData({
+                ...shareData,
+                profit: undefined,
+                position: undefined,
+              })
+            }
             className="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
           >
-            <div className="font-medium text-gray-900">🤔 Market Discussion</div>
+            <div className="font-medium text-gray-900">
+              🤔 Market Discussion
+            </div>
             <div className="text-sm text-gray-600">Start a conversation</div>
           </button>
         </div>

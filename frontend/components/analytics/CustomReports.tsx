@@ -3,16 +3,20 @@
 import { useState } from 'react';
 
 export default function CustomReports() {
-  const [reportType, setReportType] = useState<'performance' | 'risk' | 'market' | 'custom'>('performance');
+  const [reportType, setReportType] = useState<
+    'performance' | 'risk' | 'market' | 'custom'
+  >('performance');
   const [dateRange, setDateRange] = useState({ start: '', end: '' });
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-6xl">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Custom Reports</h2>
-      
+
       <div className="grid grid-cols-2 gap-6 mb-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Report Type
+          </label>
           <select
             value={reportType}
             onChange={(e) => setReportType(e.target.value as any)}
@@ -24,20 +28,26 @@ export default function CustomReports() {
             <option value="custom">Custom Report</option>
           </select>
         </div>
-        
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Date Range
+          </label>
           <div className="flex space-x-2">
             <input
               type="date"
               value={dateRange.start}
-              onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
+              onChange={(e) =>
+                setDateRange({ ...dateRange, start: e.target.value })
+              }
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="date"
               value={dateRange.end}
-              onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
+              onChange={(e) =>
+                setDateRange({ ...dateRange, end: e.target.value })
+              }
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -57,7 +67,10 @@ export default function CustomReports() {
       </div>
 
       <div className="mt-6 p-8 bg-gray-50 rounded-lg text-center">
-        <p className="text-gray-600">Select options and click "Generate Report" to create your custom report</p>
+        <p className="text-gray-600">
+          Select options and click "Generate Report" to create your custom
+          report
+        </p>
       </div>
     </div>
   );

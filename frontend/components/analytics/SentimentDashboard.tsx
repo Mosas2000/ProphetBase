@@ -31,7 +31,7 @@ export default function SentimentDashboard() {
       twitter: 72.3,
       reddit: 65.8,
       discord: 71.2,
-      forum: 64.5
+      forum: 64.5,
     },
     trend: 'bullish',
     change24h: +5.3,
@@ -40,7 +40,7 @@ export default function SentimentDashboard() {
       { word: 'moon', count: 892, sentiment: 'positive' },
       { word: 'buying', count: 678, sentiment: 'positive' },
       { word: 'worried', count: 234, sentiment: 'negative' },
-      { word: 'dump', count: 156, sentiment: 'negative' }
+      { word: 'dump', count: 156, sentiment: 'negative' },
     ],
     timeline: [
       { timestamp: Date.now() - 86400000 * 7, score: 55 },
@@ -50,8 +50,8 @@ export default function SentimentDashboard() {
       { timestamp: Date.now() - 86400000 * 3, score: 65 },
       { timestamp: Date.now() - 86400000 * 2, score: 67 },
       { timestamp: Date.now() - 86400000, score: 63 },
-      { timestamp: Date.now(), score: 68.5 }
-    ]
+      { timestamp: Date.now(), score: 68.5 },
+    ],
   });
 
   const getSentimentColor = (score: number) => {
@@ -72,8 +72,12 @@ export default function SentimentDashboard() {
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-6xl">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Sentiment Analysis</h2>
-          <p className="text-sm text-gray-600">Real-time social sentiment tracking</p>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Sentiment Analysis
+          </h2>
+          <p className="text-sm text-gray-600">
+            Real-time social sentiment tracking
+          </p>
         </div>
         <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
           Updated {new Date().toLocaleTimeString()}
@@ -84,16 +88,26 @@ export default function SentimentDashboard() {
       <div className="mb-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-2 border-blue-200">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Overall Sentiment</h3>
-            <div className={`text-5xl font-bold ${getSentimentColor(sentiment.overall)}`}>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Overall Sentiment
+            </h3>
+            <div
+              className={`text-5xl font-bold ${getSentimentColor(
+                sentiment.overall
+              )}`}
+            >
               {sentiment.overall}%
             </div>
-            <p className="text-sm text-gray-600 mt-1">{getSentimentLabel(sentiment.overall)}</p>
+            <p className="text-sm text-gray-600 mt-1">
+              {getSentimentLabel(sentiment.overall)}
+            </p>
           </div>
           <div className="text-right">
-            <div className={`flex items-center space-x-1 text-lg font-semibold ${
-              sentiment.change24h > 0 ? 'text-green-600' : 'text-red-600'
-            }`}>
+            <div
+              className={`flex items-center space-x-1 text-lg font-semibold ${
+                sentiment.change24h > 0 ? 'text-green-600' : 'text-red-600'
+              }`}
+            >
               <span>{sentiment.change24h > 0 ? '↑' : '↓'}</span>
               <span>{Math.abs(sentiment.change24h)}%</span>
             </div>
@@ -104,9 +118,11 @@ export default function SentimentDashboard() {
         <div className="w-full bg-gray-200 rounded-full h-4">
           <div
             className={`h-4 rounded-full transition-all ${
-              sentiment.overall >= 70 ? 'bg-green-600' :
-              sentiment.overall >= 50 ? 'bg-yellow-600' :
-              'bg-red-600'
+              sentiment.overall >= 70
+                ? 'bg-green-600'
+                : sentiment.overall >= 50
+                ? 'bg-yellow-600'
+                : 'bg-red-600'
             }`}
             style={{ width: `${sentiment.overall}%` }}
           />
@@ -115,7 +131,9 @@ export default function SentimentDashboard() {
 
       {/* Source Breakdown */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Sentiment by Source</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Sentiment by Source
+        </h3>
         <div className="grid grid-cols-4 gap-4">
           {Object.entries(sentiment.sources).map(([source, score]) => (
             <div key={source} className="bg-gray-50 rounded-lg p-4 text-center">
@@ -136,15 +154,19 @@ export default function SentimentDashboard() {
 
       {/* Trending Keywords */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Trending Keywords</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Trending Keywords
+        </h3>
         <div className="flex flex-wrap gap-3">
           {sentiment.keywords.map((keyword, index) => (
             <div
               key={index}
               className={`px-4 py-2 rounded-full border-2 ${
-                keyword.sentiment === 'positive' ? 'bg-green-50 border-green-300 text-green-700' :
-                keyword.sentiment === 'negative' ? 'bg-red-50 border-red-300 text-red-700' :
-                'bg-gray-50 border-gray-300 text-gray-700'
+                keyword.sentiment === 'positive'
+                  ? 'bg-green-50 border-green-300 text-green-700'
+                  : keyword.sentiment === 'negative'
+                  ? 'bg-red-50 border-red-300 text-red-700'
+                  : 'bg-gray-50 border-gray-300 text-gray-700'
               }`}
             >
               <span className="font-semibold">{keyword.word}</span>
@@ -156,7 +178,9 @@ export default function SentimentDashboard() {
 
       {/* Sentiment Timeline */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">7-Day Sentiment Trend</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          7-Day Sentiment Trend
+        </h3>
         <div className="bg-gray-50 rounded-lg p-6">
           <div className="relative h-40">
             <svg className="w-full h-full">
@@ -164,11 +188,13 @@ export default function SentimentDashboard() {
                 fill="none"
                 stroke="#2563EB"
                 strokeWidth="3"
-                points={sentiment.timeline.map((point, index) => {
-                  const x = (index / (sentiment.timeline.length - 1)) * 100;
-                  const y = 100 - point.score;
-                  return `${x}%,${y}%`;
-                }).join(' ')}
+                points={sentiment.timeline
+                  .map((point, index) => {
+                    const x = (index / (sentiment.timeline.length - 1)) * 100;
+                    const y = 100 - point.score;
+                    return `${x}%,${y}%`;
+                  })
+                  .join(' ')}
               />
               {sentiment.timeline.map((point, index) => {
                 const x = (index / (sentiment.timeline.length - 1)) * 100;
