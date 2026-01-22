@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./frontend",
+        "paths": {
+            "@/*": [
+                "./*"
+            ],
+            "@/components/*": [
+                "./components/*"
+            ],
+            "@/lib/*": [
+                "./lib/*"
+            ],
+            "@/hooks/*": [
+                "./lib/hooks/*"
+            ],
+            "@/utils/*": [
+                "./lib/utils/*"
+            ],
+            "@/types/*": [
+                "./types/*"
+            ],
+            "@/styles/*": [
+                "./styles/*"
+            ]
+        }
+    }
+}

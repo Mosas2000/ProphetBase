@@ -1,0 +1,292 @@
+@import "tailwindcss";
+
+/* ===== BASE BRAND DESIGN SYSTEM ===== */
+:root {
+  /* Base Official Brand Colors */
+  --base-blue: #0052FF;
+  --base-dark: #0033CC;
+  --base-hover: #0040DD;
+  /* New intermediate hover state */
+  --base-light: #E6EEFF;
+  /* Light background for blue elements */
+  --base-black: #0F1115;
+  /* Professional black */
+
+  /* Semantic Colors */
+  --success: #00D395;
+  --success-dark: #00A372;
+  --error: #FF4444;
+  --error-dark: #CC0000;
+  --warning: #FFBF00;
+
+  /* Neutral Colors (Light Values) */
+  --background: #FAFBFC;
+  --background-alt: #F3F4F6;
+  --card-bg: #FFFFFF;
+  --text-primary: #1A1B1F;
+  --text-secondary: #6B7280;
+  --text-tertiary: #9CA3AF;
+  --border: #E5E7EB;
+  --border-hover: #D1D5DB;
+
+  /* Professional Shadows */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 15px rgba(0, 82, 255, 0.15);
+  /* Base blue glow */
+
+  /* Animation Timing */
+  --ease-spring: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Overrides */
+.dark {
+  /* Neutral Colors (Dark Values) */
+  --background: #0F1115;
+  --background-alt: #1A1B1F;
+  --card-bg: #1A1B1F;
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
+  --border: #2D3748;
+  --border-hover: #4A5568;
+
+  /* Adjust semantic colors for dark mode if needed */
+  --base-light: rgba(0, 82, 255, 0.15);
+  /* Darker blue background */
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+}
+
+@theme inline {
+  --color-base-blue: var(--base-blue);
+  --color-base-dark: var(--base-dark);
+  --color-base-hover: var(--base-hover);
+  --color-base-light: var(--base-light);
+  --color-base-black: var(--base-black);
+
+  --color-success: var(--success);
+  --color-error: var(--error);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+
+  --animate-lift: lift 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-fade-in: fadeIn 0.3s ease-out forwards;
+
+  @keyframes lift {
+    to {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+  }
+}
+
+/* ===== GLOBAL STYLES ===== */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  /* Remove mobile tap highlight */
+}
+
+body {
+  background: var(--background);
+  /* Use variable for dark mode support */
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Smooth theming */
+}
+
+/* Base Transition defaults */
+* {
+  border-color: var(--border);
+}
+
+/* ===== PROFESSIONAL TYPOGRAPHY ===== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  /* Tighter headings for modern look */
+}
+
+/* ===== FOCUS STATES ===== */
+*:focus-visible {
+  outline: 2px solid var(--base-blue);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* ===== SCROLLBAR ===== */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 4px;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: #4B5563;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #6B7280;
+  }
+}
+
+/* ===== UTILITY COMPONENTS ===== */
+
+/* Buttons */
+.btn {
+  @apply inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* Primary Button - Base Blue */
+.btn-primary {
+  @apply bg-[#0052FF] text-white shadow-sm border border-transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+  @apply bg-[#0040DD] shadow-md;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  @apply bg-[#0033CC];
+  transform: translateY(0);
+}
+
+/* Secondary Button - Outline */
+.btn-secondary {
+  @apply bg-white dark:bg-[#1A1B1F] text-[#1A1B1F] dark:text-white border border-[#E5E7EB] dark:border-[#2D3748] shadow-xs;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  @apply bg-[#F9FAFB] dark:bg-[#2D3748] border-[#D1D5DB] dark:border-[#4A5568] text-[#0052FF];
+}
+
+/* Ghost Button - Minimal */
+.btn-ghost {
+  @apply bg-transparent text-[#6B7280] dark:text-[#9CA3AF] hover:bg-[#F3F4F6] dark:hover:bg-[#2D3748] hover:text-[#1A1B1F] dark:hover:text-white;
+}
+
+/* Cards */
+.card {
+  @apply bg-white dark:bg-[#1A1B1F] rounded-xl border border-[#E5E7EB] dark:border-[#2D3748] shadow-xs transition-all duration-200 overflow-hidden;
+}
+
+.card-hover {
+  @apply hover:shadow-md hover:border-[#D1D5DB] dark:hover:border-[#4A5568] hover:-translate-y-0.5;
+}
+
+/* Inputs */
+.input-base {
+  @apply w-full rounded-lg border border-[#E5E7EB] dark:border-[#2D3748] bg-white dark:bg-[#0F1115] px-4 py-2.5 text-[#1A1B1F] dark:text-white placeholder-[#9CA3AF] shadow-xs transition-all duration-200;
+}
+
+.input-base:focus {
+  @apply border-[#0052FF] ring-2 ring-[#0052FF]/20 outline-none;
+}
+
+.input-base:hover:not(:focus) {
+  @apply border-[#D1D5DB] dark:border-[#4A5568];
+}
+
+/* Badges */
+.badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border;
+}
+
+.badge-blue {
+  @apply bg-[#EFF6FF] dark:bg-blue-900/30 text-[#0052FF] dark:text-blue-200 border-[#BFDBFE] dark:border-blue-800;
+}
+
+.badge-green {
+  @apply bg-[#ECFDF5] dark:bg-green-900/30 text-[#027A48] dark:text-green-200 border-[#A7F3D0] dark:border-green-800;
+}
+
+.badge-red {
+  @apply bg-[#FEF2F2] dark:bg-red-900/30 text-[#B91C1C] dark:text-red-200 border-[#FECACA] dark:border-red-800;
+}
+
+.badge-gray {
+  @apply bg-[#F9FAFB] dark:bg-gray-800 text-[#4B5563] dark:text-gray-300 border-[#E5E7EB] dark:border-gray-700;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ===== MOBILE OPTIMIZATIONS ===== */
+/* Touch targets should be at least 44px */
+@media (max-width: 640px) {
+
+  .btn,
+  .input-base,
+  select {
+    @apply min-h-[44px];
+  }
+}
+
+/* Hide scrollbar for horizontal scrolling areas on mobile but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

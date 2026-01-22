@@ -1,0 +1,113 @@
+/* Tooltip Styles */
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-gray-900);
+  color: white;
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-in-out);
+  z-index: 40;
+}
+
+.tooltip-wrapper:hover .tooltip-content,
+.tooltip-wrapper:focus .tooltip-content {
+  opacity: 1;
+}
+
+.tooltip-content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--color-gray-900);
+}
+
+/* Tooltip Positions */
+.tooltip-top {
+  bottom: 100%;
+  margin-bottom: var(--space-2);
+}
+
+.tooltip-bottom {
+  top: 100%;
+  bottom: auto;
+  margin-top: var(--space-2);
+  transform: translateX(-50%) translateY(8px);
+}
+
+.tooltip-bottom::after {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: var(--color-gray-900);
+}
+
+.tooltip-left {
+  left: auto;
+  right: 100%;
+  bottom: 50%;
+  margin-right: var(--space-2);
+  transform: translateY(50%) translateX(-8px);
+}
+
+.tooltip-left::after {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top-color: transparent;
+  border-left-color: var(--color-gray-900);
+}
+
+.tooltip-right {
+  left: 100%;
+  bottom: 50%;
+  margin-left: var(--space-2);
+  transform: translateY(50%) translateX(8px);
+}
+
+.tooltip-right::after {
+  left: auto;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top-color: transparent;
+  border-right-color: var(--color-gray-900);
+}
+
+/* Dark Mode */
+.dark .tooltip-content {
+  background: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+
+.dark .tooltip-content::after {
+  border-top-color: var(--color-gray-100);
+}
+
+.dark .tooltip-bottom::after {
+  border-bottom-color: var(--color-gray-100);
+}
+
+.dark .tooltip-left::after {
+  border-left-color: var(--color-gray-100);
+}
+
+.dark .tooltip-right::after {
+  border-right-color: var(--color-gray-100);
+}
