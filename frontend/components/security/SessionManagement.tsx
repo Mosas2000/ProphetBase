@@ -1,7 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Monitor, Smartphone, Tablet, Globe, MapPin, Clock, X, AlertTriangle, Check } from 'lucide-react';
+import {
+  AlertTriangle,
+  Check,
+  Clock,
+  MapPin,
+  Monitor,
+  Smartphone,
+  Tablet,
+  X,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface Session {
   id: string;
@@ -181,17 +190,19 @@ export default function SessionManagement() {
   };
 
   const handleTerminateSession = (sessionId: string) => {
-    setSessions(prev => prev.filter(s => s.id !== sessionId));
+    setSessions((prev) => prev.filter((s) => s.id !== sessionId));
   };
 
   const handleTerminateAll = () => {
-    setSessions(prev => prev.filter(s => s.isCurrent));
+    setSessions((prev) => prev.filter((s) => s.isCurrent));
     setShowTerminateAll(false);
   };
 
   const activeSessions = sessions.length;
-  const trustedSessions = sessions.filter(s => s.security.isTrusted).length;
-  const highRiskSessions = sessions.filter(s => s.security.riskScore >= 30).length;
+  const trustedSessions = sessions.filter((s) => s.security.isTrusted).length;
+  const highRiskSessions = sessions.filter(
+    (s) => s.security.riskScore >= 30
+  ).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4 md:p-8">
@@ -203,8 +214,12 @@ export default function SessionManagement() {
               <Monitor className="w-8 h-8 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Session Management</h1>
-              <p className="text-slate-400">Monitor and control active sessions across all devices</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                Session Management
+              </h1>
+              <p className="text-slate-400">
+                Monitor and control active sessions across all devices
+              </p>
             </div>
           </div>
         </div>
@@ -224,7 +239,9 @@ export default function SessionManagement() {
               <span className="text-slate-400 text-sm">Trusted Devices</span>
               <Check className="w-4 h-4 text-green-400" />
             </div>
-            <div className="text-3xl font-bold text-green-400">{trustedSessions}</div>
+            <div className="text-3xl font-bold text-green-400">
+              {trustedSessions}
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -232,7 +249,9 @@ export default function SessionManagement() {
               <span className="text-slate-400 text-sm">High Risk</span>
               <AlertTriangle className="w-4 h-4 text-red-400" />
             </div>
-            <div className="text-3xl font-bold text-red-400">{highRiskSessions}</div>
+            <div className="text-3xl font-bold text-red-400">
+              {highRiskSessions}
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -247,10 +266,12 @@ export default function SessionManagement() {
         {/* Session Settings */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
           <h2 className="text-xl font-bold mb-6">Session Settings</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Auto-logout Timeout (minutes)</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Auto-logout Timeout (minutes)
+              </label>
               <input
                 type="number"
                 value={autoTimeout}
@@ -262,7 +283,9 @@ export default function SessionManagement() {
             </div>
 
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Session Security</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Session Security
+              </label>
               <div className="space-y-3">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -325,14 +348,20 @@ export default function SessionManagement() {
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className={`p-3 rounded-xl ${
-                          session.isCurrent ? 'bg-blue-600/20' : 'bg-slate-600/50'
-                        }`}>
+                        <div
+                          className={`p-3 rounded-xl ${
+                            session.isCurrent
+                              ? 'bg-blue-600/20'
+                              : 'bg-slate-600/50'
+                          }`}
+                        >
                           {getDeviceIcon(session.device.type)}
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-semibold text-lg">{session.device.name}</h3>
+                            <h3 className="font-semibold text-lg">
+                              {session.device.name}
+                            </h3>
                             {session.isCurrent && (
                               <span className="px-2 py-0.5 bg-blue-600 text-xs rounded-full">
                                 Current
@@ -363,8 +392,12 @@ export default function SessionManagement() {
                           <span>Location</span>
                         </div>
                         <div className="text-sm">
-                          <div>{session.location.city}, {session.location.country}</div>
-                          <div className="text-slate-400">{session.location.ip}</div>
+                          <div>
+                            {session.location.city}, {session.location.country}
+                          </div>
+                          <div className="text-slate-400">
+                            {session.location.ip}
+                          </div>
                         </div>
                       </div>
 
@@ -375,8 +408,13 @@ export default function SessionManagement() {
                           <span>Activity</span>
                         </div>
                         <div className="text-sm">
-                          <div>Last active: {formatTimeAgo(session.activity.lastActive)}</div>
-                          <div className="text-slate-400">{session.activity.requestCount} requests</div>
+                          <div>
+                            Last active:{' '}
+                            {formatTimeAgo(session.activity.lastActive)}
+                          </div>
+                          <div className="text-slate-400">
+                            {session.activity.requestCount} requests
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -385,8 +423,14 @@ export default function SessionManagement() {
                   {/* Security Info */}
                   <div className="lg:w-64 space-y-4">
                     <div>
-                      <div className="text-sm text-slate-400 mb-2">Security Status</div>
-                      <div className={`text-lg font-semibold ${getRiskColor(session.security.riskScore)}`}>
+                      <div className="text-sm text-slate-400 mb-2">
+                        Security Status
+                      </div>
+                      <div
+                        className={`text-lg font-semibold ${getRiskColor(
+                          session.security.riskScore
+                        )}`}
+                      >
                         {getRiskLabel(session.security.riskScore)}
                       </div>
                       {session.security.riskScore > 0 && (
@@ -397,24 +441,32 @@ export default function SessionManagement() {
                     </div>
 
                     <div>
-                      <div className="text-sm text-slate-400 mb-2">Device Trust</div>
+                      <div className="text-sm text-slate-400 mb-2">
+                        Device Trust
+                      </div>
                       <div className="flex items-center gap-2">
                         {session.security.isTrusted ? (
                           <>
                             <Check className="w-4 h-4 text-green-400" />
-                            <span className="text-sm text-green-400">Trusted Device</span>
+                            <span className="text-sm text-green-400">
+                              Trusted Device
+                            </span>
                           </>
                         ) : (
                           <>
                             <AlertTriangle className="w-4 h-4 text-yellow-400" />
-                            <span className="text-sm text-yellow-400">Untrusted Device</span>
+                            <span className="text-sm text-yellow-400">
+                              Untrusted Device
+                            </span>
                           </>
                         )}
                       </div>
                     </div>
 
                     <div>
-                      <div className="text-sm text-slate-400 mb-1">Device Fingerprint</div>
+                      <div className="text-sm text-slate-400 mb-1">
+                        Device Fingerprint
+                      </div>
                       <code className="text-xs text-slate-500 font-mono">
                         {session.security.fingerprint}
                       </code>
@@ -425,7 +477,8 @@ export default function SessionManagement() {
                         <div className="flex items-start gap-2">
                           <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                           <div className="text-xs text-red-300">
-                            Unusual activity detected. Review this session carefully.
+                            Unusual activity detected. Review this session
+                            carefully.
                           </div>
                         </div>
                       </div>
@@ -445,9 +498,12 @@ export default function SessionManagement() {
         {showTerminateAll && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full border border-slate-700">
-              <h3 className="text-xl font-bold mb-4">Terminate All Other Sessions?</h3>
+              <h3 className="text-xl font-bold mb-4">
+                Terminate All Other Sessions?
+              </h3>
               <p className="text-slate-400 mb-6">
-                This will log you out of all devices except your current one. You'll need to log in again on those devices.
+                This will log you out of all devices except your current one.
+                You'll need to log in again on those devices.
               </p>
               <div className="flex gap-3">
                 <button

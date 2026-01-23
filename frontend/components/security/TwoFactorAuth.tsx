@@ -1,7 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Shield, Smartphone, Key, Copy, Download, Check, AlertTriangle, QrCode } from 'lucide-react';
+import {
+  AlertTriangle,
+  Check,
+  Copy,
+  Download,
+  QrCode,
+  Shield,
+  Smartphone,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface BackupCode {
   code: string;
@@ -37,14 +45,14 @@ export default function TwoFactorAuth() {
   };
 
   const handleCopyBackupCodes = async () => {
-    const codes = backupCodes.map(bc => bc.code).join('\n');
+    const codes = backupCodes.map((bc) => bc.code).join('\n');
     await navigator.clipboard.writeText(codes);
     setCopiedBackup(true);
     setTimeout(() => setCopiedBackup(false), 2000);
   };
 
   const handleDownloadBackupCodes = () => {
-    const codes = backupCodes.map(bc => bc.code).join('\n');
+    const codes = backupCodes.map((bc) => bc.code).join('\n');
     const blob = new Blob([codes], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -74,7 +82,16 @@ export default function TwoFactorAuth() {
   const handleRegenerateBackupCodes = () => {
     // Simulate generating new backup codes
     const newCodes: BackupCode[] = Array.from({ length: 8 }, () => ({
-      code: `${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
+      code: `${Math.random()
+        .toString(36)
+        .substr(2, 4)
+        .toUpperCase()}-${Math.random()
+        .toString(36)
+        .substr(2, 4)
+        .toUpperCase()}-${Math.random()
+        .toString(36)
+        .substr(2, 4)
+        .toUpperCase()}`,
       used: false,
     }));
     setBackupCodes(newCodes);
@@ -92,33 +109,47 @@ export default function TwoFactorAuth() {
               <Shield className="w-8 h-8 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Two-Factor Authentication</h1>
-              <p className="text-slate-400">Add an extra layer of security to your account</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                Two-Factor Authentication
+              </h1>
+              <p className="text-slate-400">
+                Add an extra layer of security to your account
+              </p>
             </div>
           </div>
         </div>
 
         {/* Status Banner */}
-        <div className={`mb-8 p-4 rounded-xl border ${
-          is2FAEnabled
-            ? 'bg-green-600/10 border-green-600/30'
-            : 'bg-yellow-600/10 border-yellow-600/30'
-        }`}>
+        <div
+          className={`mb-8 p-4 rounded-xl border ${
+            is2FAEnabled
+              ? 'bg-green-600/10 border-green-600/30'
+              : 'bg-yellow-600/10 border-yellow-600/30'
+          }`}
+        >
           <div className="flex items-center gap-3">
             {is2FAEnabled ? (
               <>
                 <Check className="w-6 h-6 text-green-400" />
                 <div className="flex-1">
-                  <div className="font-semibold text-green-400">2FA Enabled</div>
-                  <div className="text-sm text-slate-300">Your account is protected with two-factor authentication</div>
+                  <div className="font-semibold text-green-400">
+                    2FA Enabled
+                  </div>
+                  <div className="text-sm text-slate-300">
+                    Your account is protected with two-factor authentication
+                  </div>
                 </div>
               </>
             ) : (
               <>
                 <AlertTriangle className="w-6 h-6 text-yellow-400" />
                 <div className="flex-1">
-                  <div className="font-semibold text-yellow-400">2FA Not Enabled</div>
-                  <div className="text-sm text-slate-300">Enable 2FA to secure your account</div>
+                  <div className="font-semibold text-yellow-400">
+                    2FA Not Enabled
+                  </div>
+                  <div className="text-sm text-slate-300">
+                    Enable 2FA to secure your account
+                  </div>
                 </div>
               </>
             )}
@@ -137,25 +168,38 @@ export default function TwoFactorAuth() {
                       1
                     </div>
                     <div className="flex-1">
-                      <h2 className="text-xl font-bold mb-3">Download an Authenticator App</h2>
+                      <h2 className="text-xl font-bold mb-3">
+                        Download an Authenticator App
+                      </h2>
                       <p className="text-slate-400 mb-4">
-                        Install one of these authenticator apps on your mobile device:
+                        Install one of these authenticator apps on your mobile
+                        device:
                       </p>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="p-4 bg-slate-700/50 rounded-lg">
                           <Smartphone className="w-6 h-6 text-blue-400 mb-2" />
-                          <div className="font-semibold">Google Authenticator</div>
-                          <div className="text-sm text-slate-400">iOS & Android</div>
+                          <div className="font-semibold">
+                            Google Authenticator
+                          </div>
+                          <div className="text-sm text-slate-400">
+                            iOS & Android
+                          </div>
                         </div>
                         <div className="p-4 bg-slate-700/50 rounded-lg">
                           <Smartphone className="w-6 h-6 text-blue-400 mb-2" />
                           <div className="font-semibold">Authy</div>
-                          <div className="text-sm text-slate-400">iOS & Android</div>
+                          <div className="text-sm text-slate-400">
+                            iOS & Android
+                          </div>
                         </div>
                         <div className="p-4 bg-slate-700/50 rounded-lg">
                           <Smartphone className="w-6 h-6 text-blue-400 mb-2" />
-                          <div className="font-semibold">Microsoft Authenticator</div>
-                          <div className="text-sm text-slate-400">iOS & Android</div>
+                          <div className="font-semibold">
+                            Microsoft Authenticator
+                          </div>
+                          <div className="text-sm text-slate-400">
+                            iOS & Android
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -180,7 +224,9 @@ export default function TwoFactorAuth() {
                           </div>
                         </div>
                         <div className="flex-1">
-                          <div className="text-sm text-slate-400 mb-2">Can't scan the QR code? Enter this key manually:</div>
+                          <div className="text-sm text-slate-400 mb-2">
+                            Can't scan the QR code? Enter this key manually:
+                          </div>
                           <div className="flex items-center gap-2">
                             <code className="flex-1 p-3 bg-slate-700 rounded-lg font-mono text-sm">
                               {secretKey}
@@ -201,7 +247,9 @@ export default function TwoFactorAuth() {
                             <div className="flex items-start gap-2">
                               <AlertTriangle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
                               <div className="text-sm text-slate-300">
-                                <strong>Important:</strong> Keep this secret key safe. You'll need it to restore 2FA if you lose access to your device.
+                                <strong>Important:</strong> Keep this secret key
+                                safe. You'll need it to restore 2FA if you lose
+                                access to your device.
                               </div>
                             </div>
                           </div>
@@ -220,13 +268,18 @@ export default function TwoFactorAuth() {
                     <div className="flex-1">
                       <h2 className="text-xl font-bold mb-3">Verify Setup</h2>
                       <p className="text-slate-400 mb-4">
-                        Enter the 6-digit code from your authenticator app to complete setup:
+                        Enter the 6-digit code from your authenticator app to
+                        complete setup:
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3 max-w-md">
                         <input
                           type="text"
                           value={verificationCode}
-                          onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                          onChange={(e) =>
+                            setVerificationCode(
+                              e.target.value.replace(/\D/g, '').slice(0, 6)
+                            )
+                          }
                           placeholder="000000"
                           className="flex-1 px-4 py-3 bg-slate-700 rounded-lg text-center text-2xl font-mono tracking-wider focus:ring-2 focus:ring-blue-500 outline-none"
                           maxLength={6}
@@ -250,12 +303,17 @@ export default function TwoFactorAuth() {
               <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
                 <h2 className="text-xl font-bold mb-4">Save Backup Codes</h2>
                 <p className="text-slate-400 mb-6">
-                  Save these backup codes in a secure location. You can use them to access your account if you lose access to your authenticator app.
+                  Save these backup codes in a secure location. You can use them
+                  to access your account if you lose access to your
+                  authenticator app.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                   {backupCodes.map((bc, index) => (
-                    <div key={index} className="p-3 bg-slate-700 rounded-lg font-mono text-center">
+                    <div
+                      key={index}
+                      className="p-3 bg-slate-700 rounded-lg font-mono text-center"
+                    >
                       {bc.code}
                     </div>
                   ))}
@@ -300,7 +358,9 @@ export default function TwoFactorAuth() {
                   <div className="flex items-start gap-2">
                     <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                     <div className="text-sm text-slate-300">
-                      <strong>Warning:</strong> Each backup code can only be used once. Store them securely and don't share them with anyone.
+                      <strong>Warning:</strong> Each backup code can only be
+                      used once. Store them securely and don't share them with
+                      anyone.
                     </div>
                   </div>
                 </div>
@@ -331,7 +391,8 @@ export default function TwoFactorAuth() {
                   </button>
                 </div>
                 <p className="text-slate-400 mb-4">
-                  {backupCodes.filter(bc => !bc.used).length} unused backup codes remaining
+                  {backupCodes.filter((bc) => !bc.used).length} unused backup
+                  codes remaining
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                   {backupCodes.map((bc, index) => (
@@ -379,7 +440,9 @@ export default function TwoFactorAuth() {
                 {showRecovery && (
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm text-slate-400 mb-2">Recovery Email</label>
+                      <label className="block text-sm text-slate-400 mb-2">
+                        Recovery Email
+                      </label>
                       <input
                         type="email"
                         value={recoveryEmail}
@@ -388,7 +451,9 @@ export default function TwoFactorAuth() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-slate-400 mb-2">Recovery Phone</label>
+                      <label className="block text-sm text-slate-400 mb-2">
+                        Recovery Phone
+                      </label>
                       <input
                         type="tel"
                         value={recoveryPhone}
@@ -405,14 +470,18 @@ export default function TwoFactorAuth() {
 
               {/* Authenticator Devices */}
               <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-                <h2 className="text-xl font-bold mb-4">Authenticator Devices</h2>
+                <h2 className="text-xl font-bold mb-4">
+                  Authenticator Devices
+                </h2>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
                     <div className="flex items-center gap-3">
                       <Smartphone className="w-5 h-5 text-blue-400" />
                       <div>
                         <div className="font-medium">iPhone 13 Pro</div>
-                        <div className="text-sm text-slate-400">Added on Jan 15, 2026</div>
+                        <div className="text-sm text-slate-400">
+                          Added on Jan 15, 2026
+                        </div>
                       </div>
                     </div>
                     <span className="px-3 py-1 bg-green-600/20 text-green-400 text-sm rounded-full">
@@ -424,9 +493,12 @@ export default function TwoFactorAuth() {
 
               {/* Disable 2FA */}
               <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-red-600/30">
-                <h2 className="text-xl font-bold mb-2 text-red-400">Disable Two-Factor Authentication</h2>
+                <h2 className="text-xl font-bold mb-2 text-red-400">
+                  Disable Two-Factor Authentication
+                </h2>
                 <p className="text-slate-400 mb-4">
-                  This will reduce your account security. Make sure you understand the risks before proceeding.
+                  This will reduce your account security. Make sure you
+                  understand the risks before proceeding.
                 </p>
                 <button
                   onClick={handleDisable2FA}

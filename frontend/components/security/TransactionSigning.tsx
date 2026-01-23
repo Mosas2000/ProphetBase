@@ -1,7 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Shield, FileSignature, CheckCircle, AlertTriangle, Clock, Users, Usb, Eye } from 'lucide-react';
+import {
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Eye,
+  FileSignature,
+  Shield,
+  Usb,
+  Users,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface Transaction {
   id: string;
@@ -37,7 +46,9 @@ export default function TransactionSigning() {
     nonce: 45,
   });
 
-  const [signingMethod, setSigningMethod] = useState<'metamask' | 'ledger' | 'trezor' | 'walletconnect'>('metamask');
+  const [signingMethod, setSigningMethod] = useState<
+    'metamask' | 'ledger' | 'trezor' | 'walletconnect'
+  >('metamask');
   const [requiredSignatures, setRequiredSignatures] = useState(2);
   const [signers, setSigners] = useState<Signer[]>([
     {
@@ -76,39 +87,55 @@ export default function TransactionSigning() {
   const handleSign = async () => {
     setIsSigning(true);
     // Simulate signing process
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     // Update first unsigned signer
-    const firstUnsigned = signers.findIndex(s => !s.signed);
+    const firstUnsigned = signers.findIndex((s) => !s.signed);
     if (firstUnsigned !== -1) {
-      setSigners(prev => prev.map((s, i) => i === firstUnsigned ? {
-        ...s,
-        signed: true,
-        signedAt: new Date(),
-        device: signingMethod === 'metamask' ? 'MetaMask' : signingMethod === 'ledger' ? 'Ledger Nano X' : 'Hardware Wallet',
-      } : s));
+      setSigners((prev) =>
+        prev.map((s, i) =>
+          i === firstUnsigned
+            ? {
+                ...s,
+                signed: true,
+                signedAt: new Date(),
+                device:
+                  signingMethod === 'metamask'
+                    ? 'MetaMask'
+                    : signingMethod === 'ledger'
+                    ? 'Ledger Nano X'
+                    : 'Hardware Wallet',
+              }
+            : s
+        )
+      );
     }
-    
+
     setIsSigning(false);
   };
 
   const handleVerifySignature = async () => {
     setIsSigning(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     setSignatureVerified(true);
     setIsSigning(false);
   };
 
-  const signedCount = signers.filter(s => s.signed).length;
+  const signedCount = signers.filter((s) => s.signed).length;
   const canExecute = signedCount >= requiredSignatures;
 
   const getTransactionTypeColor = (type: string) => {
     switch (type) {
-      case 'transfer': return 'text-blue-400';
-      case 'swap': return 'text-purple-400';
-      case 'stake': return 'text-green-400';
-      case 'withdraw': return 'text-red-400';
-      default: return 'text-slate-400';
+      case 'transfer':
+        return 'text-blue-400';
+      case 'swap':
+        return 'text-purple-400';
+      case 'stake':
+        return 'text-green-400';
+      case 'withdraw':
+        return 'text-red-400';
+      default:
+        return 'text-slate-400';
     }
   };
 
@@ -132,8 +159,12 @@ export default function TransactionSigning() {
               <FileSignature className="w-8 h-8 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Transaction Signing</h1>
-              <p className="text-slate-400">Secure multi-signature transaction approval</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                Transaction Signing
+              </h1>
+              <p className="text-slate-400">
+                Secure multi-signature transaction approval
+              </p>
             </div>
           </div>
         </div>
@@ -143,13 +174,17 @@ export default function TransactionSigning() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
               <h2 className="text-xl font-bold mb-1">Signature Progress</h2>
-              <p className="text-slate-400">{signedCount} of {requiredSignatures} required signatures</p>
+              <p className="text-slate-400">
+                {signedCount} of {requiredSignatures} required signatures
+              </p>
             </div>
-            <div className={`px-4 py-2 rounded-lg font-semibold ${
-              canExecute
-                ? 'bg-green-600/20 text-green-400'
-                : 'bg-yellow-600/20 text-yellow-400'
-            }`}>
+            <div
+              className={`px-4 py-2 rounded-lg font-semibold ${
+                canExecute
+                  ? 'bg-green-600/20 text-green-400'
+                  : 'bg-yellow-600/20 text-yellow-400'
+              }`}
+            >
               {canExecute ? '✓ Ready to Execute' : '⏳ Awaiting Signatures'}
             </div>
           </div>
@@ -161,7 +196,9 @@ export default function TransactionSigning() {
                 className={`h-full transition-all duration-500 ${
                   canExecute ? 'bg-green-500' : 'bg-blue-500'
                 }`}
-                style={{ width: `${(signedCount / requiredSignatures) * 100}%` }}
+                style={{
+                  width: `${(signedCount / requiredSignatures) * 100}%`,
+                }}
               />
             </div>
           </div>
@@ -179,9 +216,11 @@ export default function TransactionSigning() {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-full ${
-                      signer.signed ? 'bg-green-600' : 'bg-slate-600'
-                    }`}>
+                    <div
+                      className={`p-2 rounded-full ${
+                        signer.signed ? 'bg-green-600' : 'bg-slate-600'
+                      }`}
+                    >
                       {signer.signed ? (
                         <CheckCircle className="w-5 h-5" />
                       ) : (
@@ -191,16 +230,20 @@ export default function TransactionSigning() {
                     <div>
                       <div className="font-semibold">{signer.name}</div>
                       <div className="text-sm text-slate-400 font-mono">
-                        {signer.address.slice(0, 6)}...{signer.address.slice(-4)}
+                        {signer.address.slice(0, 6)}...
+                        {signer.address.slice(-4)}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
                     {signer.signed ? (
                       <>
-                        <div className="text-sm text-green-400 font-semibold">Signed</div>
+                        <div className="text-sm text-green-400 font-semibold">
+                          Signed
+                        </div>
                         <div className="text-xs text-slate-400">
-                          {signer.signedAt?.toLocaleTimeString()} via {signer.device}
+                          {signer.signedAt?.toLocaleTimeString()} via{' '}
+                          {signer.device}
                         </div>
                       </>
                     ) : (
@@ -217,7 +260,11 @@ export default function TransactionSigning() {
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">Transaction Preview</h2>
-            <div className={`px-3 py-1 rounded-full text-sm font-semibold capitalize ${getTransactionTypeColor(currentTransaction.type)}`}>
+            <div
+              className={`px-3 py-1 rounded-full text-sm font-semibold capitalize ${getTransactionTypeColor(
+                currentTransaction.type
+              )}`}
+            >
               {currentTransaction.type}
             </div>
           </div>
@@ -228,13 +275,15 @@ export default function TransactionSigning() {
               <div>
                 <div className="text-sm text-slate-400 mb-2">From</div>
                 <div className="p-3 bg-slate-700 rounded-lg font-mono text-sm">
-                  {currentTransaction.from.slice(0, 10)}...{currentTransaction.from.slice(-8)}
+                  {currentTransaction.from.slice(0, 10)}...
+                  {currentTransaction.from.slice(-8)}
                 </div>
               </div>
               <div>
                 <div className="text-sm text-slate-400 mb-2">To</div>
                 <div className="p-3 bg-slate-700 rounded-lg font-mono text-sm">
-                  {currentTransaction.to.slice(0, 10)}...{currentTransaction.to.slice(-8)}
+                  {currentTransaction.to.slice(0, 10)}...
+                  {currentTransaction.to.slice(-8)}
                 </div>
               </div>
             </div>
@@ -244,14 +293,20 @@ export default function TransactionSigning() {
               <div>
                 <div className="text-sm text-slate-400 mb-2">Amount</div>
                 <div className="p-3 bg-slate-700 rounded-lg">
-                  <span className="text-2xl font-bold">{currentTransaction.amount}</span>
-                  <span className="text-slate-400 ml-2">{currentTransaction.token}</span>
+                  <span className="text-2xl font-bold">
+                    {currentTransaction.amount}
+                  </span>
+                  <span className="text-slate-400 ml-2">
+                    {currentTransaction.token}
+                  </span>
                 </div>
               </div>
               <div>
                 <div className="text-sm text-slate-400 mb-2">Value (USD)</div>
                 <div className="p-3 bg-slate-700 rounded-lg">
-                  <span className="text-2xl font-bold">${currentTransaction.value.toLocaleString()}</span>
+                  <span className="text-2xl font-bold">
+                    ${currentTransaction.value.toLocaleString()}
+                  </span>
                 </div>
               </div>
             </div>
@@ -268,15 +323,21 @@ export default function TransactionSigning() {
               <div>
                 <div className="text-sm text-slate-400 mb-2">Gas Estimate</div>
                 <div className="p-3 bg-slate-700 rounded-lg">
-                  <div className="font-semibold">{currentTransaction.gasEstimate.toLocaleString()}</div>
+                  <div className="font-semibold">
+                    {currentTransaction.gasEstimate.toLocaleString()}
+                  </div>
                   <div className="text-xs text-slate-400">~$0.15</div>
                 </div>
               </div>
               <div>
                 <div className="text-sm text-slate-400 mb-2">Nonce</div>
                 <div className="p-3 bg-slate-700 rounded-lg">
-                  <div className="font-semibold">#{currentTransaction.nonce}</div>
-                  <div className="text-xs text-slate-400">Transaction count</div>
+                  <div className="font-semibold">
+                    #{currentTransaction.nonce}
+                  </div>
+                  <div className="text-xs text-slate-400">
+                    Transaction count
+                  </div>
                 </div>
               </div>
             </div>
@@ -288,7 +349,9 @@ export default function TransactionSigning() {
                 className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors mb-2"
               >
                 <Eye className="w-4 h-4" />
-                <span className="text-sm">{showRawData ? 'Hide' : 'View'} Raw Transaction Data</span>
+                <span className="text-sm">
+                  {showRawData ? 'Hide' : 'View'} Raw Transaction Data
+                </span>
               </button>
               {showRawData && (
                 <pre className="p-4 bg-slate-900 rounded-lg text-xs font-mono overflow-x-auto border border-slate-700">
@@ -303,22 +366,26 @@ export default function TransactionSigning() {
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
           <h2 className="text-xl font-bold mb-4">Signing Method</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {(['metamask', 'ledger', 'trezor', 'walletconnect'] as const).map((method) => (
-              <button
-                key={method}
-                onClick={() => setSigningMethod(method)}
-                className={`p-4 rounded-xl border-2 transition-all ${
-                  signingMethod === method
-                    ? 'border-blue-600 bg-blue-600/20'
-                    : 'border-slate-600 bg-slate-700/50 hover:border-slate-500'
-                }`}
-              >
-                <div className="flex flex-col items-center gap-2">
-                  {getSigningMethodIcon(method)}
-                  <span className="text-sm font-medium capitalize">{method}</span>
-                </div>
-              </button>
-            ))}
+            {(['metamask', 'ledger', 'trezor', 'walletconnect'] as const).map(
+              (method) => (
+                <button
+                  key={method}
+                  onClick={() => setSigningMethod(method)}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    signingMethod === method
+                      ? 'border-blue-600 bg-blue-600/20'
+                      : 'border-slate-600 bg-slate-700/50 hover:border-slate-500'
+                  }`}
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    {getSigningMethodIcon(method)}
+                    <span className="text-sm font-medium capitalize">
+                      {method}
+                    </span>
+                  </div>
+                </button>
+              )
+            )}
           </div>
 
           {(signingMethod === 'ledger' || signingMethod === 'trezor') && (
@@ -326,9 +393,13 @@ export default function TransactionSigning() {
               <div className="flex items-start gap-2">
                 <Usb className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
-                  <div className="font-semibold text-blue-400 mb-1">Hardware Wallet Connected</div>
+                  <div className="font-semibold text-blue-400 mb-1">
+                    Hardware Wallet Connected
+                  </div>
                   <div className="text-slate-300">
-                    Please review the transaction on your {signingMethod === 'ledger' ? 'Ledger' : 'Trezor'} device and confirm to sign.
+                    Please review the transaction on your{' '}
+                    {signingMethod === 'ledger' ? 'Ledger' : 'Trezor'} device
+                    and confirm to sign.
                   </div>
                 </div>
               </div>
@@ -365,7 +436,7 @@ export default function TransactionSigning() {
           >
             {isSigning ? 'Signing...' : 'Sign Transaction'}
           </button>
-          
+
           {canExecute && (
             <>
               <button
@@ -375,7 +446,7 @@ export default function TransactionSigning() {
               >
                 {signatureVerified ? '✓ Verified' : 'Verify Signatures'}
               </button>
-              
+
               <button
                 disabled={!signatureVerified}
                 className="flex-1 px-6 py-4 bg-green-600 hover:bg-green-700 rounded-xl font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
@@ -391,7 +462,9 @@ export default function TransactionSigning() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-slate-300">
-              <strong className="text-yellow-400">Security Notice:</strong> Always verify transaction details carefully before signing. Once executed, transactions cannot be reversed.
+              <strong className="text-yellow-400">Security Notice:</strong>{' '}
+              Always verify transaction details carefully before signing. Once
+              executed, transactions cannot be reversed.
             </div>
           </div>
         </div>

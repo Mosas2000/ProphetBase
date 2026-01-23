@@ -1,7 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
-import { FileText, Download, Filter, Search, Shield, LogIn, ArrowRightLeft, Settings, AlertTriangle } from 'lucide-react';
+import {
+  AlertTriangle,
+  ArrowRightLeft,
+  Download,
+  FileText,
+  Filter,
+  LogIn,
+  Search,
+  Settings,
+  Shield,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface AuditEntry {
   id: string;
@@ -136,7 +146,9 @@ export default function AuditLog() {
   const [filterType, setFilterType] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [dateRange, setDateRange] = useState<'24h' | '7d' | '30d' | 'all'>('7d');
+  const [dateRange, setDateRange] = useState<'24h' | '7d' | '30d' | 'all'>(
+    '7d'
+  );
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -200,21 +212,25 @@ export default function AuditLog() {
     }
   };
 
-  const filteredLogs = logs.filter(log => {
+  const filteredLogs = logs.filter((log) => {
     if (filterType !== 'all' && log.type !== filterType) return false;
     if (filterStatus !== 'all' && log.status !== filterStatus) return false;
-    if (searchQuery && !log.action.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !log.description.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    
+    if (
+      searchQuery &&
+      !log.action.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !log.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+      return false;
+
     const cutoffTime = {
       '24h': Date.now() - 1000 * 60 * 60 * 24,
       '7d': Date.now() - 1000 * 60 * 60 * 24 * 7,
       '30d': Date.now() - 1000 * 60 * 60 * 24 * 30,
-      'all': 0,
+      all: 0,
     }[dateRange];
-    
+
     if (log.timestamp.getTime() < cutoffTime) return false;
-    
+
     return true;
   });
 
@@ -228,8 +244,17 @@ export default function AuditLog() {
       filename = 'audit-logs.json';
       mimeType = 'application/json';
     } else {
-      const headers = ['Timestamp', 'Type', 'Action', 'Description', 'IP', 'Location', 'Device', 'Status'];
-      const rows = filteredLogs.map(log => [
+      const headers = [
+        'Timestamp',
+        'Type',
+        'Action',
+        'Description',
+        'IP',
+        'Location',
+        'Device',
+        'Status',
+      ];
+      const rows = filteredLogs.map((log) => [
         log.timestamp.toISOString(),
         log.type,
         log.action,
@@ -239,7 +264,7 @@ export default function AuditLog() {
         log.device,
         log.status,
       ]);
-      content = [headers, ...rows].map(row => row.join(',')).join('\n');
+      content = [headers, ...rows].map((row) => row.join(',')).join('\n');
       filename = 'audit-logs.csv';
       mimeType = 'text/csv';
     }
@@ -257,9 +282,9 @@ export default function AuditLog() {
 
   const stats = {
     total: filteredLogs.length,
-    success: filteredLogs.filter(l => l.status === 'success').length,
-    failed: filteredLogs.filter(l => l.status === 'failed').length,
-    warning: filteredLogs.filter(l => l.status === 'warning').length,
+    success: filteredLogs.filter((l) => l.status === 'success').length,
+    failed: filteredLogs.filter((l) => l.status === 'failed').length,
+    warning: filteredLogs.filter((l) => l.status === 'warning').length,
   };
 
   return (
@@ -273,7 +298,9 @@ export default function AuditLog() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Audit Log</h1>
-              <p className="text-slate-400">Complete activity history and security events</p>
+              <p className="text-slate-400">
+                Complete activity history and security events
+              </p>
             </div>
           </div>
         </div>
@@ -286,15 +313,21 @@ export default function AuditLog() {
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-sm text-slate-400 mb-1">Success</div>
-            <div className="text-2xl font-bold text-green-400">{stats.success}</div>
+            <div className="text-2xl font-bold text-green-400">
+              {stats.success}
+            </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-sm text-slate-400 mb-1">Failed</div>
-            <div className="text-2xl font-bold text-red-400">{stats.failed}</div>
+            <div className="text-2xl font-bold text-red-400">
+              {stats.failed}
+            </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-sm text-slate-400 mb-1">Warnings</div>
-            <div className="text-2xl font-bold text-yellow-400">{stats.warning}</div>
+            <div className="text-2xl font-bold text-yellow-400">
+              {stats.warning}
+            </div>
           </div>
         </div>
 
@@ -308,7 +341,9 @@ export default function AuditLog() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Search */}
             <div className="lg:col-span-2">
-              <label className="block text-sm text-slate-400 mb-2">Search</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Search
+              </label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input
@@ -340,7 +375,9 @@ export default function AuditLog() {
 
             {/* Status Filter */}
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Status</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Status
+              </label>
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
@@ -398,12 +435,24 @@ export default function AuditLog() {
             <table className="w-full">
               <thead className="bg-slate-700/50">
                 <tr>
-                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Timestamp</th>
-                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Type</th>
-                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Action</th>
-                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Location</th>
-                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Device</th>
-                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Status</th>
+                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">
+                    Timestamp
+                  </th>
+                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">
+                    Type
+                  </th>
+                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">
+                    Action
+                  </th>
+                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">
+                    Location
+                  </th>
+                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">
+                    Device
+                  </th>
+                  <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -415,17 +464,25 @@ export default function AuditLog() {
                     }`}
                   >
                     <td className="py-4 px-4">
-                      <div className="text-sm">{log.timestamp.toLocaleString()}</div>
+                      <div className="text-sm">
+                        {log.timestamp.toLocaleString()}
+                      </div>
                     </td>
                     <td className="py-4 px-4">
-                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${getTypeColor(log.type)}`}>
+                      <div
+                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${getTypeColor(
+                          log.type
+                        )}`}
+                      >
                         {getTypeIcon(log.type)}
                         <span className="capitalize">{log.type}</span>
                       </div>
                     </td>
                     <td className="py-4 px-4">
                       <div className="font-medium">{log.action}</div>
-                      <div className="text-sm text-slate-400">{log.description}</div>
+                      <div className="text-sm text-slate-400">
+                        {log.description}
+                      </div>
                     </td>
                     <td className="py-4 px-4">
                       <div className="text-sm">{log.location}</div>
@@ -435,7 +492,11 @@ export default function AuditLog() {
                       <div className="text-sm">{log.device}</div>
                     </td>
                     <td className="py-4 px-4">
-                      <span className={`text-sm font-medium ${getStatusColor(log.status)}`}>
+                      <span
+                        className={`text-sm font-medium ${getStatusColor(
+                          log.status
+                        )}`}
+                      >
                         {getStatusLabel(log.status)}
                       </span>
                     </td>
@@ -458,7 +519,10 @@ export default function AuditLog() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-slate-300">
-              <strong className="text-blue-400">Privacy Notice:</strong> Audit logs are retained for 90 days for security purposes in compliance with GDPR. You can export your logs at any time or request deletion by contacting support.
+              <strong className="text-blue-400">Privacy Notice:</strong> Audit
+              logs are retained for 90 days for security purposes in compliance
+              with GDPR. You can export your logs at any time or request
+              deletion by contacting support.
             </div>
           </div>
         </div>
