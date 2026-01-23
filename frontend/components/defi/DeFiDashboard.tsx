@@ -1,7 +1,19 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Wallet, PieChart, BarChart3, ArrowUpRight, ArrowDownRight, RefreshCw, Settings, Eye, EyeOff } from 'lucide-react';
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  BarChart3,
+  DollarSign,
+  Eye,
+  EyeOff,
+  PieChart,
+  RefreshCw,
+  Settings,
+  TrendingUp,
+  Wallet,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface Position {
   id: string;
@@ -106,7 +118,9 @@ export default function DeFiDashboard() {
   });
 
   const [hideBalances, setHideBalances] = useState(false);
-  const [selectedTimeframe, setSelectedTimeframe] = useState<'24h' | '7d' | '30d' | 'all'>('24h');
+  const [selectedTimeframe, setSelectedTimeframe] = useState<
+    '24h' | '7d' | '30d' | 'all'
+  >('24h');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const protocolAllocations: ProtocolAllocation[] = [
@@ -128,15 +142,15 @@ export default function DeFiDashboard() {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     // Simulate data refresh
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     // Update with slightly different values
-    setStats(prev => ({
+    setStats((prev) => ({
       ...prev,
       totalEarnings24h: prev.totalEarnings24h + Math.random() * 5,
       portfolioChange24h: prev.portfolioChange24h + (Math.random() - 0.5),
     }));
-    
+
     setIsRefreshing(false);
   };
 
@@ -152,17 +166,26 @@ export default function DeFiDashboard() {
 
   const formatNumber = (value: number) => {
     if (hideBalances) return '****';
-    return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   const getPositionTypeIcon = (type: string) => {
     switch (type) {
-      case 'lending': return '🏦';
-      case 'farming': return '🌾';
-      case 'staking': return '💎';
-      case 'vault': return '🔒';
-      case 'liquidity': return '💧';
-      default: return '📊';
+      case 'lending':
+        return '🏦';
+      case 'farming':
+        return '🌾';
+      case 'staking':
+        return '💎';
+      case 'vault':
+        return '🔒';
+      case 'liquidity':
+        return '💧';
+      default:
+        return '📊';
     }
   };
 
@@ -172,8 +195,12 @@ export default function DeFiDashboard() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">DeFi Dashboard</h1>
-            <p className="text-slate-400">Complete overview of your DeFi positions</p>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              DeFi Dashboard
+            </h1>
+            <p className="text-slate-400">
+              Complete overview of your DeFi positions
+            </p>
           </div>
           <div className="flex items-center gap-3 mt-4 md:mt-0">
             <button
@@ -181,7 +208,11 @@ export default function DeFiDashboard() {
               className="p-3 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors"
               title={hideBalances ? 'Show balances' : 'Hide balances'}
             >
-              {hideBalances ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              {hideBalances ? (
+                <EyeOff className="w-5 h-5" />
+              ) : (
+                <Eye className="w-5 h-5" />
+              )}
             </button>
             <button
               onClick={handleRefresh}
@@ -189,7 +220,9 @@ export default function DeFiDashboard() {
               className="p-3 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors disabled:opacity-50"
               title="Refresh data"
             >
-              <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <RefreshCw
+                className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`}
+              />
             </button>
             <button className="p-3 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors">
               <Settings className="w-5 h-5" />
@@ -207,13 +240,21 @@ export default function DeFiDashboard() {
             <div className="text-2xl md:text-3xl font-bold mb-1">
               {formatCurrency(stats.totalValueLocked)}
             </div>
-            <div className={`flex items-center gap-1 text-sm ${stats.portfolioChange24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            <div
+              className={`flex items-center gap-1 text-sm ${
+                stats.portfolioChange24h >= 0
+                  ? 'text-green-400'
+                  : 'text-red-400'
+              }`}
+            >
               {stats.portfolioChange24h >= 0 ? (
                 <ArrowUpRight className="w-4 h-4" />
               ) : (
                 <ArrowDownRight className="w-4 h-4" />
               )}
-              <span>{Math.abs(stats.portfolioChange24h).toFixed(2)}% (24h)</span>
+              <span>
+                {Math.abs(stats.portfolioChange24h).toFixed(2)}% (24h)
+              </span>
             </div>
           </div>
 
@@ -225,9 +266,7 @@ export default function DeFiDashboard() {
             <div className="text-2xl md:text-3xl font-bold text-green-400 mb-1">
               {formatCurrency(stats.totalEarnings24h)}
             </div>
-            <div className="text-sm text-slate-400">
-              Daily rate
-            </div>
+            <div className="text-sm text-slate-400">Daily rate</div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -238,9 +277,7 @@ export default function DeFiDashboard() {
             <div className="text-2xl md:text-3xl font-bold text-green-400 mb-1">
               {formatCurrency(stats.totalEarningsAllTime)}
             </div>
-            <div className="text-sm text-slate-400">
-              Total earned
-            </div>
+            <div className="text-sm text-slate-400">Total earned</div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -265,7 +302,7 @@ export default function DeFiDashboard() {
               <PieChart className="w-5 h-5 text-blue-400" />
               <h2 className="text-xl font-bold">Protocol Allocation</h2>
             </div>
-            
+
             <div className="space-y-4">
               {protocolAllocations.map((protocol) => (
                 <div key={protocol.name}>
@@ -295,13 +332,15 @@ export default function DeFiDashboard() {
               <BarChart3 className="w-5 h-5 text-blue-400" />
               <h2 className="text-xl font-bold">Position Types</h2>
             </div>
-            
+
             <div className="space-y-4">
               {typeAllocations.map((type) => (
                 <div key={type.name}>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium">{type.name}</span>
-                    <span className="text-sm text-slate-400">{type.percentage}%</span>
+                    <span className="text-sm text-slate-400">
+                      {type.percentage}%
+                    </span>
                   </div>
                   <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
                     <div
@@ -343,39 +382,68 @@ export default function DeFiDashboard() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-700">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Protocol</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Type</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Token</th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">Amount</th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">Value</th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">APY</th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">Daily</th>
-                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">P&L</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Protocol
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Type
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Token
+                  </th>
+                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">
+                    Amount
+                  </th>
+                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">
+                    Value
+                  </th>
+                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">
+                    APY
+                  </th>
+                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">
+                    Daily
+                  </th>
+                  <th className="text-right py-3 px-4 text-sm font-medium text-slate-400">
+                    P&L
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {positions.map((position) => (
-                  <tr key={position.id} className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors">
+                  <tr
+                    key={position.id}
+                    className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors"
+                  >
                     <td className="py-4 px-4">
                       <div className="font-medium">{position.protocol}</div>
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-2">
                         <span>{getPositionTypeIcon(position.type)}</span>
-                        <span className="capitalize text-sm">{position.type}</span>
+                        <span className="capitalize text-sm">
+                          {position.type}
+                        </span>
                       </div>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="font-mono text-sm">{position.token}</span>
+                      <span className="font-mono text-sm">
+                        {position.token}
+                      </span>
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <span className="font-mono text-sm">{formatNumber(position.amount)}</span>
+                      <span className="font-mono text-sm">
+                        {formatNumber(position.amount)}
+                      </span>
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <span className="font-medium">{formatCurrency(position.valueUSD)}</span>
+                      <span className="font-medium">
+                        {formatCurrency(position.valueUSD)}
+                      </span>
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <span className="text-blue-400 font-medium">{position.apy}%</span>
+                      <span className="text-blue-400 font-medium">
+                        {position.apy}%
+                      </span>
                     </td>
                     <td className="py-4 px-4 text-right">
                       <span className="text-green-400 font-medium">
@@ -383,10 +451,16 @@ export default function DeFiDashboard() {
                       </span>
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <div className={`font-medium ${position.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {position.pnl >= 0 ? '+' : ''}{formatCurrency(position.pnl)}
+                      <div
+                        className={`font-medium ${
+                          position.pnl >= 0 ? 'text-green-400' : 'text-red-400'
+                        }`}
+                      >
+                        {position.pnl >= 0 ? '+' : ''}
+                        {formatCurrency(position.pnl)}
                         <div className="text-xs">
-                          ({position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%)
+                          ({position.pnlPercent >= 0 ? '+' : ''}
+                          {position.pnlPercent.toFixed(2)}%)
                         </div>
                       </div>
                     </td>
@@ -399,23 +473,33 @@ export default function DeFiDashboard() {
           <div className="mt-6 pt-6 border-t border-slate-700">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <div className="text-sm text-slate-400 mb-1">Total Deposited</div>
-                <div className="text-lg font-bold">{formatCurrency(stats.totalValueLocked)}</div>
+                <div className="text-sm text-slate-400 mb-1">
+                  Total Deposited
+                </div>
+                <div className="text-lg font-bold">
+                  {formatCurrency(stats.totalValueLocked)}
+                </div>
               </div>
               <div>
-                <div className="text-sm text-slate-400 mb-1">Daily Earnings</div>
+                <div className="text-sm text-slate-400 mb-1">
+                  Daily Earnings
+                </div>
                 <div className="text-lg font-bold text-green-400">
                   +{formatCurrency(stats.totalEarnings24h)}
                 </div>
               </div>
               <div>
-                <div className="text-sm text-slate-400 mb-1">Monthly Projection</div>
+                <div className="text-sm text-slate-400 mb-1">
+                  Monthly Projection
+                </div>
                 <div className="text-lg font-bold text-green-400">
                   +{formatCurrency(stats.totalEarnings24h * 30)}
                 </div>
               </div>
               <div>
-                <div className="text-sm text-slate-400 mb-1">Yearly Projection</div>
+                <div className="text-sm text-slate-400 mb-1">
+                  Yearly Projection
+                </div>
                 <div className="text-lg font-bold text-green-400">
                   +{formatCurrency(stats.totalEarnings24h * 365)}
                 </div>
