@@ -1,13 +1,30 @@
+## 👋 Mobile Onboarding & Wallet Connect
+
+The `MobileOnboarding` component provides a step-by-step onboarding experience for mobile users, including wallet connection and feature highlights.
+
+**Features:**
+- Welcome and introduction
+- Guided wallet connection (RainbowKit)
+- Feature highlights and navigation
+
+**Usage:**
+```tsx
+import { MobileOnboarding } from './components/mobile';
+
+<MobileOnboarding />
+```
 ## 📲 Mobile Push Notification Opt-In
 
 The `PushNotificationManager` utility enables mobile users to opt-in to push notifications, manage their subscription, and set notification preferences.
 
 **Features:**
+
 - Request notification permission
 - Subscribe/unsubscribe to push notifications
 - Manage notification preferences (localStorage)
 
 **Usage:**
+
 ```ts
 import { PushNotificationManager } from './lib/mobile';
 
@@ -24,6 +41,7 @@ await PushNotificationManager.unsubscribeUser();
 PushNotificationManager.setPreference('marketAlerts', true);
 const prefs = PushNotificationManager.getPreferences();
 ```
+
 ## 📱 Mobile Trading Interface
 
 The `QuickTrade` component provides a mobile-optimized trading interface with:
