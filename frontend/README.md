@@ -1,18 +1,37 @@
+## 🔒 Mobile Biometric Authentication
+
+The `BiometricAuth` utility enables biometric authentication (FaceID, TouchID, WebAuthn) for quick and secure access on mobile devices.
+
+**Features:**
+- Prompt for biometric authentication
+- Fallback to PIN if unavailable
+- Returns success/failure
+
+**Usage:**
+```ts
+import { BiometricAuth } from './lib/mobile';
+
+const available = await BiometricAuth.isAvailable();
+const success = await BiometricAuth.prompt('Authenticate to access your portfolio');
+```
 ## 👋 Mobile Onboarding & Wallet Connect
 
 The `MobileOnboarding` component provides a step-by-step onboarding experience for mobile users, including wallet connection and feature highlights.
 
 **Features:**
+
 - Welcome and introduction
 - Guided wallet connection (RainbowKit)
 - Feature highlights and navigation
 
 **Usage:**
+
 ```tsx
 import { MobileOnboarding } from './components/mobile';
 
-<MobileOnboarding />
+<MobileOnboarding />;
 ```
+
 ## 📲 Mobile Push Notification Opt-In
 
 The `PushNotificationManager` utility enables mobile users to opt-in to push notifications, manage their subscription, and set notification preferences.
