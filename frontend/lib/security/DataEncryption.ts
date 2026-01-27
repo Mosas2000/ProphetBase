@@ -42,7 +42,7 @@ export class DataEncryptionService {
 
   encrypt(data: string, keyId: string): EncryptedData {
     const key = this.keys.get(keyId);
-    
+
     if (!key || key.status !== 'active') {
       throw new Error('Invalid or inactive encryption key');
     }
@@ -69,7 +69,7 @@ export class DataEncryptionService {
 
   decrypt(encryptedData: EncryptedData, keyId: string): string {
     const key = this.keys.get(keyId);
-    
+
     if (!key) {
       throw new Error('Encryption key not found');
     }
@@ -109,14 +109,20 @@ export class DataEncryptionService {
     return this.encrypt(jsonString, keyId);
   }
 
-  decryptPersonalInfo(encryptedData: EncryptedData, keyId: string): Record<string, any> {
+  decryptPersonalInfo(
+    encryptedData: EncryptedData,
+    keyId: string
+  ): Record<string, any> {
     const decrypted = this.decrypt(encryptedData, keyId);
     return JSON.parse(decrypted);
   }
 
-  rotateKey(oldKeyId: string, userId: string): { oldKey: EncryptionKey; newKey: EncryptionKey } {
+  rotateKey(
+    oldKeyId: string,
+    userId: string
+  ): { oldKey: EncryptionKey; newKey: EncryptionKey } {
     const oldKey = this.keys.get(oldKeyId);
-    
+
     if (!oldKey || oldKey.userId !== userId) {
       throw new Error('Invalid key or unauthorized');
     }
@@ -140,18 +146,18 @@ export class DataEncryptionService {
 
   getUserKeys(userId: string): EncryptionKey[] {
     return Array.from(this.keys.values())
-      .filter(key => key.userId === userId)
+      .filter((key) => key.userId === userId)
       .sort((a, b) => b.createdAt - a.createdAt);
   }
 
   getActiveKey(userId: string): EncryptionKey | null {
     const keys = this.getUserKeys(userId);
-    return keys.find(key => key.status === 'active') || null;
+    return keys.find((key) => key.status === 'active') || null;
   }
 
   archiveKey(keyId: string): boolean {
     const key = this.keys.get(keyId);
-    
+
     if (key && key.status === 'active') {
       key.status = 'archived';
       key.rotatedAt = Date.now();
@@ -163,7 +169,7 @@ export class DataEncryptionService {
 
   deleteKey(keyId: string, userId: string): boolean {
     const key = this.keys.get(keyId);
-    
+
     if (key && key.userId === userId && key.status === 'archived') {
       return this.keys.delete(keyId);
     }
@@ -173,13 +179,17 @@ export class DataEncryptionService {
 
   hashPassword(password: string): string {
     const salt = crypto.randomBytes(16).toString('hex');
-    const hash = crypto.pbkdf2Sync(password, salt, 100000, 64, 'sha512').toString('hex');
+    const hash = crypto
+      .pbkdf2Sync(password, salt, 100000, 64, 'sha512')
+      .toString('hex');
     return `${salt}:${hash}`;
   }
 
   verifyPassword(password: string, storedHash: string): boolean {
     const [salt, hash] = storedHash.split(':');
-    const verifyHash = crypto.pbkdf2Sync(password, salt, 100000, 64, 'sha512').toString('hex');
+    const verifyHash = crypto
+      .pbkdf2Sync(password, salt, 100000, 64, 'sha512')
+      .toString('hex');
     return hash === verifyHash;
   }
 
@@ -197,9 +207,12 @@ export class DataEncryptionService {
     return this.decrypt(encrypted, keyId);
   }
 
-  bulkEncrypt(data: Record<string, string>, keyId: string): Record<string, EncryptedData> {
+  bulkEncrypt(
+    data: Record<string, string>,
+    keyId: string
+  ): Record<string, EncryptedData> {
     const encrypted: Record<string, EncryptedData> = {};
-    
+
     for (const [key, value] of Object.entries(data)) {
       encrypted[key] = this.encrypt(value, keyId);
     }
@@ -207,9 +220,12 @@ export class DataEncryptionService {
     return encrypted;
   }
 
-  bulkDecrypt(encryptedData: Record<string, EncryptedData>, keyId: string): Record<string, string> {
+  bulkDecrypt(
+    encryptedData: Record<string, EncryptedData>,
+    keyId: string
+  ): Record<string, string> {
     const decrypted: Record<string, string> = {};
-    
+
     for (const [key, value] of Object.entries(encryptedData)) {
       decrypted[key] = this.decrypt(value, keyId);
     }
@@ -228,10 +244,12 @@ export class DataEncryptionService {
 
     return {
       totalKeys: userKeys.length,
-      activeKeys: userKeys.filter(k => k.status === 'active').length,
-      archivedKeys: userKeys.filter(k => k.status === 'archived').length,
-      oldestKey: userKeys.length > 0 ? Math.min(...userKeys.map(k => k.createdAt)) : 0,
-      newestKey: userKeys.length > 0 ? Math.max(...userKeys.map(k => k.createdAt)) : 0,
+      activeKeys: userKeys.filter((k) => k.status === 'active').length,
+      archivedKeys: userKeys.filter((k) => k.status === 'archived').length,
+      oldestKey:
+        userKeys.length > 0 ? Math.min(...userKeys.map((k) => k.createdAt)) : 0,
+      newestKey:
+        userKeys.length > 0 ? Math.max(...userKeys.map((k) => k.createdAt)) : 0,
     };
   }
 }

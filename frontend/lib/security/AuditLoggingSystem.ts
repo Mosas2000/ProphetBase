@@ -44,7 +44,13 @@ export class AuditLoggingSystem {
     action: string,
     resource: string,
     metadata: Record<string, any> = {},
-    request?: { method?: string; endpoint?: string; statusCode?: number; ipAddress?: string; userAgent?: string }
+    request?: {
+      method?: string;
+      endpoint?: string;
+      statusCode?: number;
+      ipAddress?: string;
+      userAgent?: string;
+    }
   ): AuditLog {
     const log: AuditLog = {
       id: this.generateLogId(),
@@ -63,7 +69,7 @@ export class AuditLoggingSystem {
     };
 
     log.checksum = this.calculateChecksum(log);
-    
+
     this.logs.push(log);
     this.previousChecksum = log.checksum;
 
@@ -91,9 +97,9 @@ export class AuditLoggingSystem {
   verifyLogIntegrity(log: AuditLog): boolean {
     const tempChecksum = log.checksum;
     const originalPrevChecksum = this.previousChecksum;
-    
+
     const calculatedChecksum = this.calculateChecksum({ ...log, checksum: '' });
-    
+
     return calculatedChecksum === tempChecksum;
   }
 
@@ -104,7 +110,7 @@ export class AuditLoggingSystem {
     for (const log of this.logs) {
       const tempPrevChecksum = this.previousChecksum;
       this.previousChecksum = prevChecksum;
-      
+
       if (!this.verifyLogIntegrity(log)) {
         tamperedLogs.push(log.id);
       }
@@ -123,34 +129,38 @@ export class AuditLoggingSystem {
     let results = [...this.logs];
 
     if (query.userId) {
-      results = results.filter(log => log.userId === query.userId);
+      results = results.filter((log) => log.userId === query.userId);
     }
 
     if (query.action) {
-      results = results.filter(log => log.action.toLowerCase().includes(query.action!.toLowerCase()));
+      results = results.filter((log) =>
+        log.action.toLowerCase().includes(query.action!.toLowerCase())
+      );
     }
 
     if (query.resource) {
-      results = results.filter(log => log.resource.toLowerCase().includes(query.resource!.toLowerCase()));
+      results = results.filter((log) =>
+        log.resource.toLowerCase().includes(query.resource!.toLowerCase())
+      );
     }
 
     if (query.startDate) {
-      results = results.filter(log => log.timestamp >= query.startDate!);
+      results = results.filter((log) => log.timestamp >= query.startDate!);
     }
 
     if (query.endDate) {
-      results = results.filter(log => log.timestamp <= query.endDate!);
+      results = results.filter((log) => log.timestamp <= query.endDate!);
     }
 
     if (query.ipAddress) {
-      results = results.filter(log => log.ipAddress === query.ipAddress);
+      results = results.filter((log) => log.ipAddress === query.ipAddress);
     }
 
     results.sort((a, b) => b.timestamp - a.timestamp);
 
     const offset = query.offset || 0;
     const limit = query.limit || 100;
-    
+
     return results.slice(offset, offset + limit);
   }
 
@@ -200,7 +210,7 @@ export class AuditLoggingSystem {
       'Checksum',
     ];
 
-    const rows = logs.map(log => [
+    const rows = logs.map((log) => [
       log.id,
       log.userId,
       log.action,
@@ -217,24 +227,29 @@ export class AuditLoggingSystem {
 
     return [
       headers.join(','),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(',')),
+      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(',')),
     ].join('\n');
   }
 
-  getActivitySummary(userId: string, timeframe: number = 86400000): {
+  getActivitySummary(
+    userId: string,
+    timeframe: number = 86400000
+  ): {
     totalActions: number;
     uniqueResources: number;
     topActions: Array<{ action: string; count: number }>;
     activityByHour: number[];
   } {
     const cutoff = Date.now() - timeframe;
-    const userLogs = this.logs.filter(log => log.userId === userId && log.timestamp >= cutoff);
+    const userLogs = this.logs.filter(
+      (log) => log.userId === userId && log.timestamp >= cutoff
+    );
 
     const totalActions = userLogs.length;
-    const uniqueResources = new Set(userLogs.map(log => log.resource)).size;
+    const uniqueResources = new Set(userLogs.map((log) => log.resource)).size;
 
     const actionCounts = new Map<string, number>();
-    userLogs.forEach(log => {
+    userLogs.forEach((log) => {
       actionCounts.set(log.action, (actionCounts.get(log.action) || 0) + 1);
     });
 
@@ -244,7 +259,7 @@ export class AuditLoggingSystem {
       .slice(0, 10);
 
     const activityByHour = new Array(24).fill(0);
-    userLogs.forEach(log => {
+    userLogs.forEach((log) => {
       const hour = new Date(log.timestamp).getHours();
       activityByHour[hour]++;
     });
@@ -259,15 +274,15 @@ export class AuditLoggingSystem {
 
   getRecentLogs(userId: string, limit: number = 50): AuditLog[] {
     return this.logs
-      .filter(log => log.userId === userId)
+      .filter((log) => log.userId === userId)
       .sort((a, b) => b.timestamp - a.timestamp)
       .slice(0, limit);
   }
 
   archiveLogs(olderThan: number): { archived: number; remaining: number } {
     const cutoff = Date.now() - olderThan;
-    const toArchive = this.logs.filter(log => log.timestamp < cutoff);
-    this.logs = this.logs.filter(log => log.timestamp >= cutoff);
+    const toArchive = this.logs.filter((log) => log.timestamp < cutoff);
+    this.logs = this.logs.filter((log) => log.timestamp >= cutoff);
 
     return {
       archived: toArchive.length,
@@ -277,10 +292,20 @@ export class AuditLoggingSystem {
 
   getSecurityEvents(userId: string, timeframe: number = 86400000): AuditLog[] {
     const cutoff = Date.now() - timeframe;
-    const securityActions = ['login', 'logout', 'password_change', 'api_key_created', '2fa_enabled', 'permission_change'];
+    const securityActions = [
+      'login',
+      'logout',
+      'password_change',
+      'api_key_created',
+      '2fa_enabled',
+      'permission_change',
+    ];
 
     return this.logs.filter(
-      log => log.userId === userId && log.timestamp >= cutoff && securityActions.includes(log.action)
+      (log) =>
+        log.userId === userId &&
+        log.timestamp >= cutoff &&
+        securityActions.includes(log.action)
     );
   }
 }

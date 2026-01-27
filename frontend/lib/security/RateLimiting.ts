@@ -79,7 +79,7 @@ export class RateLimitingService {
     reputation: number = 0.5
   ): RateLimitResult {
     const rule = this.rules.get(ruleId);
-    
+
     if (!rule) {
       return {
         allowed: true,
@@ -105,15 +105,19 @@ export class RateLimitingService {
     const now = Date.now();
     const windowStart = now - rule.windowMs;
 
-    record.requests = record.requests.filter(timestamp => timestamp > windowStart);
+    record.requests = record.requests.filter(
+      (timestamp) => timestamp > windowStart
+    );
 
     const adjustedLimit = this.calculateAdjustedLimit(rule, reputation);
 
     if (record.requests.length >= adjustedLimit) {
       record.blocked++;
-      
+
       const oldestRequest = record.requests[0];
-      const retryAfter = Math.ceil((oldestRequest + rule.windowMs - now) / 1000);
+      const retryAfter = Math.ceil(
+        (oldestRequest + rule.windowMs - now) / 1000
+      );
 
       return {
         allowed: false,
@@ -133,26 +137,40 @@ export class RateLimitingService {
     };
   }
 
-  private calculateAdjustedLimit(rule: RateLimitRule, reputation: number): number {
-    const reputationBonus = reputation > 0.7 ? Math.floor(rule.maxRequests * 0.2) : 0;
-    const reputationPenalty = reputation < 0.3 ? Math.floor(rule.maxRequests * 0.3) : 0;
+  private calculateAdjustedLimit(
+    rule: RateLimitRule,
+    reputation: number
+  ): number {
+    const reputationBonus =
+      reputation > 0.7 ? Math.floor(rule.maxRequests * 0.2) : 0;
+    const reputationPenalty =
+      reputation < 0.3 ? Math.floor(rule.maxRequests * 0.3) : 0;
 
     const adjustedLimit = Math.floor(
-      rule.maxRequests * rule.reputationModifier + reputationBonus - reputationPenalty
+      rule.maxRequests * rule.reputationModifier +
+        reputationBonus -
+        reputationPenalty
     );
 
     return Math.max(1, adjustedLimit);
   }
 
-  configureTier(identifier: string, tier: 'basic' | 'premium' | 'enterprise'): void {
+  configureTier(
+    identifier: string,
+    tier: 'basic' | 'premium' | 'enterprise'
+  ): void {
     const ruleId = `api:${tier}`;
     const rule = this.rules.get(ruleId);
-    
+
     if (rule) {
     }
   }
 
-  updateReputation(identifier: string, ruleId: string, newReputation: number): void {
+  updateReputation(
+    identifier: string,
+    ruleId: string,
+    newReputation: number
+  ): void {
     const recordKey = `${identifier}:${ruleId}`;
     const record = this.records.get(recordKey);
 
@@ -169,7 +187,10 @@ export class RateLimitingService {
     return this.rules.delete(ruleId);
   }
 
-  getRecordStatistics(identifier: string, ruleId: string): {
+  getRecordStatistics(
+    identifier: string,
+    ruleId: string
+  ): {
     totalRequests: number;
     blockedRequests: number;
     currentReputation: number;
@@ -272,8 +293,8 @@ export class RateLimitingService {
 
   getActiveRecords(): RateLimitRecord[] {
     const now = Date.now();
-    return Array.from(this.records.values()).filter(
-      record => record.requests.some(timestamp => now - timestamp < 900000)
+    return Array.from(this.records.values()).filter((record) =>
+      record.requests.some((timestamp) => now - timestamp < 900000)
     );
   }
 

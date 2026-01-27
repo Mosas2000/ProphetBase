@@ -106,7 +106,11 @@ export class DeviceFingerprintingService {
     return null;
   }
 
-  updateDeviceOnLogin(deviceId: string, success: boolean, location?: string): void {
+  updateDeviceOnLogin(
+    deviceId: string,
+    success: boolean,
+    location?: string
+  ): void {
     const device = this.devices.get(deviceId);
     if (!device) return;
 
@@ -115,11 +119,14 @@ export class DeviceFingerprintingService {
     if (success) {
       device.loginCount++;
       device.failedLoginAttempts = 0;
-      
+
       const currentHour = new Date().getHours();
       device.loginPattern.loginHours.push(currentHour);
-      
-      if (location && !device.loginPattern.typicalLocations.includes(location)) {
+
+      if (
+        location &&
+        !device.loginPattern.typicalLocations.includes(location)
+      ) {
         device.loginPattern.typicalLocations.push(location);
       }
 
@@ -129,8 +136,12 @@ export class DeviceFingerprintingService {
       this.adjustTrustScore(device, 'failed_login');
 
       if (device.failedLoginAttempts >= 3) {
-        this.flagSuspiciousActivity(deviceId, 'multiple_failed_logins', 'high', 
-          `${device.failedLoginAttempts} consecutive failed login attempts`);
+        this.flagSuspiciousActivity(
+          deviceId,
+          'multiple_failed_logins',
+          'high',
+          `${device.failedLoginAttempts} consecutive failed login attempts`
+        );
       }
     }
   }
@@ -158,24 +169,34 @@ export class DeviceFingerprintingService {
 
   private adjustTrustScore(device: DeviceFingerprint, event: string): void {
     const adjustments: Record<string, number> = {
-      'successful_login': 0.01,
-      'failed_login': -0.05,
-      'suspicious_activity': -0.15,
-      'verification_completed': 0.2,
+      successful_login: 0.01,
+      failed_login: -0.05,
+      suspicious_activity: -0.15,
+      verification_completed: 0.2,
     };
 
     const adjustment = adjustments[event] || 0;
-    device.trustScore = Math.max(0, Math.min(1, device.trustScore + adjustment));
+    device.trustScore = Math.max(
+      0,
+      Math.min(1, device.trustScore + adjustment)
+    );
   }
 
-  analyzeDevicePattern(deviceId: string, currentActivity: any): {
+  analyzeDevicePattern(
+    deviceId: string,
+    currentActivity: any
+  ): {
     isAnomalous: boolean;
     anomalies: string[];
     riskLevel: 'low' | 'medium' | 'high';
   } {
     const device = this.devices.get(deviceId);
     if (!device) {
-      return { isAnomalous: true, anomalies: ['Unknown device'], riskLevel: 'high' };
+      return {
+        isAnomalous: true,
+        anomalies: ['Unknown device'],
+        riskLevel: 'high',
+      };
     }
 
     const anomalies: string[] = [];
@@ -186,8 +207,13 @@ export class DeviceFingerprintingService {
       anomalies.push('Unusual login time');
     }
 
-    if (currentActivity.location && device.loginPattern.typicalLocations.length > 0) {
-      if (!device.loginPattern.typicalLocations.includes(currentActivity.location)) {
+    if (
+      currentActivity.location &&
+      device.loginPattern.typicalLocations.length > 0
+    ) {
+      if (
+        !device.loginPattern.typicalLocations.includes(currentActivity.location)
+      ) {
         anomalies.push('New location');
       }
     }
@@ -261,12 +287,12 @@ export class DeviceFingerprintingService {
 
   getUserDevices(userId: string): DeviceFingerprint[] {
     return Array.from(this.devices.values())
-      .filter(d => d.userId === userId)
+      .filter((d) => d.userId === userId)
       .sort((a, b) => b.lastSeen - a.lastSeen);
   }
 
   getSuspiciousActivities(deviceId: string): SuspiciousActivity[] {
-    return this.suspiciousActivities.filter(a => a.deviceId === deviceId);
+    return this.suspiciousActivities.filter((a) => a.deviceId === deviceId);
   }
 
   removeDevice(deviceId: string): boolean {
@@ -283,9 +309,11 @@ export class DeviceFingerprintingService {
 
     return {
       totalDevices: userDevices.length,
-      verifiedDevices: userDevices.filter(d => d.verified).length,
-      averageTrustScore: userDevices.reduce((sum, d) => sum + d.trustScore, 0) / userDevices.length || 0,
-      suspiciousDevices: userDevices.filter(d => d.trustScore < 0.3).length,
+      verifiedDevices: userDevices.filter((d) => d.verified).length,
+      averageTrustScore:
+        userDevices.reduce((sum, d) => sum + d.trustScore, 0) /
+          userDevices.length || 0,
+      suspiciousDevices: userDevices.filter((d) => d.trustScore < 0.3).length,
     };
   }
 }

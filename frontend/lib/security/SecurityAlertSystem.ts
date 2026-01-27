@@ -67,10 +67,14 @@ export class SecurityAlertSystem {
   }
 
   private generateAlertId(): string {
-    return 'alert_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    return (
+      'alert_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+    );
   }
 
-  private determineChannels(severity: 'low' | 'medium' | 'high' | 'critical'): ('email' | 'sms' | 'push' | 'in-app')[] {
+  private determineChannels(
+    severity: 'low' | 'medium' | 'high' | 'critical'
+  ): ('email' | 'sms' | 'push' | 'in-app')[] {
     switch (severity) {
       case 'critical':
         return ['email', 'sms', 'push', 'in-app'];
@@ -84,59 +88,76 @@ export class SecurityAlertSystem {
   }
 
   private deliverAlert(alert: SecurityAlert): void {
-    alert.channels.forEach(channel => {
+    alert.channels.forEach((channel) => {
       this.sendToChannel(channel, alert);
     });
   }
 
-  private sendToChannel(channel: string, alert: SecurityAlert): void {
-  }
+  private sendToChannel(channel: string, alert: SecurityAlert): void {}
 
   detectAnomalies(userId: string, activity: any): SecurityAlert[] {
     const alerts: SecurityAlert[] = [];
 
-    if (activity.type === 'login' && activity.location !== activity.expectedLocation) {
-      alerts.push(this.createAlert(
-        userId,
-        'unusual_location',
-        'medium',
-        'Login from unusual location',
-        `Login detected from ${activity.location}, which differs from your usual locations`,
-        { location: activity.location, expectedLocation: activity.expectedLocation }
-      ));
+    if (
+      activity.type === 'login' &&
+      activity.location !== activity.expectedLocation
+    ) {
+      alerts.push(
+        this.createAlert(
+          userId,
+          'unusual_location',
+          'medium',
+          'Login from unusual location',
+          `Login detected from ${activity.location}, which differs from your usual locations`,
+          {
+            location: activity.location,
+            expectedLocation: activity.expectedLocation,
+          }
+        )
+      );
     }
 
     if (activity.type === 'failed_login' && activity.attempts >= 3) {
-      alerts.push(this.createAlert(
-        userId,
-        'failed_login_attempts',
-        'high',
-        'Multiple failed login attempts',
-        `${activity.attempts} failed login attempts detected`,
-        { attempts: activity.attempts, ipAddress: activity.ipAddress }
-      ));
+      alerts.push(
+        this.createAlert(
+          userId,
+          'failed_login_attempts',
+          'high',
+          'Multiple failed login attempts',
+          `${activity.attempts} failed login attempts detected`,
+          { attempts: activity.attempts, ipAddress: activity.ipAddress }
+        )
+      );
     }
 
     if (activity.type === 'withdrawal' && activity.amount > 10000) {
-      alerts.push(this.createAlert(
-        userId,
-        'large_withdrawal',
-        'high',
-        'Large withdrawal request',
-        `Withdrawal of ${activity.amount} ${activity.currency} requested`,
-        { amount: activity.amount, currency: activity.currency, destination: activity.destination }
-      ));
+      alerts.push(
+        this.createAlert(
+          userId,
+          'large_withdrawal',
+          'high',
+          'Large withdrawal request',
+          `Withdrawal of ${activity.amount} ${activity.currency} requested`,
+          {
+            amount: activity.amount,
+            currency: activity.currency,
+            destination: activity.destination,
+          }
+        )
+      );
     }
 
     if (activity.type === 'device' && activity.trustScore < 0.3) {
-      alerts.push(this.createAlert(
-        userId,
-        'suspicious_device',
-        'medium',
-        'Suspicious device detected',
-        `Login from a device with low trust score (${activity.trustScore})`,
-        { deviceId: activity.deviceId, trustScore: activity.trustScore }
-      ));
+      alerts.push(
+        this.createAlert(
+          userId,
+          'suspicious_device',
+          'medium',
+          'Suspicious device detected',
+          `Login from a device with low trust score (${activity.trustScore})`,
+          { deviceId: activity.deviceId, trustScore: activity.trustScore }
+        )
+      );
     }
 
     return alerts;
@@ -185,30 +206,35 @@ export class SecurityAlertSystem {
     return response;
   }
 
-  getAlerts(userId: string, filters?: {
-    severity?: string;
-    alertType?: string;
-    resolved?: boolean;
-    startDate?: number;
-    endDate?: number;
-  }): SecurityAlert[] {
-    let alerts = Array.from(this.alerts.values()).filter(a => a.userId === userId);
+  getAlerts(
+    userId: string,
+    filters?: {
+      severity?: string;
+      alertType?: string;
+      resolved?: boolean;
+      startDate?: number;
+      endDate?: number;
+    }
+  ): SecurityAlert[] {
+    let alerts = Array.from(this.alerts.values()).filter(
+      (a) => a.userId === userId
+    );
 
     if (filters) {
       if (filters.severity) {
-        alerts = alerts.filter(a => a.severity === filters.severity);
+        alerts = alerts.filter((a) => a.severity === filters.severity);
       }
       if (filters.alertType) {
-        alerts = alerts.filter(a => a.alertType === filters.alertType);
+        alerts = alerts.filter((a) => a.alertType === filters.alertType);
       }
       if (filters.resolved !== undefined) {
-        alerts = alerts.filter(a => a.resolved === filters.resolved);
+        alerts = alerts.filter((a) => a.resolved === filters.resolved);
       }
       if (filters.startDate) {
-        alerts = alerts.filter(a => a.timestamp >= filters.startDate!);
+        alerts = alerts.filter((a) => a.timestamp >= filters.startDate!);
       }
       if (filters.endDate) {
-        alerts = alerts.filter(a => a.timestamp <= filters.endDate!);
+        alerts = alerts.filter((a) => a.timestamp <= filters.endDate!);
       }
     }
 
@@ -223,7 +249,10 @@ export class SecurityAlertSystem {
     return this.getAlerts(userId, { severity: 'critical', resolved: false });
   }
 
-  getAlertStatistics(userId: string, timeframe: number = 2592000000): {
+  getAlertStatistics(
+    userId: string,
+    timeframe: number = 2592000000
+  ): {
     totalAlerts: number;
     bySeverity: Record<string, number>;
     byType: Record<string, number>;
@@ -231,14 +260,14 @@ export class SecurityAlertSystem {
     averageResolutionTime: number;
   } {
     const cutoff = Date.now() - timeframe;
-    const alerts = this.getAlerts(userId).filter(a => a.timestamp >= cutoff);
+    const alerts = this.getAlerts(userId).filter((a) => a.timestamp >= cutoff);
 
     const bySeverity: Record<string, number> = {};
     const byType: Record<string, number> = {};
     let totalResolutionTime = 0;
     let resolvedCount = 0;
 
-    alerts.forEach(alert => {
+    alerts.forEach((alert) => {
       bySeverity[alert.severity] = (bySeverity[alert.severity] || 0) + 1;
       byType[alert.alertType] = (byType[alert.alertType] || 0) + 1;
 
@@ -253,12 +282,13 @@ export class SecurityAlertSystem {
       bySeverity,
       byType,
       resolvedCount,
-      averageResolutionTime: resolvedCount > 0 ? totalResolutionTime / resolvedCount : 0,
+      averageResolutionTime:
+        resolvedCount > 0 ? totalResolutionTime / resolvedCount : 0,
     };
   }
 
   getIncidentResponses(alertId: string): IncidentResponse[] {
-    return this.responses.filter(r => r.alertId === alertId);
+    return this.responses.filter((r) => r.alertId === alertId);
   }
 
   configureAlertThreshold(alertType: string, threshold: number): void {
@@ -272,7 +302,7 @@ export class SecurityAlertSystem {
   bulkResolveAlerts(alertIds: string[], resolvedBy: string): number {
     let resolved = 0;
 
-    alertIds.forEach(id => {
+    alertIds.forEach((id) => {
       if (this.resolveAlert(id, resolvedBy)) {
         resolved++;
       }
@@ -294,16 +324,19 @@ export class SecurityAlertSystem {
     return false;
   }
 
-  getAlertTrends(userId: string, days: number = 30): {
+  getAlertTrends(
+    userId: string,
+    days: number = 30
+  ): {
     dailyAlerts: Array<{ date: string; count: number }>;
     trendDirection: 'increasing' | 'decreasing' | 'stable';
   } {
     const cutoff = Date.now() - days * 86400000;
-    const alerts = this.getAlerts(userId).filter(a => a.timestamp >= cutoff);
+    const alerts = this.getAlerts(userId).filter((a) => a.timestamp >= cutoff);
 
     const dailyCounts = new Map<string, number>();
 
-    alerts.forEach(alert => {
+    alerts.forEach((alert) => {
       const date = new Date(alert.timestamp).toISOString().split('T')[0];
       dailyCounts.set(date, (dailyCounts.get(date) || 0) + 1);
     });
@@ -315,8 +348,12 @@ export class SecurityAlertSystem {
     let trendDirection: 'increasing' | 'decreasing' | 'stable' = 'stable';
 
     if (dailyAlerts.length >= 7) {
-      const firstWeek = dailyAlerts.slice(0, 7).reduce((sum, d) => sum + d.count, 0);
-      const lastWeek = dailyAlerts.slice(-7).reduce((sum, d) => sum + d.count, 0);
+      const firstWeek = dailyAlerts
+        .slice(0, 7)
+        .reduce((sum, d) => sum + d.count, 0);
+      const lastWeek = dailyAlerts
+        .slice(-7)
+        .reduce((sum, d) => sum + d.count, 0);
 
       if (lastWeek > firstWeek * 1.2) {
         trendDirection = 'increasing';

@@ -78,7 +78,10 @@ export class WithdrawalApprovalWorkflow {
     return 'wd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   }
 
-  private calculateRequiredApprovals(amount: number, limit?: WithdrawalLimit): number {
+  private calculateRequiredApprovals(
+    amount: number,
+    limit?: WithdrawalLimit
+  ): number {
     if (!limit) return 1;
 
     if (amount >= limit.multiSigThreshold) {
@@ -103,17 +106,25 @@ export class WithdrawalApprovalWorkflow {
     }
 
     if (request.status !== 'pending') {
-      return { success: false, message: `Request is already ${request.status}` };
+      return {
+        success: false,
+        message: `Request is already ${request.status}`,
+      };
     }
 
-    if (request.approvals.some(a => a.approverId === approverId)) {
-      return { success: false, message: 'You have already approved this request' };
+    if (request.approvals.some((a) => a.approverId === approverId)) {
+      return {
+        success: false,
+        message: 'You have already approved this request',
+      };
     }
 
     if (request.coolingOffUntil && Date.now() < request.coolingOffUntil) {
       return {
         success: false,
-        message: `Cooling-off period active until ${new Date(request.coolingOffUntil).toISOString()}`,
+        message: `Cooling-off period active until ${new Date(
+          request.coolingOffUntil
+        ).toISOString()}`,
       };
     }
 
@@ -146,7 +157,10 @@ export class WithdrawalApprovalWorkflow {
     }
 
     if (request.status !== 'pending') {
-      return { success: false, message: `Request is already ${request.status}` };
+      return {
+        success: false,
+        message: `Request is already ${request.status}`,
+      };
     }
 
     request.status = 'rejected';
@@ -164,11 +178,19 @@ export class WithdrawalApprovalWorkflow {
     }
 
     if (request.status !== 'approved') {
-      return { success: false, message: 'Request must be approved before execution' };
+      return {
+        success: false,
+        message: 'Request must be approved before execution',
+      };
     }
 
-    if (!this.isAddressWhitelisted(request.userId, request.destinationAddress)) {
-      return { success: false, message: 'Destination address is not whitelisted' };
+    if (
+      !this.isAddressWhitelisted(request.userId, request.destinationAddress)
+    ) {
+      return {
+        success: false,
+        message: 'Destination address is not whitelisted',
+      };
     }
 
     request.status = 'executed';
@@ -177,7 +199,10 @@ export class WithdrawalApprovalWorkflow {
     return { success: true, message: 'Withdrawal executed successfully' };
   }
 
-  cancelWithdrawal(requestId: string, userId: string): { success: boolean; message: string } {
+  cancelWithdrawal(
+    requestId: string,
+    userId: string
+  ): { success: boolean; message: string } {
     const request = this.withdrawals.get(requestId);
 
     if (!request) {
@@ -230,7 +255,7 @@ export class WithdrawalApprovalWorkflow {
 
   removeWhitelistedAddress(userId: string, address: string): boolean {
     const userAddresses = this.whitelistedAddresses.get(userId) || [];
-    const filtered = userAddresses.filter(a => a.address !== address);
+    const filtered = userAddresses.filter((a) => a.address !== address);
 
     if (filtered.length < userAddresses.length) {
       this.whitelistedAddresses.set(userId, filtered);
@@ -242,7 +267,7 @@ export class WithdrawalApprovalWorkflow {
 
   isAddressWhitelisted(userId: string, address: string): boolean {
     const userAddresses = this.whitelistedAddresses.get(userId) || [];
-    return userAddresses.some(a => a.address === address && a.verified);
+    return userAddresses.some((a) => a.address === address && a.verified);
   }
 
   getWhitelistedAddresses(userId: string): WhitelistedAddress[] {
@@ -251,7 +276,7 @@ export class WithdrawalApprovalWorkflow {
 
   verifyWhitelistedAddress(userId: string, address: string): boolean {
     const userAddresses = this.whitelistedAddresses.get(userId) || [];
-    const addressEntry = userAddresses.find(a => a.address === address);
+    const addressEntry = userAddresses.find((a) => a.address === address);
 
     if (addressEntry) {
       addressEntry.verified = true;
@@ -263,20 +288,25 @@ export class WithdrawalApprovalWorkflow {
 
   getPendingWithdrawals(userId: string): WithdrawalRequest[] {
     return Array.from(this.withdrawals.values()).filter(
-      w => w.userId === userId && w.status === 'pending'
+      (w) => w.userId === userId && w.status === 'pending'
     );
   }
 
-  getWithdrawalHistory(userId: string, limit: number = 50): WithdrawalRequest[] {
+  getWithdrawalHistory(
+    userId: string,
+    limit: number = 50
+  ): WithdrawalRequest[] {
     return Array.from(this.withdrawals.values())
-      .filter(w => w.userId === userId)
+      .filter((w) => w.userId === userId)
       .sort((a, b) => b.createdAt - a.createdAt)
       .slice(0, limit);
   }
 
   getWithdrawalsAwaitingApproval(approverId: string): WithdrawalRequest[] {
     return Array.from(this.withdrawals.values()).filter(
-      w => w.status === 'pending' && !w.approvals.some(a => a.approverId === approverId)
+      (w) =>
+        w.status === 'pending' &&
+        !w.approvals.some((a) => a.approverId === approverId)
     );
   }
 }

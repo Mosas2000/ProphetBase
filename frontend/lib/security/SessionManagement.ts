@@ -64,10 +64,19 @@ export class SessionManagementSystem {
     if (typeof window !== 'undefined' && window.crypto) {
       window.crypto.getRandomValues(bytes);
     }
-    return 'ses_' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+    return (
+      'ses_' +
+      Array.from(bytes)
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('')
+    );
   }
 
-  validateSession(sessionId: string): { valid: boolean; session?: Session; error?: string } {
+  validateSession(sessionId: string): {
+    valid: boolean;
+    session?: Session;
+    error?: string;
+  } {
     const session = this.sessions.get(sessionId);
 
     if (!session) {
@@ -115,7 +124,11 @@ export class SessionManagementSystem {
     let terminated = 0;
 
     for (const session of this.sessions.values()) {
-      if (session.userId === userId && session.id !== exceptSessionId && session.status === 'active') {
+      if (
+        session.userId === userId &&
+        session.id !== exceptSessionId &&
+        session.status === 'active'
+      ) {
         session.status = 'terminated';
         this.logActivity(session.id, 'session_terminated_by_user');
         terminated++;
@@ -127,7 +140,7 @@ export class SessionManagementSystem {
 
   getActiveSessions(userId: string): Session[] {
     return Array.from(this.sessions.values())
-      .filter(s => s.userId === userId && s.status === 'active')
+      .filter((s) => s.userId === userId && s.status === 'active')
       .sort((a, b) => b.lastActivity - a.lastActivity);
   }
 
@@ -135,14 +148,21 @@ export class SessionManagementSystem {
     return this.sessions.get(sessionId) || null;
   }
 
-  getSessionActivities(sessionId: string, limit: number = 50): SessionActivity[] {
+  getSessionActivities(
+    sessionId: string,
+    limit: number = 50
+  ): SessionActivity[] {
     return this.activities
-      .filter(a => a.sessionId === sessionId)
+      .filter((a) => a.sessionId === sessionId)
       .sort((a, b) => b.timestamp - a.timestamp)
       .slice(0, limit);
   }
 
-  private logActivity(sessionId: string, action: string, details?: string): void {
+  private logActivity(
+    sessionId: string,
+    action: string,
+    details?: string
+  ): void {
     this.activities.push({
       sessionId,
       action,
@@ -155,8 +175,7 @@ export class SessionManagementSystem {
     }
   }
 
-  setConcurrentSessionLimit(userId: string, limit: number): void {
-  }
+  setConcurrentSessionLimit(userId: string, limit: number): void {}
 
   getConcurrentSessionLimit(userId: string): number {
     return this.MAX_CONCURRENT_SESSIONS;
@@ -167,7 +186,11 @@ export class SessionManagementSystem {
 
     if (session && session.status === 'active') {
       session.expiresAt += additionalTime;
-      this.logActivity(sessionId, 'session_extended', `Extended by ${additionalTime}ms`);
+      this.logActivity(
+        sessionId,
+        'session_extended',
+        `Extended by ${additionalTime}ms`
+      );
       return true;
     }
 
@@ -181,23 +204,32 @@ export class SessionManagementSystem {
     terminatedSessions: number;
     averageSessionDuration: number;
   } {
-    const userSessions = Array.from(this.sessions.values()).filter(s => s.userId === userId);
+    const userSessions = Array.from(this.sessions.values()).filter(
+      (s) => s.userId === userId
+    );
 
     const totalSessions = userSessions.length;
-    const activeSessions = userSessions.filter(s => s.status === 'active').length;
-    const expiredSessions = userSessions.filter(s => s.status === 'expired').length;
-    const terminatedSessions = userSessions.filter(s => s.status === 'terminated').length;
+    const activeSessions = userSessions.filter(
+      (s) => s.status === 'active'
+    ).length;
+    const expiredSessions = userSessions.filter(
+      (s) => s.status === 'expired'
+    ).length;
+    const terminatedSessions = userSessions.filter(
+      (s) => s.status === 'terminated'
+    ).length;
 
     const durations = userSessions
-      .filter(s => s.status !== 'active')
-      .map(s => {
+      .filter((s) => s.status !== 'active')
+      .map((s) => {
         const endTime = s.status === 'expired' ? s.expiresAt : s.lastActivity;
         return endTime - s.createdAt;
       });
 
-    const averageSessionDuration = durations.length > 0
-      ? durations.reduce((a, b) => a + b, 0) / durations.length
-      : 0;
+    const averageSessionDuration =
+      durations.length > 0
+        ? durations.reduce((a, b) => a + b, 0) / durations.length
+        : 0;
 
     return {
       totalSessions,
@@ -226,13 +258,15 @@ export class SessionManagementSystem {
     const activeSessions = this.getActiveSessions(userId);
     const suspicious: Session[] = [];
 
-    const locations = new Set(activeSessions.map(s => s.location).filter(Boolean));
+    const locations = new Set(
+      activeSessions.map((s) => s.location).filter(Boolean)
+    );
     if (locations.size > 2) {
       suspicious.push(...activeSessions);
     }
 
     const now = Date.now();
-    activeSessions.forEach(session => {
+    activeSessions.forEach((session) => {
       if (now - session.lastActivity > 3600000 * 6) {
         suspicious.push(session);
       }
@@ -243,7 +277,8 @@ export class SessionManagementSystem {
 
   getSessionByDevice(userId: string, deviceId: string): Session | null {
     const sessions = Array.from(this.sessions.values()).filter(
-      s => s.userId === userId && s.deviceId === deviceId && s.status === 'active'
+      (s) =>
+        s.userId === userId && s.deviceId === deviceId && s.status === 'active'
     );
 
     return sessions.length > 0 ? sessions[0] : null;
