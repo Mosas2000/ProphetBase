@@ -9,13 +9,19 @@ export interface SentimentScore {
 }
 
 export class SentimentAnalysisEngine {
-  private readonly sources = ['news', 'twitter', 'reddit', 'telegram', 'onchain'];
+  private readonly sources = [
+    'news',
+    'twitter',
+    'reddit',
+    'telegram',
+    'onchain',
+  ];
 
   async analyzeSentiment(symbol: string): Promise<SentimentScore> {
     const signals = await this.collectSignals(symbol);
-    
+
     const weighted = this.calculateWeightedSentiment(signals);
-    
+
     return {
       symbol,
       overall: weighted.overall,
@@ -41,13 +47,16 @@ export class SentimentAnalysisEngine {
     signals: Array<{ source: string; sentiment: number; weight: number }>
   ): { overall: number; news: number; social: number; onchain: number } {
     const totalWeight = signals.reduce((sum, s) => sum + s.weight, 0);
-    const overall = signals.reduce((sum, s) => sum + s.sentiment * s.weight, 0) / totalWeight;
+    const overall =
+      signals.reduce((sum, s) => sum + s.sentiment * s.weight, 0) / totalWeight;
 
     return {
       overall,
       news: signals.find((s) => s.source === 'news')?.sentiment || 0,
-      social: signals.filter((s) => ['twitter', 'reddit', 'telegram'].includes(s.source))
-        .reduce((sum, s) => sum + s.sentiment, 0) / 3,
+      social:
+        signals
+          .filter((s) => ['twitter', 'reddit', 'telegram'].includes(s.source))
+          .reduce((sum, s) => sum + s.sentiment, 0) / 3,
       onchain: signals.find((s) => s.source === 'onchain')?.sentiment || 0,
     };
   }

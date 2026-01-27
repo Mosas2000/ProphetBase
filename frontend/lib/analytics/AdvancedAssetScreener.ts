@@ -43,44 +43,58 @@ export class AdvancedAssetScreener {
     let results = Array.from(this.assets.values());
 
     if (criteria.priceMin !== undefined) {
-      results = results.filter(a => a.price >= criteria.priceMin!);
+      results = results.filter((a) => a.price >= criteria.priceMin!);
     }
     if (criteria.priceMax !== undefined) {
-      results = results.filter(a => a.price <= criteria.priceMax!);
+      results = results.filter((a) => a.price <= criteria.priceMax!);
     }
     if (criteria.volumeMin !== undefined) {
-      results = results.filter(a => a.volume >= criteria.volumeMin!);
+      results = results.filter((a) => a.volume >= criteria.volumeMin!);
     }
     if (criteria.marketCapMin !== undefined) {
-      results = results.filter(a => a.marketCap >= criteria.marketCapMin!);
+      results = results.filter((a) => a.marketCap >= criteria.marketCapMin!);
     }
     if (criteria.marketCapMax !== undefined) {
-      results = results.filter(a => a.marketCap <= criteria.marketCapMax!);
+      results = results.filter((a) => a.marketCap <= criteria.marketCapMax!);
     }
     if (criteria.changePercent24hMin !== undefined) {
-      results = results.filter(a => a.changePercent24h >= criteria.changePercent24hMin!);
+      results = results.filter(
+        (a) => a.changePercent24h >= criteria.changePercent24hMin!
+      );
     }
     if (criteria.changePercent24hMax !== undefined) {
-      results = results.filter(a => a.changePercent24h <= criteria.changePercent24hMax!);
+      results = results.filter(
+        (a) => a.changePercent24h <= criteria.changePercent24hMax!
+      );
     }
     if (criteria.volatilityMin !== undefined) {
-      results = results.filter(a => a.volatility >= criteria.volatilityMin!);
+      results = results.filter((a) => a.volatility >= criteria.volatilityMin!);
     }
     if (criteria.volatilityMax !== undefined) {
-      results = results.filter(a => a.volatility <= criteria.volatilityMax!);
+      results = results.filter((a) => a.volatility <= criteria.volatilityMax!);
     }
 
     if (criteria.technicals) {
       if (criteria.technicals.rsi) {
-        results = results.filter(a => {
+        results = results.filter((a) => {
           if (!a.rsi) return false;
-          if (criteria.technicals!.rsi!.min !== undefined && a.rsi < criteria.technicals!.rsi!.min) return false;
-          if (criteria.technicals!.rsi!.max !== undefined && a.rsi > criteria.technicals!.rsi!.max) return false;
+          if (
+            criteria.technicals!.rsi!.min !== undefined &&
+            a.rsi < criteria.technicals!.rsi!.min
+          )
+            return false;
+          if (
+            criteria.technicals!.rsi!.max !== undefined &&
+            a.rsi > criteria.technicals!.rsi!.max
+          )
+            return false;
           return true;
         });
       }
       if (criteria.technicals.macdSignal) {
-        results = results.filter(a => a.macdSignal === criteria.technicals!.macdSignal);
+        results = results.filter(
+          (a) => a.macdSignal === criteria.technicals!.macdSignal
+        );
       }
     }
 
@@ -109,7 +123,10 @@ export class AdvancedAssetScreener {
     }
   }
 
-  rankAssets(assets: Asset[], strategy: 'momentum' | 'value' | 'quality'): Asset[] {
+  rankAssets(
+    assets: Asset[],
+    strategy: 'momentum' | 'value' | 'quality'
+  ): Asset[] {
     return [...assets].sort((a, b) => {
       switch (strategy) {
         case 'momentum':
@@ -124,7 +141,9 @@ export class AdvancedAssetScreener {
     });
   }
 
-  createPresetScreener(preset: 'breakout' | 'oversold' | 'high-volume' | 'momentum'): ScreenerCriteria {
+  createPresetScreener(
+    preset: 'breakout' | 'oversold' | 'high-volume' | 'momentum'
+  ): ScreenerCriteria {
     const presets: Record<string, ScreenerCriteria> = {
       breakout: {
         changePercent24hMin: 10,
@@ -152,8 +171,16 @@ export class AdvancedAssetScreener {
     if (format === 'json') {
       return JSON.stringify(assets, null, 2);
     } else {
-      const headers = ['Symbol', 'Name', 'Price', 'Volume', 'Market Cap', '24h Change %', 'Volatility'];
-      const rows = assets.map(a => [
+      const headers = [
+        'Symbol',
+        'Name',
+        'Price',
+        'Volume',
+        'Market Cap',
+        '24h Change %',
+        'Volatility',
+      ];
+      const rows = assets.map((a) => [
         a.symbol,
         a.name,
         a.price.toString(),
@@ -163,11 +190,14 @@ export class AdvancedAssetScreener {
         a.volatility.toFixed(4),
       ]);
 
-      return [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      return [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
     }
   }
 
-  compareAssets(symbol1: string, symbol2: string): {
+  compareAssets(
+    symbol1: string,
+    symbol2: string
+  ): {
     asset1: Asset | undefined;
     asset2: Asset | undefined;
     comparison: {

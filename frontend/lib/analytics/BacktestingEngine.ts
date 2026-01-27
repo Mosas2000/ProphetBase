@@ -67,9 +67,12 @@ export class BacktestingEngine {
       const data = historicalData[i];
 
       if (!position && this.config.strategy.entry(data)) {
-        const size = Math.floor(capital * 0.95 / data.close);
-        const cost = size * data.close * (1 + this.config.commission + this.config.slippage);
-        
+        const size = Math.floor((capital * 0.95) / data.close);
+        const cost =
+          size *
+          data.close *
+          (1 + this.config.commission + this.config.slippage);
+
         if (cost <= capital) {
           position = {
             symbol: 'BTC',
@@ -82,11 +85,15 @@ export class BacktestingEngine {
       }
 
       if (position && this.config.strategy.exit(position, data)) {
-        const proceeds = position.size * data.close * (1 - this.config.commission - this.config.slippage);
+        const proceeds =
+          position.size *
+          data.close *
+          (1 - this.config.commission - this.config.slippage);
         capital += proceeds;
 
-        const profit = proceeds - (position.size * position.entryPrice);
-        const returnPct = (data.close - position.entryPrice) / position.entryPrice;
+        const profit = proceeds - position.size * position.entryPrice;
+        const returnPct =
+          (data.close - position.entryPrice) / position.entryPrice;
 
         trades.push({
           entryTime: position.entryTime,
@@ -101,30 +108,48 @@ export class BacktestingEngine {
         position = null;
       }
 
-      const portfolioValue = capital + (position ? position.size * data.close : 0);
+      const portfolioValue =
+        capital + (position ? position.size * data.close : 0);
       equityCurve.push(portfolioValue);
     }
 
     return this.calculateMetrics(trades, equityCurve);
   }
 
-  private calculateMetrics(trades: Trade[], equityCurve: number[]): BacktestResult {
-    const totalReturn = (equityCurve[equityCurve.length - 1] - this.config.initialCapital) / this.config.initialCapital;
-    const winningTrades = trades.filter(t => t.profit > 0);
-    const losingTrades = trades.filter(t => t.profit <= 0);
-    
-    const winRate = trades.length > 0 ? winningTrades.length / trades.length : 0;
-    const avgWin = winningTrades.length > 0 
-      ? winningTrades.reduce((sum, t) => sum + t.profit, 0) / winningTrades.length 
-      : 0;
-    const avgLoss = losingTrades.length > 0 
-      ? Math.abs(losingTrades.reduce((sum, t) => sum + t.profit, 0) / losingTrades.length)
-      : 0;
+  private calculateMetrics(
+    trades: Trade[],
+    equityCurve: number[]
+  ): BacktestResult {
+    const totalReturn =
+      (equityCurve[equityCurve.length - 1] - this.config.initialCapital) /
+      this.config.initialCapital;
+    const winningTrades = trades.filter((t) => t.profit > 0);
+    const losingTrades = trades.filter((t) => t.profit <= 0);
+
+    const winRate =
+      trades.length > 0 ? winningTrades.length / trades.length : 0;
+    const avgWin =
+      winningTrades.length > 0
+        ? winningTrades.reduce((sum, t) => sum + t.profit, 0) /
+          winningTrades.length
+        : 0;
+    const avgLoss =
+      losingTrades.length > 0
+        ? Math.abs(
+            losingTrades.reduce((sum, t) => sum + t.profit, 0) /
+              losingTrades.length
+          )
+        : 0;
     const profitFactor = avgLoss > 0 ? avgWin / avgLoss : 0;
 
-    const returns = equityCurve.slice(1).map((val, i) => (val - equityCurve[i]) / equityCurve[i]);
+    const returns = equityCurve
+      .slice(1)
+      .map((val, i) => (val - equityCurve[i]) / equityCurve[i]);
     const avgReturn = returns.reduce((a, b) => a + b, 0) / returns.length;
-    const stdDev = Math.sqrt(returns.reduce((sum, r) => sum + Math.pow(r - avgReturn, 2), 0) / returns.length);
+    const stdDev = Math.sqrt(
+      returns.reduce((sum, r) => sum + Math.pow(r - avgReturn, 2), 0) /
+        returns.length
+    );
     const sharpeRatio = stdDev > 0 ? (avgReturn / stdDev) * Math.sqrt(252) : 0;
 
     let maxDrawdown = 0;
@@ -153,10 +178,17 @@ export class BacktestingEngine {
     parameterRanges: Record<string, number[]>
   ): any {
     const results = [];
-    
-    for (let i = 0; i + inSamplePeriod + outSamplePeriod < historicalData.length; i += outSamplePeriod) {
+
+    for (
+      let i = 0;
+      i + inSamplePeriod + outSamplePeriod < historicalData.length;
+      i += outSamplePeriod
+    ) {
       const inSampleData = historicalData.slice(i, i + inSamplePeriod);
-      const outSampleData = historicalData.slice(i + inSamplePeriod, i + inSamplePeriod + outSamplePeriod);
+      const outSampleData = historicalData.slice(
+        i + inSamplePeriod,
+        i + inSamplePeriod + outSamplePeriod
+      );
 
       const bestParams = this.optimizeParameters(inSampleData, parameterRanges);
       const outSampleResult = this.runBacktest(outSampleData);
@@ -167,7 +199,10 @@ export class BacktestingEngine {
     return results;
   }
 
-  private optimizeParameters(data: MarketData[], ranges: Record<string, number[]>): Record<string, number> {
+  private optimizeParameters(
+    data: MarketData[],
+    ranges: Record<string, number[]>
+  ): Record<string, number> {
     return {};
   }
 
@@ -177,17 +212,18 @@ export class BacktestingEngine {
     for (let i = 0; i < iterations; i++) {
       const shuffled = [...trades].sort(() => Math.random() - 0.5);
       let capital = this.config.initialCapital;
-      
+
       for (const trade of shuffled) {
         capital += trade.profit;
       }
 
-      const finalReturn = (capital - this.config.initialCapital) / this.config.initialCapital;
+      const finalReturn =
+        (capital - this.config.initialCapital) / this.config.initialCapital;
       simulations.push(finalReturn);
     }
 
     simulations.sort((a, b) => a - b);
-    
+
     return {
       mean: simulations.reduce((a, b) => a + b, 0) / simulations.length,
       median: simulations[Math.floor(simulations.length / 2)],

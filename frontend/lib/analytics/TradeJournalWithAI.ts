@@ -28,10 +28,10 @@ export class TradeJournalWithAI {
   addTrade(trade: Omit<TradeEntry, 'id' | 'aiInsights'>): string {
     const id = `trade_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const entry: TradeEntry = { ...trade, id };
-    
+
     this.trades.set(id, entry);
     this.generateAIInsights(id);
-    
+
     return id;
   }
 
@@ -58,17 +58,26 @@ export class TradeJournalWithAI {
       strengths.push('Used risk management with stop loss');
     }
 
-    if (trade.notes.toLowerCase().includes('fomo') || trade.emotions.includes('fear')) {
+    if (
+      trade.notes.toLowerCase().includes('fomo') ||
+      trade.emotions.includes('fear')
+    ) {
       weaknesses.push('Emotional trading detected');
       recommendations.push('Develop a systematic entry/exit strategy');
     }
 
     if (trade.marketConditions.volatility > 0.03) {
-      recommendations.push('Consider reducing position size in high volatility');
+      recommendations.push(
+        'Consider reducing position size in high volatility'
+      );
     }
 
     const sentiment = this.extractSentiment(trade.notes);
-    const summary = `Trade executed during ${trade.marketConditions.regime} market with ${sentiment} sentiment. ${trade.profit && trade.profit > 0 ? 'Positive' : 'Negative'} outcome.`;
+    const summary = `Trade executed during ${
+      trade.marketConditions.regime
+    } market with ${sentiment} sentiment. ${
+      trade.profit && trade.profit > 0 ? 'Positive' : 'Negative'
+    } outcome.`;
 
     return { summary, strengths, weaknesses, recommendations };
   }
@@ -78,8 +87,12 @@ export class TradeJournalWithAI {
     const negativeWords = ['bad', 'poor', 'weak', 'uncertain', 'worried'];
 
     const lowerText = text.toLowerCase();
-    const positiveCount = positiveWords.filter(word => lowerText.includes(word)).length;
-    const negativeCount = negativeWords.filter(word => lowerText.includes(word)).length;
+    const positiveCount = positiveWords.filter((word) =>
+      lowerText.includes(word)
+    ).length;
+    const negativeCount = negativeWords.filter((word) =>
+      lowerText.includes(word)
+    ).length;
 
     if (positiveCount > negativeCount) return 'positive';
     if (negativeCount > positiveCount) return 'negative';
@@ -96,12 +109,16 @@ export class TradeJournalWithAI {
     else if (trade.profit && trade.profit < 0) autoTags.push('loser');
 
     if (trade.marketConditions.regime === 'bull') autoTags.push('bull-market');
-    else if (trade.marketConditions.regime === 'bear') autoTags.push('bear-market');
+    else if (trade.marketConditions.regime === 'bear')
+      autoTags.push('bear-market');
 
-    if (trade.marketConditions.volatility > 0.03) autoTags.push('high-volatility');
+    if (trade.marketConditions.volatility > 0.03)
+      autoTags.push('high-volatility');
 
-    if (trade.notes.toLowerCase().includes('breakout')) autoTags.push('breakout-trade');
-    if (trade.notes.toLowerCase().includes('reversal')) autoTags.push('reversal-trade');
+    if (trade.notes.toLowerCase().includes('breakout'))
+      autoTags.push('breakout-trade');
+    if (trade.notes.toLowerCase().includes('reversal'))
+      autoTags.push('reversal-trade');
 
     trade.tags = [...new Set([...trade.tags, ...autoTags])];
   }
@@ -117,19 +134,21 @@ export class TradeJournalWithAI {
 
     if (filters) {
       if (filters.symbol) {
-        trades = trades.filter(t => t.symbol === filters.symbol);
+        trades = trades.filter((t) => t.symbol === filters.symbol);
       }
       if (filters.action) {
-        trades = trades.filter(t => t.action === filters.action);
+        trades = trades.filter((t) => t.action === filters.action);
       }
       if (filters.tags && filters.tags.length > 0) {
-        trades = trades.filter(t => filters.tags!.some(tag => t.tags.includes(tag)));
+        trades = trades.filter((t) =>
+          filters.tags!.some((tag) => t.tags.includes(tag))
+        );
       }
       if (filters.dateFrom) {
-        trades = trades.filter(t => t.timestamp >= filters.dateFrom!);
+        trades = trades.filter((t) => t.timestamp >= filters.dateFrom!);
       }
       if (filters.dateTo) {
-        trades = trades.filter(t => t.timestamp <= filters.dateTo!);
+        trades = trades.filter((t) => t.timestamp <= filters.dateTo!);
       }
     }
 
@@ -143,12 +162,14 @@ export class TradeJournalWithAI {
     commonTags: string[];
     emotionalImpact: string;
   } {
-    const trades = Array.from(this.trades.values()).filter(t => t.profit !== undefined);
-    const winners = trades.filter(t => t.profit! > 0);
+    const trades = Array.from(this.trades.values()).filter(
+      (t) => t.profit !== undefined
+    );
+    const winners = trades.filter((t) => t.profit! > 0);
 
     const tagCounts = new Map<string, number>();
-    trades.forEach(trade => {
-      trade.tags.forEach(tag => {
+    trades.forEach((trade) => {
+      trade.tags.forEach((tag) => {
         tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
       });
     });
@@ -158,15 +179,19 @@ export class TradeJournalWithAI {
       .slice(0, 5)
       .map(([tag]) => tag);
 
-    const emotionalTrades = trades.filter(t => t.emotions.length > 0);
-    const emotionalImpact = emotionalTrades.length > trades.length * 0.3
-      ? 'High emotional influence detected'
-      : 'Disciplined trading behavior';
+    const emotionalTrades = trades.filter((t) => t.emotions.length > 0);
+    const emotionalImpact =
+      emotionalTrades.length > trades.length * 0.3
+        ? 'High emotional influence detected'
+        : 'Disciplined trading behavior';
 
     return {
       totalTrades: trades.length,
       winRate: trades.length > 0 ? winners.length / trades.length : 0,
-      avgProfit: trades.length > 0 ? trades.reduce((sum, t) => sum + (t.profit || 0), 0) / trades.length : 0,
+      avgProfit:
+        trades.length > 0
+          ? trades.reduce((sum, t) => sum + (t.profit || 0), 0) / trades.length
+          : 0,
       commonTags,
       emotionalImpact,
     };

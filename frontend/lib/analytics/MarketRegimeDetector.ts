@@ -58,39 +58,74 @@ export class MarketRegimeDetector {
 
   private calculateTrend(prices: number[]): number {
     if (prices.length < 2) return 0;
-    
+
     const recentPrices = prices.slice(-this.WINDOW_SIZE);
-    const returns = recentPrices.slice(1).map((p, i) => (p - recentPrices[i]) / recentPrices[i]);
-    
+    const returns = recentPrices
+      .slice(1)
+      .map((p, i) => (p - recentPrices[i]) / recentPrices[i]);
+
     return returns.reduce((a, b) => a + b, 0) / returns.length;
   }
 
   private calculateVolatility(prices: number[]): number {
     const recentPrices = prices.slice(-this.WINDOW_SIZE);
-    const returns = recentPrices.slice(1).map((p, i) => (p - recentPrices[i]) / recentPrices[i]);
+    const returns = recentPrices
+      .slice(1)
+      .map((p, i) => (p - recentPrices[i]) / recentPrices[i]);
     const mean = returns.reduce((a, b) => a + b, 0) / returns.length;
-    
+
     return Math.sqrt(
-      returns.reduce((sum, r) => sum + Math.pow(r - mean, 2), 0) / returns.length
+      returns.reduce((sum, r) => sum + Math.pow(r - mean, 2), 0) /
+        returns.length
     );
   }
 
   private calculateMomentum(prices: number[]): number {
     if (prices.length < 20) return 0;
-    
+
     const currentPrice = prices[prices.length - 1];
     const pastPrice = prices[prices.length - 20];
-    
+
     return (currentPrice - pastPrice) / pastPrice;
   }
 
   predictRegimeTransition(currentRegime: MarketRegime): RegimeTransition[] {
     const transitionMatrix = {
-      bull: { bull: 0.7, ranging: 0.2, volatile: 0.05, bear: 0.03, quiet: 0.02 },
-      bear: { bear: 0.7, ranging: 0.15, volatile: 0.08, bull: 0.05, quiet: 0.02 },
-      ranging: { ranging: 0.5, bull: 0.2, bear: 0.15, quiet: 0.1, volatile: 0.05 },
-      volatile: { volatile: 0.4, ranging: 0.3, bull: 0.15, bear: 0.1, quiet: 0.05 },
-      quiet: { quiet: 0.5, ranging: 0.25, bull: 0.1, bear: 0.1, volatile: 0.05 },
+      bull: {
+        bull: 0.7,
+        ranging: 0.2,
+        volatile: 0.05,
+        bear: 0.03,
+        quiet: 0.02,
+      },
+      bear: {
+        bear: 0.7,
+        ranging: 0.15,
+        volatile: 0.08,
+        bull: 0.05,
+        quiet: 0.02,
+      },
+      ranging: {
+        ranging: 0.5,
+        bull: 0.2,
+        bear: 0.15,
+        quiet: 0.1,
+        volatile: 0.05,
+      },
+      volatile: {
+        volatile: 0.4,
+        ranging: 0.3,
+        bull: 0.15,
+        bear: 0.1,
+        quiet: 0.05,
+      },
+      quiet: {
+        quiet: 0.5,
+        ranging: 0.25,
+        bull: 0.1,
+        bear: 0.1,
+        volatile: 0.05,
+      },
     };
 
     const probabilities = transitionMatrix[currentRegime.regime];
@@ -137,10 +172,15 @@ export class MarketRegimeDetector {
     const averageDuration: Record<string, number> = {};
     for (const key in durations) {
       const durationList = durations[key];
-      averageDuration[key] = durationList.reduce((a, b) => a + b, 0) / durationList.length;
+      averageDuration[key] =
+        durationList.reduce((a, b) => a + b, 0) / durationList.length;
     }
 
-    return { regimeDistribution: distribution, averageDuration, transitionFrequency: transitions };
+    return {
+      regimeDistribution: distribution,
+      averageDuration,
+      transitionFrequency: transitions,
+    };
   }
 
   classifyMarketByRegime(regime: MarketRegime): {
@@ -152,7 +192,11 @@ export class MarketRegimeDetector {
       bull: {
         recommendedStrategy: 'Trend Following',
         riskLevel: 'medium',
-        suitableInstruments: ['Long positions', 'Call options', 'Leveraged ETFs'],
+        suitableInstruments: [
+          'Long positions',
+          'Call options',
+          'Leveraged ETFs',
+        ],
       },
       bear: {
         recommendedStrategy: 'Short Selling',
@@ -162,7 +206,11 @@ export class MarketRegimeDetector {
       ranging: {
         recommendedStrategy: 'Mean Reversion',
         riskLevel: 'low',
-        suitableInstruments: ['Range trading', 'Iron condors', 'Market neutral'],
+        suitableInstruments: [
+          'Range trading',
+          'Iron condors',
+          'Market neutral',
+        ],
       },
       volatile: {
         recommendedStrategy: 'Volatility Trading',
@@ -172,7 +220,11 @@ export class MarketRegimeDetector {
       quiet: {
         recommendedStrategy: 'Covered Calls',
         riskLevel: 'low',
-        suitableInstruments: ['Income strategies', 'Theta decay', 'Credit spreads'],
+        suitableInstruments: [
+          'Income strategies',
+          'Theta decay',
+          'Credit spreads',
+        ],
       },
     };
 

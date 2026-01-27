@@ -20,7 +20,9 @@ export class MLPricePredictor {
     }>
   ): Promise<void> {
     const sequences = this.prepareSequences(historicalData);
-    console.log(`Training LSTM model for ${symbol} with ${sequences.length} sequences`);
+    console.log(
+      `Training LSTM model for ${symbol} with ${sequences.length} sequences`
+    );
   }
 
   predict(
@@ -34,13 +36,13 @@ export class MLPricePredictor {
   ): PricePrediction {
     const features = this.extractFeatures(recentData);
     const currentPrice = recentData[recentData.length - 1].price;
-    
+
     const trendStrength = features.momentum || 0;
     const volatilityFactor = features.volatility || 0.02;
-    
+
     const predictedChange = trendStrength * (1 - volatilityFactor);
     const predictedPrice = currentPrice * (1 + predictedChange);
-    
+
     const confidence = Math.max(0.5, Math.min(0.95, 1 - volatilityFactor * 2));
 
     return {
@@ -75,7 +77,11 @@ export class MLPricePredictor {
   }
 
   private extractFeatures(
-    data: Array<{ price: number; volume: number; features: Record<string, number> }>
+    data: Array<{
+      price: number;
+      volume: number;
+      features: Record<string, number>;
+    }>
   ): Record<string, number> {
     const prices = data.map((d) => d.price);
     const returns = prices.slice(1).map((p, i) => (p - prices[i]) / prices[i]);
@@ -101,7 +107,7 @@ export class MLPricePredictor {
     return {
       price_history: 0.35,
       volume: 0.25,
-      momentum: 0.20,
+      momentum: 0.2,
       volatility: 0.15,
       market_sentiment: 0.05,
     };

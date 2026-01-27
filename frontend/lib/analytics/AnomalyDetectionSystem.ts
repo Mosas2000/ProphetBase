@@ -1,5 +1,9 @@
 export interface Anomaly {
-  type: 'price_spike' | 'volume_surge' | 'unusual_pattern' | 'correlation_break';
+  type:
+    | 'price_spike'
+    | 'volume_surge'
+    | 'unusual_pattern'
+    | 'correlation_break';
   severity: 'low' | 'medium' | 'high';
   timestamp: number;
   description: string;
@@ -26,22 +30,25 @@ export class AnomalyDetectionSystem {
 
   private detectPriceSpikes(prices: number[], window: number): Anomaly[] {
     const anomalies: Anomaly[] = [];
-    
+
     for (let i = window; i < prices.length; i++) {
       const historicalPrices = prices.slice(i - window, i);
       const mean = historicalPrices.reduce((a, b) => a + b, 0) / window;
       const stdDev = Math.sqrt(
-        historicalPrices.reduce((sum, p) => sum + Math.pow(p - mean, 2), 0) / window
+        historicalPrices.reduce((sum, p) => sum + Math.pow(p - mean, 2), 0) /
+          window
       );
 
       const zScore = Math.abs((prices[i] - mean) / stdDev);
-      
+
       if (zScore > this.Z_SCORE_THRESHOLD) {
         anomalies.push({
           type: 'price_spike',
           severity: zScore > 5 ? 'high' : 'medium',
           timestamp: i,
-          description: `Price deviation ${zScore.toFixed(2)} standard deviations from mean`,
+          description: `Price deviation ${zScore.toFixed(
+            2
+          )} standard deviations from mean`,
           metrics: { zScore, price: prices[i], mean, stdDev },
         });
       }
@@ -52,9 +59,10 @@ export class AnomalyDetectionSystem {
 
   private detectVolumeSurges(volumes: number[], window: number): Anomaly[] {
     const anomalies: Anomaly[] = [];
-    
+
     for (let i = window; i < volumes.length; i++) {
-      const avgVolume = volumes.slice(i - window, i).reduce((a, b) => a + b, 0) / window;
+      const avgVolume =
+        volumes.slice(i - window, i).reduce((a, b) => a + b, 0) / window;
       const ratio = volumes[i] / avgVolume;
 
       if (ratio > 3) {

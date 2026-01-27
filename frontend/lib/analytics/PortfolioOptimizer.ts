@@ -23,11 +23,18 @@ export class PortfolioOptimizer {
     config: PortfolioOptimization
   ): OptimizedPortfolio {
     const weights = this.calculateEqualWeights(assets);
-    
+
     const expectedReturn = this.calculateExpectedReturn(weights, returns);
-    const expectedVolatility = this.calculateExpectedVolatility(weights, returns);
-    const sharpeRatio = expectedVolatility > 0 ? expectedReturn / expectedVolatility : 0;
-    const diversificationRatio = this.calculateDiversificationRatio(weights, returns);
+    const expectedVolatility = this.calculateExpectedVolatility(
+      weights,
+      returns
+    );
+    const sharpeRatio =
+      expectedVolatility > 0 ? expectedReturn / expectedVolatility : 0;
+    const diversificationRatio = this.calculateDiversificationRatio(
+      weights,
+      returns
+    );
 
     return {
       weights,
@@ -41,7 +48,7 @@ export class PortfolioOptimizer {
   private calculateEqualWeights(assets: string[]): Map<string, number> {
     const weight = 1 / assets.length;
     const weights = new Map<string, number>();
-    assets.forEach(asset => weights.set(asset, weight));
+    assets.forEach((asset) => weights.set(asset, weight));
     return weights;
   }
 
@@ -54,7 +61,8 @@ export class PortfolioOptimizer {
     for (const [asset, weight] of weights.entries()) {
       const assetReturns = returns.get(asset);
       if (assetReturns && assetReturns.length > 0) {
-        const avgReturn = assetReturns.reduce((a, b) => a + b, 0) / assetReturns.length;
+        const avgReturn =
+          assetReturns.reduce((a, b) => a + b, 0) / assetReturns.length;
         expectedReturn += weight * avgReturn;
       }
     }
@@ -68,7 +76,7 @@ export class PortfolioOptimizer {
   ): number {
     const assets = Array.from(weights.keys());
     const covarianceMatrix = this.calculateCovarianceMatrix(assets, returns);
-    
+
     let variance = 0;
 
     for (let i = 0; i < assets.length; i++) {
@@ -87,7 +95,9 @@ export class PortfolioOptimizer {
     returns: Map<string, number[]>
   ): number[][] {
     const n = assets.length;
-    const matrix: number[][] = Array(n).fill(0).map(() => Array(n).fill(0));
+    const matrix: number[][] = Array(n)
+      .fill(0)
+      .map(() => Array(n).fill(0));
 
     for (let i = 0; i < n; i++) {
       for (let j = 0; j < n; j++) {
@@ -126,15 +136,21 @@ export class PortfolioOptimizer {
       weightedVolatilitySum += weight * volatility;
     }
 
-    const portfolioVolatility = this.calculateExpectedVolatility(weights, returns);
-    
-    return portfolioVolatility > 0 ? weightedVolatilitySum / portfolioVolatility : 1;
+    const portfolioVolatility = this.calculateExpectedVolatility(
+      weights,
+      returns
+    );
+
+    return portfolioVolatility > 0
+      ? weightedVolatilitySum / portfolioVolatility
+      : 1;
   }
 
   private calculateStandardDeviation(data: number[]): number {
     if (data.length < 2) return 0;
     const mean = data.reduce((a, b) => a + b, 0) / data.length;
-    const variance = data.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / data.length;
+    const variance =
+      data.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / data.length;
     return Math.sqrt(variance);
   }
 
@@ -147,7 +163,9 @@ export class PortfolioOptimizer {
 
     for (let i = 0; i < points; i++) {
       const targetReturn = (i / (points - 1)) * 0.2;
-      const portfolio = this.optimizePortfolio(assets, returns, { targetReturn });
+      const portfolio = this.optimizePortfolio(assets, returns, {
+        targetReturn,
+      });
       frontier.push(portfolio);
     }
 

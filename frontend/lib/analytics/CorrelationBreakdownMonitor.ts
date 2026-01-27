@@ -54,7 +54,9 @@ export class CorrelationBreakdownMonitor {
       }
     }
 
-    return breakdowns.sort((a, b) => b.breakdownMagnitude - a.breakdownMagnitude);
+    return breakdowns.sort(
+      (a, b) => b.breakdownMagnitude - a.breakdownMagnitude
+    );
   }
 
   private calculateCorrelation(data1: number[], data2: number[]): number {
@@ -90,14 +92,24 @@ export class CorrelationBreakdownMonitor {
     action: string;
     priority: number;
   } {
-    const direction = breakdown.currentCorrelation > breakdown.historicalCorrelation 
-      ? 'increased' 
-      : 'decreased';
+    const direction =
+      breakdown.currentCorrelation > breakdown.historicalCorrelation
+        ? 'increased'
+        : 'decreased';
 
     return {
-      message: `Correlation between ${breakdown.asset1} and ${breakdown.asset2} has ${direction} from ${breakdown.historicalCorrelation.toFixed(2)} to ${breakdown.currentCorrelation.toFixed(2)}`,
+      message: `Correlation between ${breakdown.asset1} and ${
+        breakdown.asset2
+      } has ${direction} from ${breakdown.historicalCorrelation.toFixed(
+        2
+      )} to ${breakdown.currentCorrelation.toFixed(2)}`,
       action: 'Review portfolio diversification and hedging strategies',
-      priority: breakdown.severity === 'high' ? 3 : breakdown.severity === 'medium' ? 2 : 1,
+      priority:
+        breakdown.severity === 'high'
+          ? 3
+          : breakdown.severity === 'medium'
+          ? 2
+          : 1,
     };
   }
 
