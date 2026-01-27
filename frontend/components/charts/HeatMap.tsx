@@ -1,6 +1,6 @@
 'use client';
 
-import { Flame, Clock, TrendingUp, Filter } from 'lucide-react';
+import { Clock, Filter, Flame, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 interface HeatMapCell {

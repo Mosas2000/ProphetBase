@@ -1,7 +1,7 @@
 'use client';
 
+import { Eye, Moon, Settings, Type, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Settings, Moon, Zap, Eye, Type } from 'lucide-react';
 
 // Accessibility preferences
 export interface AccessibilityPreferences {
@@ -70,27 +70,35 @@ export class AccessibilitySettingsManager {
     if (typeof window === 'undefined') return;
 
     // Detect prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
     if (prefersReducedMotion) {
       this.preferences.reducedMotion = true;
       this.preferences.animations = false;
     }
 
     // Detect prefers-contrast
-    const prefersHighContrast = window.matchMedia('(prefers-contrast: more)').matches;
+    const prefersHighContrast = window.matchMedia(
+      '(prefers-contrast: more)'
+    ).matches;
     if (prefersHighContrast) {
       this.preferences.highContrast = true;
     }
 
     // Listen for changes
-    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
-      this.setPreference('reducedMotion', e.matches);
-      this.setPreference('animations', !e.matches);
-    });
+    window
+      .matchMedia('(prefers-reduced-motion: reduce)')
+      .addEventListener('change', (e) => {
+        this.setPreference('reducedMotion', e.matches);
+        this.setPreference('animations', !e.matches);
+      });
 
-    window.matchMedia('(prefers-contrast: more)').addEventListener('change', (e) => {
-      this.setPreference('highContrast', e.matches);
-    });
+    window
+      .matchMedia('(prefers-contrast: more)')
+      .addEventListener('change', (e) => {
+        this.setPreference('highContrast', e.matches);
+      });
   }
 
   // Apply preferences to DOM
@@ -199,7 +207,8 @@ export class AccessibilitySettingsManager {
 
 // Accessibility settings hook
 export function useAccessibilitySettings() {
-  const [preferences, setPreferences] = useState<AccessibilityPreferences>(DEFAULT_PREFERENCES);
+  const [preferences, setPreferences] =
+    useState<AccessibilityPreferences>(DEFAULT_PREFERENCES);
   const [manager] = useState(() => new AccessibilitySettingsManager());
 
   useEffect(() => {
@@ -222,7 +231,8 @@ export function useAccessibilitySettings() {
 
 // Accessibility settings dashboard
 export function AccessibilitySettingsDashboard() {
-  const { preferences, setPreference, resetToDefaults } = useAccessibilitySettings();
+  const { preferences, setPreference, resetToDefaults } =
+    useAccessibilitySettings();
 
   const toggles = [
     {
@@ -270,7 +280,11 @@ export function AccessibilitySettingsDashboard() {
   ];
 
   return (
-    <div className="p-6 bg-slate-800 rounded-xl" role="region" aria-label="Accessibility Settings">
+    <div
+      className="p-6 bg-slate-800 rounded-xl"
+      role="region"
+      aria-label="Accessibility Settings"
+    >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Settings className="w-6 h-6 text-indigo-400" />
@@ -298,19 +312,27 @@ export function AccessibilitySettingsDashboard() {
                   <Icon className="w-5 h-5 text-blue-400" />
                   <div>
                     <div className="font-medium">{toggle.label}</div>
-                    <div className="text-sm text-slate-400">{toggle.description}</div>
+                    <div className="text-sm text-slate-400">
+                      {toggle.description}
+                    </div>
                   </div>
                 </div>
                 <button
-                  onClick={() => setPreference(toggle.key, !preferences[toggle.key])}
+                  onClick={() =>
+                    setPreference(toggle.key, !preferences[toggle.key])
+                  }
                   className={`w-12 h-6 rounded-full transition-colors ${
                     preferences[toggle.key] ? 'bg-green-600' : 'bg-slate-600'
                   }`}
-                  aria-label={`${toggle.label} ${preferences[toggle.key] ? 'enabled' : 'disabled'}`}
+                  aria-label={`${toggle.label} ${
+                    preferences[toggle.key] ? 'enabled' : 'disabled'
+                  }`}
                 >
                   <div
                     className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                      preferences[toggle.key] ? 'translate-x-6' : 'translate-x-0.5'
+                      preferences[toggle.key]
+                        ? 'translate-x-6'
+                        : 'translate-x-0.5'
                     }`}
                   />
                 </button>
@@ -332,19 +354,27 @@ export function AccessibilitySettingsDashboard() {
                   <Icon className="w-5 h-5 text-purple-400" />
                   <div>
                     <div className="font-medium">{toggle.label}</div>
-                    <div className="text-sm text-slate-400">{toggle.description}</div>
+                    <div className="text-sm text-slate-400">
+                      {toggle.description}
+                    </div>
                   </div>
                 </div>
                 <button
-                  onClick={() => setPreference(toggle.key, !preferences[toggle.key])}
+                  onClick={() =>
+                    setPreference(toggle.key, !preferences[toggle.key])
+                  }
                   className={`w-12 h-6 rounded-full transition-colors ${
                     preferences[toggle.key] ? 'bg-green-600' : 'bg-slate-600'
                   }`}
-                  aria-label={`${toggle.label} ${preferences[toggle.key] ? 'enabled' : 'disabled'}`}
+                  aria-label={`${toggle.label} ${
+                    preferences[toggle.key] ? 'enabled' : 'disabled'
+                  }`}
                 >
                   <div
                     className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                      preferences[toggle.key] ? 'translate-x-6' : 'translate-x-0.5'
+                      preferences[toggle.key]
+                        ? 'translate-x-6'
+                        : 'translate-x-0.5'
                     }`}
                   />
                 </button>
@@ -396,8 +426,8 @@ export function AccessibilitySettingsDashboard() {
       <div className="mt-6 p-4 bg-blue-900/20 border border-blue-600/30 rounded-lg">
         <h3 className="font-bold mb-2 text-blue-400">System Detected</h3>
         <div className="text-sm text-slate-300">
-          Some settings are automatically detected from your operating system preferences and will
-          be applied when available.
+          Some settings are automatically detected from your operating system
+          preferences and will be applied when available.
         </div>
       </div>
     </div>

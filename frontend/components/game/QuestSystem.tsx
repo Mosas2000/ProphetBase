@@ -1,6 +1,15 @@
 'use client';
 
-import { Swords, Trophy, Target, Clock, CheckCircle, Lock, Star, Zap } from 'lucide-react';
+import {
+  CheckCircle,
+  Clock,
+  Lock,
+  Star,
+  Swords,
+  Target,
+  Trophy,
+  Zap,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface Quest {
@@ -21,7 +30,9 @@ interface Quest {
 }
 
 export default function QuestSystem() {
-  const [activeTab, setActiveTab] = useState<'daily' | 'weekly' | 'chains'>('daily');
+  const [activeTab, setActiveTab] = useState<'daily' | 'weekly' | 'chains'>(
+    'daily'
+  );
   const [selectedQuest, setSelectedQuest] = useState<Quest | null>(null);
 
   const [quests] = useState<Quest[]>([
@@ -37,7 +48,7 @@ export default function QuestSystem() {
       xpReward: 50,
       tokenReward: 10,
       status: 'completed',
-      timeRemaining: 18000
+      timeRemaining: 18000,
     },
     {
       id: 'd2',
@@ -50,7 +61,7 @@ export default function QuestSystem() {
       xpReward: 150,
       tokenReward: 50,
       status: 'active',
-      timeRemaining: 18000
+      timeRemaining: 18000,
     },
     {
       id: 'd3',
@@ -63,7 +74,7 @@ export default function QuestSystem() {
       xpReward: 120,
       tokenReward: 30,
       status: 'active',
-      timeRemaining: 18000
+      timeRemaining: 18000,
     },
     {
       id: 'd4',
@@ -76,7 +87,7 @@ export default function QuestSystem() {
       xpReward: 250,
       tokenReward: 100,
       status: 'active',
-      timeRemaining: 18000
+      timeRemaining: 18000,
     },
     // Weekly Quests
     {
@@ -90,7 +101,7 @@ export default function QuestSystem() {
       xpReward: 500,
       tokenReward: 200,
       status: 'active',
-      timeRemaining: 432000
+      timeRemaining: 432000,
     },
     {
       id: 'w2',
@@ -103,7 +114,7 @@ export default function QuestSystem() {
       xpReward: 750,
       tokenReward: 350,
       status: 'active',
-      timeRemaining: 432000
+      timeRemaining: 432000,
     },
     {
       id: 'w3',
@@ -116,7 +127,7 @@ export default function QuestSystem() {
       xpReward: 1500,
       tokenReward: 1000,
       status: 'active',
-      timeRemaining: 432000
+      timeRemaining: 432000,
     },
     // Quest Chains
     {
@@ -131,7 +142,7 @@ export default function QuestSystem() {
       tokenReward: 25,
       status: 'completed',
       chainPosition: 1,
-      chainTotal: 5
+      chainTotal: 5,
     },
     {
       id: 'c2',
@@ -146,7 +157,7 @@ export default function QuestSystem() {
       status: 'active',
       chainPosition: 2,
       chainTotal: 5,
-      requirements: ['Complete Novice Trader I']
+      requirements: ['Complete Novice Trader I'],
     },
     {
       id: 'c3',
@@ -161,27 +172,37 @@ export default function QuestSystem() {
       status: 'locked',
       chainPosition: 3,
       chainTotal: 5,
-      requirements: ['Complete Novice Trader II']
-    }
+      requirements: ['Complete Novice Trader II'],
+    },
   ]);
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return 'text-green-400';
-      case 'medium': return 'text-blue-400';
-      case 'hard': return 'text-purple-400';
-      case 'legendary': return 'text-amber-400';
-      default: return 'text-slate-400';
+      case 'easy':
+        return 'text-green-400';
+      case 'medium':
+        return 'text-blue-400';
+      case 'hard':
+        return 'text-purple-400';
+      case 'legendary':
+        return 'text-amber-400';
+      default:
+        return 'text-slate-400';
     }
   };
 
   const getDifficultyBg = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return 'bg-green-500/20';
-      case 'medium': return 'bg-blue-500/20';
-      case 'hard': return 'bg-purple-500/20';
-      case 'legendary': return 'bg-amber-500/20';
-      default: return 'bg-slate-500/20';
+      case 'easy':
+        return 'bg-green-500/20';
+      case 'medium':
+        return 'bg-blue-500/20';
+      case 'hard':
+        return 'bg-purple-500/20';
+      case 'legendary':
+        return 'bg-amber-500/20';
+      default:
+        return 'bg-slate-500/20';
     }
   };
 
@@ -191,14 +212,16 @@ export default function QuestSystem() {
     return `${hours}h ${minutes}m`;
   };
 
-  const filteredQuests = quests.filter(q => {
+  const filteredQuests = quests.filter((q) => {
     if (activeTab === 'daily') return q.type === 'daily';
     if (activeTab === 'weekly') return q.type === 'weekly';
     return q.type === 'chain';
   });
 
-  const totalXP = quests.filter(q => q.status === 'completed').reduce((sum, q) => sum + q.xpReward, 0);
-  const completedQuests = quests.filter(q => q.status === 'completed').length;
+  const totalXP = quests
+    .filter((q) => q.status === 'completed')
+    .reduce((sum, q) => sum + q.xpReward, 0);
+  const completedQuests = quests.filter((q) => q.status === 'completed').length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4 md:p-8">
@@ -211,7 +234,9 @@ export default function QuestSystem() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Quest System</h1>
-              <p className="text-slate-400">Complete quests to earn XP and rewards</p>
+              <p className="text-slate-400">
+                Complete quests to earn XP and rewards
+              </p>
             </div>
           </div>
 
@@ -222,14 +247,18 @@ export default function QuestSystem() {
                 <Trophy className="w-5 h-5 text-amber-400" />
                 <span className="text-slate-400 text-sm">Total XP</span>
               </div>
-              <div className="text-2xl font-bold text-amber-400">{totalXP.toLocaleString()}</div>
+              <div className="text-2xl font-bold text-amber-400">
+                {totalXP.toLocaleString()}
+              </div>
             </div>
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle className="w-5 h-5 text-green-400" />
                 <span className="text-slate-400 text-sm">Completed</span>
               </div>
-              <div className="text-2xl font-bold text-green-400">{completedQuests}</div>
+              <div className="text-2xl font-bold text-green-400">
+                {completedQuests}
+              </div>
             </div>
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
@@ -237,7 +266,7 @@ export default function QuestSystem() {
                 <span className="text-slate-400 text-sm">Active</span>
               </div>
               <div className="text-2xl font-bold text-purple-400">
-                {quests.filter(q => q.status === 'active').length}
+                {quests.filter((q) => q.status === 'active').length}
               </div>
             </div>
           </div>
@@ -282,7 +311,7 @@ export default function QuestSystem() {
 
         {/* Quest List */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredQuests.map(quest => (
+          {filteredQuests.map((quest) => (
             <div
               key={quest.id}
               className={`bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border transition-all cursor-pointer ${
@@ -298,21 +327,33 @@ export default function QuestSystem() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    {quest.status === 'locked' && <Lock className="w-5 h-5 text-slate-400" />}
-                    {quest.status === 'completed' && <CheckCircle className="w-5 h-5 text-green-400" />}
+                    {quest.status === 'locked' && (
+                      <Lock className="w-5 h-5 text-slate-400" />
+                    )}
+                    {quest.status === 'completed' && (
+                      <CheckCircle className="w-5 h-5 text-green-400" />
+                    )}
                     <h3 className="text-xl font-bold">{quest.title}</h3>
                   </div>
-                  <p className="text-slate-400 text-sm mb-3">{quest.description}</p>
-                  
+                  <p className="text-slate-400 text-sm mb-3">
+                    {quest.description}
+                  </p>
+
                   {quest.chainPosition && (
                     <div className="flex items-center gap-2 text-sm text-purple-400 mb-2">
                       <Zap className="w-4 h-4" />
-                      <span>Chain Quest {quest.chainPosition}/{quest.chainTotal}</span>
+                      <span>
+                        Chain Quest {quest.chainPosition}/{quest.chainTotal}
+                      </span>
                     </div>
                   )}
                 </div>
-                
-                <div className={`px-3 py-1 rounded-full text-xs font-bold ${getDifficultyBg(quest.difficulty)} ${getDifficultyColor(quest.difficulty)}`}>
+
+                <div
+                  className={`px-3 py-1 rounded-full text-xs font-bold ${getDifficultyBg(
+                    quest.difficulty
+                  )} ${getDifficultyColor(quest.difficulty)}`}
+                >
                   {quest.difficulty.toUpperCase()}
                 </div>
               </div>
@@ -329,7 +370,9 @@ export default function QuestSystem() {
                   <div className="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-purple-600 to-pink-600 transition-all duration-500"
-                      style={{ width: `${(quest.progress / quest.target) * 100}%` }}
+                      style={{
+                        width: `${(quest.progress / quest.target) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -338,9 +381,14 @@ export default function QuestSystem() {
               {/* Requirements */}
               {quest.requirements && quest.status === 'locked' && (
                 <div className="mb-4 p-3 bg-slate-700/50 rounded-lg">
-                  <div className="text-xs text-slate-400 mb-2">Requirements:</div>
+                  <div className="text-xs text-slate-400 mb-2">
+                    Requirements:
+                  </div>
                   {quest.requirements.map((req, idx) => (
-                    <div key={idx} className="text-sm text-slate-300 flex items-center gap-2">
+                    <div
+                      key={idx}
+                      className="text-sm text-slate-300 flex items-center gap-2"
+                    >
                       <Lock className="w-3 h-3" />
                       {req}
                     </div>
@@ -353,11 +401,15 @@ export default function QuestSystem() {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <Star className="w-5 h-5 text-amber-400" />
-                    <span className="font-bold text-amber-400">+{quest.xpReward} XP</span>
+                    <span className="font-bold text-amber-400">
+                      +{quest.xpReward} XP
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-purple-400" />
-                    <span className="font-bold text-purple-400">+{quest.tokenReward}</span>
+                    <span className="font-bold text-purple-400">
+                      +{quest.tokenReward}
+                    </span>
                   </div>
                 </div>
 
@@ -390,23 +442,33 @@ export default function QuestSystem() {
             >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-bold">{selectedQuest.title}</h2>
-                <div className={`px-3 py-1 rounded-full text-xs font-bold ${getDifficultyBg(selectedQuest.difficulty)} ${getDifficultyColor(selectedQuest.difficulty)}`}>
+                <div
+                  className={`px-3 py-1 rounded-full text-xs font-bold ${getDifficultyBg(
+                    selectedQuest.difficulty
+                  )} ${getDifficultyColor(selectedQuest.difficulty)}`}
+                >
                   {selectedQuest.difficulty.toUpperCase()}
                 </div>
               </div>
-              
+
               <p className="text-slate-300 mb-6">{selectedQuest.description}</p>
-              
+
               {selectedQuest.status !== 'locked' && (
                 <div className="mb-6">
-                  <div className="text-sm text-slate-400 mb-2">Current Progress</div>
+                  <div className="text-sm text-slate-400 mb-2">
+                    Current Progress
+                  </div>
                   <div className="text-3xl font-bold mb-2">
                     {selectedQuest.progress} / {selectedQuest.target}
                   </div>
                   <div className="w-full bg-slate-700 rounded-full h-4">
                     <div
                       className="h-full bg-gradient-to-r from-purple-600 to-pink-600 rounded-full"
-                      style={{ width: `${(selectedQuest.progress / selectedQuest.target) * 100}%` }}
+                      style={{
+                        width: `${
+                          (selectedQuest.progress / selectedQuest.target) * 100
+                        }%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -418,14 +480,18 @@ export default function QuestSystem() {
                     <Star className="w-5 h-5 text-amber-400" />
                     <span className="text-sm text-slate-400">XP Reward</span>
                   </div>
-                  <div className="text-2xl font-bold text-amber-400">+{selectedQuest.xpReward}</div>
+                  <div className="text-2xl font-bold text-amber-400">
+                    +{selectedQuest.xpReward}
+                  </div>
                 </div>
                 <div className="bg-slate-700/50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Trophy className="w-5 h-5 text-purple-400" />
                     <span className="text-sm text-slate-400">Tokens</span>
                   </div>
-                  <div className="text-2xl font-bold text-purple-400">+{selectedQuest.tokenReward}</div>
+                  <div className="text-2xl font-bold text-purple-400">
+                    +{selectedQuest.tokenReward}
+                  </div>
                 </div>
               </div>
 

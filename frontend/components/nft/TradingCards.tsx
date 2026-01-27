@@ -1,6 +1,6 @@
 'use client';
 
-import { Download, Eye, Filter, Heart, Search, ShoppingCart, Star, TrendingUp } from 'lucide-react';
+import { Download, Eye, Filter, Search, ShoppingCart, Star, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 interface TradingCard {

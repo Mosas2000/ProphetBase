@@ -1,6 +1,6 @@
 'use client';
 
-import { Grid3x3, TrendingUp, Filter } from 'lucide-react';
+import { Filter, Grid3x3, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 interface CorrelationData {
@@ -24,7 +24,7 @@ export default function CorrelationMatrix() {
         if (i === j) return 1;
         if (i > j) {
           // Use symmetric values
-          return correlationMatrix?.[j]?.[i] ?? (Math.random() * 2 - 1);
+          return correlationMatrix?.[j]?.[i] ?? Math.random() * 2 - 1;
         }
         return Math.random() * 2 - 1;
       })
@@ -69,7 +69,7 @@ export default function CorrelationMatrix() {
             market2: m2,
             correlation: corr,
             pValue: getPValue(corr),
-            significance: getSignificance(corr)
+            significance: getSignificance(corr),
           });
         }
       }
@@ -77,12 +77,12 @@ export default function CorrelationMatrix() {
   });
 
   const strongPositive = correlations
-    .filter(c => c.correlation > 0.7)
+    .filter((c) => c.correlation > 0.7)
     .sort((a, b) => b.correlation - a.correlation)
     .slice(0, 5);
 
   const strongNegative = correlations
-    .filter(c => c.correlation < -0.7)
+    .filter((c) => c.correlation < -0.7)
     .sort((a, b) => a.correlation - b.correlation)
     .slice(0, 5);
 
@@ -96,8 +96,12 @@ export default function CorrelationMatrix() {
               <Grid3x3 className="w-8 h-8 text-purple-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Correlation Matrix</h1>
-              <p className="text-slate-400">Market correlations with statistical significance analysis</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                Correlation Matrix
+              </h1>
+              <p className="text-slate-400">
+                Market correlations with statistical significance analysis
+              </p>
             </div>
           </div>
 
@@ -107,7 +111,9 @@ export default function CorrelationMatrix() {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Filter className="w-4 h-4 text-slate-400" />
-                  <span className="text-sm text-slate-400">Min Correlation:</span>
+                  <span className="text-sm text-slate-400">
+                    Min Correlation:
+                  </span>
                   <input
                     type="range"
                     min="0"
@@ -117,7 +123,9 @@ export default function CorrelationMatrix() {
                     onChange={(e) => setMinCorrelation(Number(e.target.value))}
                     className="w-32"
                   />
-                  <span className="text-sm font-medium">{minCorrelation.toFixed(1)}</span>
+                  <span className="text-sm font-medium">
+                    {minCorrelation.toFixed(1)}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -140,11 +148,17 @@ export default function CorrelationMatrix() {
               {/* Legend */}
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded" style={{ backgroundColor: 'rgba(16, 185, 129, 0.8)' }} />
+                  <div
+                    className="w-4 h-4 rounded"
+                    style={{ backgroundColor: 'rgba(16, 185, 129, 0.8)' }}
+                  />
                   <span>Positive</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded" style={{ backgroundColor: 'rgba(239, 68, 68, 0.8)' }} />
+                  <div
+                    className="w-4 h-4 rounded"
+                    style={{ backgroundColor: 'rgba(239, 68, 68, 0.8)' }}
+                  />
                   <span>Negative</span>
                 </div>
               </div>
@@ -156,12 +170,14 @@ export default function CorrelationMatrix() {
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-6">
           <div className="mb-4">
             <h2 className="text-xl font-bold">Market Correlation Matrix</h2>
-            <p className="text-sm text-slate-400">Pearson correlation coefficients (range: -1 to +1)</p>
+            <p className="text-sm text-slate-400">
+              Pearson correlation coefficients (range: -1 to +1)
+            </p>
           </div>
 
           <div className="relative overflow-x-auto">
-            <svg 
-              width={padding + markets.length * cellSize + 50} 
+            <svg
+              width={padding + markets.length * cellSize + 50}
               height={padding + markets.length * cellSize + 50}
               className="min-w-[700px]"
             >
@@ -206,7 +222,7 @@ export default function CorrelationMatrix() {
                     market2: m2,
                     correlation,
                     pValue: getPValue(correlation),
-                    significance: getSignificance(correlation)
+                    significance: getSignificance(correlation),
                   };
 
                   if (Math.abs(correlation) < minCorrelation && i !== j) {
@@ -226,7 +242,9 @@ export default function CorrelationMatrix() {
                         width={cellSize - 2}
                         height={cellSize - 2}
                         fill={getColor(correlation)}
-                        stroke={hoveredCell === cellData ? '#a855f7' : '#1e293b'}
+                        stroke={
+                          hoveredCell === cellData ? '#a855f7' : '#1e293b'
+                        }
                         strokeWidth={hoveredCell === cellData ? 3 : 1}
                         rx="4"
                       />
@@ -265,27 +283,42 @@ export default function CorrelationMatrix() {
               <div className="grid grid-cols-4 gap-4">
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Markets</div>
-                  <div className="font-bold">{hoveredCell.market1} vs {hoveredCell.market2}</div>
+                  <div className="font-bold">
+                    {hoveredCell.market1} vs {hoveredCell.market2}
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Correlation</div>
-                  <div className={`font-bold text-lg ${
-                    hoveredCell.correlation > 0 ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {hoveredCell.correlation > 0 ? '+' : ''}{hoveredCell.correlation.toFixed(3)}
+                  <div
+                    className={`font-bold text-lg ${
+                      hoveredCell.correlation > 0
+                        ? 'text-green-400'
+                        : 'text-red-400'
+                    }`}
+                  >
+                    {hoveredCell.correlation > 0 ? '+' : ''}
+                    {hoveredCell.correlation.toFixed(3)}
                   </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">P-Value</div>
-                  <div className="font-bold">{hoveredCell.pValue.toFixed(4)}</div>
+                  <div className="font-bold">
+                    {hoveredCell.pValue.toFixed(4)}
+                  </div>
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400 mb-1">Significance</div>
-                  <div className={`font-bold capitalize ${
-                    hoveredCell.significance === 'high' ? 'text-amber-400' :
-                    hoveredCell.significance === 'medium' ? 'text-blue-400' :
-                    'text-slate-400'
-                  }`}>
+                  <div className="text-xs text-slate-400 mb-1">
+                    Significance
+                  </div>
+                  <div
+                    className={`font-bold capitalize ${
+                      hoveredCell.significance === 'high'
+                        ? 'text-amber-400'
+                        : hoveredCell.significance === 'medium'
+                        ? 'text-blue-400'
+                        : 'text-slate-400'
+                    }`}
+                  >
                     {hoveredCell.significance}
                   </div>
                 </div>
@@ -303,7 +336,10 @@ export default function CorrelationMatrix() {
             </div>
             <div className="space-y-3">
               {strongPositive.map((corr, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 bg-slate-700/50 rounded">
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-3 bg-slate-700/50 rounded"
+                >
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{corr.market1}</span>
                     <span className="text-slate-400">↔</span>
@@ -311,8 +347,12 @@ export default function CorrelationMatrix() {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <div className="font-bold text-green-400">+{corr.correlation.toFixed(3)}</div>
-                      <div className="text-xs text-slate-400">p = {corr.pValue.toFixed(4)}</div>
+                      <div className="font-bold text-green-400">
+                        +{corr.correlation.toFixed(3)}
+                      </div>
+                      <div className="text-xs text-slate-400">
+                        p = {corr.pValue.toFixed(4)}
+                      </div>
                     </div>
                     {corr.significance === 'high' && (
                       <span className="text-amber-400 text-lg">*</span>
@@ -331,7 +371,10 @@ export default function CorrelationMatrix() {
             <div className="space-y-3">
               {strongNegative.length > 0 ? (
                 strongNegative.map((corr, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 bg-slate-700/50 rounded">
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-3 bg-slate-700/50 rounded"
+                  >
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{corr.market1}</span>
                       <span className="text-slate-400">↔</span>
@@ -339,8 +382,12 @@ export default function CorrelationMatrix() {
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="text-right">
-                        <div className="font-bold text-red-400">{corr.correlation.toFixed(3)}</div>
-                        <div className="text-xs text-slate-400">p = {corr.pValue.toFixed(4)}</div>
+                        <div className="font-bold text-red-400">
+                          {corr.correlation.toFixed(3)}
+                        </div>
+                        <div className="text-xs text-slate-400">
+                          p = {corr.pValue.toFixed(4)}
+                        </div>
                       </div>
                       {corr.significance === 'high' && (
                         <span className="text-amber-400 text-lg">*</span>
@@ -362,8 +409,11 @@ export default function CorrelationMatrix() {
           <div className="flex items-start gap-3">
             <span className="text-amber-400 text-xl">*</span>
             <div className="text-sm text-slate-300">
-              <strong>Statistical Significance:</strong> Correlations marked with * have high statistical significance (|r| &gt; 0.7).
-              P-values indicate the probability that the correlation is due to chance. Lower p-values (&lt; 0.05) suggest stronger evidence of correlation.
+              <strong>Statistical Significance:</strong> Correlations marked
+              with * have high statistical significance (|r| &gt; 0.7). P-values
+              indicate the probability that the correlation is due to chance.
+              Lower p-values (&lt; 0.05) suggest stronger evidence of
+              correlation.
             </div>
           </div>
         </div>

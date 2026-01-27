@@ -1,7 +1,7 @@
 'use client';
 
+import { FileCode, Gauge, Package, TrendingDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Package, TrendingDown, FileCode, Gauge } from 'lucide-react';
 
 // Bundle analysis data structures
 export interface BundleChunk {
@@ -23,7 +23,11 @@ export interface BundleAnalysis {
 export class TreeShakingAnalyzer {
   private unusedExports: Map<string, string[]> = new Map();
 
-  analyzeModule(modulePath: string, exports: string[], usedExports: string[]): void {
+  analyzeModule(
+    modulePath: string,
+    exports: string[],
+    usedExports: string[]
+  ): void {
     const unused = exports.filter((exp) => !usedExports.includes(exp));
     if (unused.length > 0) {
       this.unusedExports.set(modulePath, unused);
@@ -114,7 +118,10 @@ export class DeadCodeDetector {
 
 // Minification analyzer
 export class MinificationAnalyzer {
-  calculateSavings(originalSize: number, minifiedSize: number): {
+  calculateSavings(
+    originalSize: number,
+    minifiedSize: number
+  ): {
     savedBytes: number;
     savedPercentage: number;
   } {
@@ -127,7 +134,9 @@ export class MinificationAnalyzer {
     };
   }
 
-  analyzeMinification(files: Array<{ path: string; original: number; minified: number }>) {
+  analyzeMinification(
+    files: Array<{ path: string; original: number; minified: number }>
+  ) {
     let totalOriginal = 0;
     let totalMinified = 0;
 
@@ -150,7 +159,9 @@ export class MinificationAnalyzer {
 
 // Compression analyzer
 export class CompressionAnalyzer {
-  analyzeCompression(files: Array<{ path: string; size: number; gzipSize: number }>) {
+  analyzeCompression(
+    files: Array<{ path: string; size: number; gzipSize: number }>
+  ) {
     return files.map((file) => ({
       ...file,
       compressionRatio: ((file.size - file.gzipSize) / file.size) * 100,
@@ -158,13 +169,18 @@ export class CompressionAnalyzer {
     }));
   }
 
-  recommendCompression(file: { path: string; size: number; gzipSize?: number }): string {
+  recommendCompression(file: {
+    path: string;
+    size: number;
+    gzipSize?: number;
+  }): string {
     if (!file.gzipSize) return 'Enable gzip compression';
 
     const ratio = ((file.size - file.gzipSize) / file.size) * 100;
 
     if (ratio < 50) return 'Consider using Brotli compression';
-    if (file.gzipSize > 100000) return 'File still large after compression, consider code splitting';
+    if (file.gzipSize > 100000)
+      return 'File still large after compression, consider code splitting';
     return 'Compression is optimal';
   }
 }
@@ -240,7 +256,10 @@ export const SizeAnalysis = {
   },
 
   // Calculate load time on different connections
-  estimateLoadTime: (bytes: number, connection: '3g' | '4g' | '5g' | 'wifi'): number => {
+  estimateLoadTime: (
+    bytes: number,
+    connection: '3g' | '4g' | '5g' | 'wifi'
+  ): number => {
     const speeds = {
       '3g': 750000, // 750 KB/s
       '4g': 3000000, // 3 MB/s
@@ -311,7 +330,10 @@ export function BundleOptimizationDashboard() {
         <StatCard
           icon={<Gauge className="w-5 h-5 text-amber-400" />}
           label="Load Time"
-          value={`${SizeAnalysis.estimateLoadTime(analysis.gzipSize, '3g').toFixed(0)}ms`}
+          value={`${SizeAnalysis.estimateLoadTime(
+            analysis.gzipSize,
+            '3g'
+          ).toFixed(0)}ms`}
           subtext="3G Network"
         />
       </div>

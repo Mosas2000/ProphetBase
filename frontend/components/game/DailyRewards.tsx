@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Flame, Gift, Zap, Star, Clock } from 'lucide-react';
+import { Calendar, Clock, Flame, Gift, Star, Zap } from 'lucide-react';
 import { useState } from 'react';
 
 interface DailyReward {
@@ -22,23 +22,93 @@ export default function DailyRewards() {
   const [showHistory, setShowHistory] = useState(false);
 
   const [rewards] = useState<DailyReward[]>([
-    { day: 1, reward: { type: 'tokens', amount: 50, name: '50 Tokens', icon: '💰' }, claimed: true, premium: false },
-    { day: 2, reward: { type: 'xp', amount: 100, name: '100 XP', icon: '⭐' }, claimed: true, premium: false },
-    { day: 3, reward: { type: 'tokens', amount: 75, name: '75 Tokens', icon: '💰' }, claimed: true, premium: false },
-    { day: 4, reward: { type: 'boost', amount: 1, name: '2x XP Boost', icon: '🚀' }, claimed: true, premium: false },
-    { day: 5, reward: { type: 'tokens', amount: 100, name: '100 Tokens', icon: '💰' }, claimed: true, premium: false },
-    { day: 6, reward: { type: 'xp', amount: 200, name: '200 XP', icon: '⭐' }, claimed: true, premium: false },
-    { day: 7, reward: { type: 'nft', amount: 1, name: 'Rare NFT', icon: '🎨' }, claimed: false, premium: false },
-    { day: 8, reward: { type: 'tokens', amount: 150, name: '150 Tokens', icon: '💰' }, claimed: false, premium: false },
-    { day: 9, reward: { type: 'boost', amount: 1, name: '3x XP Boost', icon: '🔥' }, claimed: false, premium: false },
-    { day: 10, reward: { type: 'tokens', amount: 200, name: '200 Tokens', icon: '💰' }, claimed: false, premium: true },
-    { day: 11, reward: { type: 'xp', amount: 500, name: '500 XP', icon: '⭐' }, claimed: false, premium: false },
-    { day: 12, reward: { type: 'tokens', amount: 250, name: '250 Tokens', icon: '💰' }, claimed: false, premium: false },
-    { day: 13, reward: { type: 'boost', amount: 1, name: '24h XP Boost', icon: '⚡' }, claimed: false, premium: false },
-    { day: 14, reward: { type: 'nft', amount: 1, name: 'Epic NFT', icon: '👑' }, claimed: false, premium: true }
+    {
+      day: 1,
+      reward: { type: 'tokens', amount: 50, name: '50 Tokens', icon: '💰' },
+      claimed: true,
+      premium: false,
+    },
+    {
+      day: 2,
+      reward: { type: 'xp', amount: 100, name: '100 XP', icon: '⭐' },
+      claimed: true,
+      premium: false,
+    },
+    {
+      day: 3,
+      reward: { type: 'tokens', amount: 75, name: '75 Tokens', icon: '💰' },
+      claimed: true,
+      premium: false,
+    },
+    {
+      day: 4,
+      reward: { type: 'boost', amount: 1, name: '2x XP Boost', icon: '🚀' },
+      claimed: true,
+      premium: false,
+    },
+    {
+      day: 5,
+      reward: { type: 'tokens', amount: 100, name: '100 Tokens', icon: '💰' },
+      claimed: true,
+      premium: false,
+    },
+    {
+      day: 6,
+      reward: { type: 'xp', amount: 200, name: '200 XP', icon: '⭐' },
+      claimed: true,
+      premium: false,
+    },
+    {
+      day: 7,
+      reward: { type: 'nft', amount: 1, name: 'Rare NFT', icon: '🎨' },
+      claimed: false,
+      premium: false,
+    },
+    {
+      day: 8,
+      reward: { type: 'tokens', amount: 150, name: '150 Tokens', icon: '💰' },
+      claimed: false,
+      premium: false,
+    },
+    {
+      day: 9,
+      reward: { type: 'boost', amount: 1, name: '3x XP Boost', icon: '🔥' },
+      claimed: false,
+      premium: false,
+    },
+    {
+      day: 10,
+      reward: { type: 'tokens', amount: 200, name: '200 Tokens', icon: '💰' },
+      claimed: false,
+      premium: true,
+    },
+    {
+      day: 11,
+      reward: { type: 'xp', amount: 500, name: '500 XP', icon: '⭐' },
+      claimed: false,
+      premium: false,
+    },
+    {
+      day: 12,
+      reward: { type: 'tokens', amount: 250, name: '250 Tokens', icon: '💰' },
+      claimed: false,
+      premium: false,
+    },
+    {
+      day: 13,
+      reward: { type: 'boost', amount: 1, name: '24h XP Boost', icon: '⚡' },
+      claimed: false,
+      premium: false,
+    },
+    {
+      day: 14,
+      reward: { type: 'nft', amount: 1, name: 'Epic NFT', icon: '👑' },
+      claimed: false,
+      premium: true,
+    },
   ]);
 
-  const nextRewardIndex = rewards.findIndex(r => !r.claimed);
+  const nextRewardIndex = rewards.findIndex((r) => !r.claimed);
   const canClaim = nextRewardIndex >= 0;
   const streakMultiplier = Math.floor(currentStreak / 7) + 1;
 
@@ -55,7 +125,7 @@ export default function DailyRewards() {
   };
 
   const totalTokensEarned = rewards
-    .filter(r => r.claimed && r.reward.type === 'tokens')
+    .filter((r) => r.claimed && r.reward.type === 'tokens')
     .reduce((sum, r) => sum + r.reward.amount, 0);
 
   return (
@@ -69,7 +139,9 @@ export default function DailyRewards() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Daily Rewards</h1>
-              <p className="text-slate-400">Login every day to claim rewards and build your streak</p>
+              <p className="text-slate-400">
+                Login every day to claim rewards and build your streak
+              </p>
             </div>
           </div>
 
@@ -80,28 +152,38 @@ export default function DailyRewards() {
                 <Flame className="w-5 h-5 text-orange-400" />
                 <span className="text-slate-400 text-sm">Current Streak</span>
               </div>
-              <div className="text-3xl font-bold text-orange-400">{currentStreak} days</div>
+              <div className="text-3xl font-bold text-orange-400">
+                {currentStreak} days
+              </div>
             </div>
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <Star className="w-5 h-5 text-amber-400" />
                 <span className="text-slate-400 text-sm">Longest Streak</span>
               </div>
-              <div className="text-3xl font-bold text-amber-400">{longestStreak} days</div>
+              <div className="text-3xl font-bold text-amber-400">
+                {longestStreak} days
+              </div>
             </div>
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <Zap className="w-5 h-5 text-purple-400" />
-                <span className="text-slate-400 text-sm">Streak Multiplier</span>
+                <span className="text-slate-400 text-sm">
+                  Streak Multiplier
+                </span>
               </div>
-              <div className="text-3xl font-bold text-purple-400">x{streakMultiplier}</div>
+              <div className="text-3xl font-bold text-purple-400">
+                x{streakMultiplier}
+              </div>
             </div>
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
               <div className="flex items-center gap-2 mb-2">
                 <Gift className="w-5 h-5 text-green-400" />
                 <span className="text-slate-400 text-sm">Tokens Earned</span>
               </div>
-              <div className="text-3xl font-bold text-green-400">{totalTokensEarned}</div>
+              <div className="text-3xl font-bold text-green-400">
+                {totalTokensEarned}
+              </div>
             </div>
           </div>
 
@@ -112,14 +194,22 @@ export default function DailyRewards() {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Clock className="w-5 h-5 text-rose-400" />
-                    <h3 className="text-xl font-bold">Day {rewards[nextRewardIndex].day} Reward Ready!</h3>
+                    <h3 className="text-xl font-bold">
+                      Day {rewards[nextRewardIndex].day} Reward Ready!
+                    </h3>
                   </div>
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="text-4xl">{rewards[nextRewardIndex].reward.icon}</div>
+                    <div className="text-4xl">
+                      {rewards[nextRewardIndex].reward.icon}
+                    </div>
                     <div>
-                      <div className="text-2xl font-bold">{rewards[nextRewardIndex].reward.name}</div>
+                      <div className="text-2xl font-bold">
+                        {rewards[nextRewardIndex].reward.name}
+                      </div>
                       {rewards[nextRewardIndex].premium && (
-                        <div className="text-amber-400 text-sm">Premium Reward</div>
+                        <div className="text-amber-400 text-sm">
+                          Premium Reward
+                        </div>
                       )}
                     </div>
                   </div>
@@ -171,7 +261,9 @@ export default function DailyRewards() {
                 )}
 
                 <div className="text-center mb-2">
-                  <div className="text-sm text-slate-400 mb-1">Day {reward.day}</div>
+                  <div className="text-sm text-slate-400 mb-1">
+                    Day {reward.day}
+                  </div>
                   <div className="text-4xl mb-2">{reward.reward.icon}</div>
                   <div className="text-sm font-bold">{reward.reward.name}</div>
                 </div>
@@ -197,12 +289,16 @@ export default function DailyRewards() {
                 <h3 className="text-xl font-bold">Streak Recovery</h3>
               </div>
               <p className="text-slate-300 mb-3">
-                Missed a day? Use a Streak Recovery token to keep your streak alive!
+                Missed a day? Use a Streak Recovery token to keep your streak
+                alive!
               </p>
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-purple-500 rounded-full" />
-                  <span>Available Tokens: <strong className="text-purple-400">3</strong></span>
+                  <span>
+                    Available Tokens:{' '}
+                    <strong className="text-purple-400">3</strong>
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-amber-500 rounded-full" />

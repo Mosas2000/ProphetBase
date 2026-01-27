@@ -1,6 +1,16 @@
 'use client';
 
-import { Download, Eye, Grid3x3, Heart, LayoutGrid, LayoutList, Share2, Star, TrendingUp } from 'lucide-react';
+import {
+  Download,
+  Eye,
+  Grid3x3,
+  Heart,
+  LayoutGrid,
+  LayoutList,
+  Share2,
+  Star,
+  TrendingUp,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface GalleryNFT {
@@ -26,7 +36,13 @@ interface GalleryNFT {
 
 type ViewMode = 'grid' | 'list' | '3d';
 type SortMode = 'recent' | 'value' | 'rarity' | 'name' | 'likes';
-type FilterCategory = 'all' | 'trading-card' | 'achievement' | 'profile' | 'seasonal' | 'dynamic';
+type FilterCategory =
+  | 'all'
+  | 'trading-card'
+  | 'achievement'
+  | 'profile'
+  | 'seasonal'
+  | 'dynamic';
 
 export default function NFTGallery() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -50,13 +66,14 @@ export default function NFTGallery() {
       views: 342,
       likes: 89,
       icon: '👑',
-      description: 'A legendary trading card representing the ultimate prediction master.',
+      description:
+        'A legendary trading card representing the ultimate prediction master.',
       attributes: [
         { name: 'Strength', value: '95', rarity: 98 },
         { name: 'Intelligence', value: '92', rarity: 95 },
         { name: 'Luck', value: '88', rarity: 90 },
-        { name: 'Year', value: '2024', rarity: 100 }
-      ]
+        { name: 'Year', value: '2024', rarity: 100 },
+      ],
     },
     {
       id: '2',
@@ -71,12 +88,13 @@ export default function NFTGallery() {
       views: 256,
       likes: 67,
       icon: '💎',
-      description: 'Earned for reaching the highest tier of trading excellence.',
+      description:
+        'Earned for reaching the highest tier of trading excellence.',
       attributes: [
         { name: 'Tier', value: 'Diamond', rarity: 99 },
         { name: 'Milestone', value: '1000 Wins', rarity: 98 },
-        { name: 'Transferrable', value: 'No', rarity: 100 }
-      ]
+        { name: 'Transferrable', value: 'No', rarity: 100 },
+      ],
     },
     {
       id: '3',
@@ -96,8 +114,8 @@ export default function NFTGallery() {
         { name: 'Background', value: 'Cosmic', rarity: 92 },
         { name: 'Body', value: 'Crystal', rarity: 88 },
         { name: 'Eyes', value: 'Laser', rarity: 85 },
-        { name: 'Accessory', value: 'Crown', rarity: 90 }
-      ]
+        { name: 'Accessory', value: 'Crown', rarity: 90 },
+      ],
     },
     {
       id: '4',
@@ -116,8 +134,8 @@ export default function NFTGallery() {
       attributes: [
         { name: 'Season', value: 'Winter 2024', rarity: 100 },
         { name: 'Edition', value: '#12/100', rarity: 99 },
-        { name: 'Rarity', value: 'Mythic', rarity: 100 }
-      ]
+        { name: 'Rarity', value: 'Mythic', rarity: 100 },
+      ],
     },
     {
       id: '5',
@@ -137,8 +155,8 @@ export default function NFTGallery() {
         { name: 'Level', value: '15', rarity: 88 },
         { name: 'Accuracy', value: '87%', rarity: 92 },
         { name: 'Evolution', value: 'Expert', rarity: 90 },
-        { name: 'Achievements', value: '5', rarity: 85 }
-      ]
+        { name: 'Achievements', value: '5', rarity: 85 },
+      ],
     },
     {
       id: '6',
@@ -157,9 +175,9 @@ export default function NFTGallery() {
       attributes: [
         { name: 'Strength', value: '75', rarity: 75 },
         { name: 'Intelligence', value: '78', rarity: 72 },
-        { name: 'Luck', value: '70', rarity: 68 }
-      ]
-    }
+        { name: 'Luck', value: '70', rarity: 68 },
+      ],
+    },
   ]);
 
   const getRarityColor = (rarity: string) => {
@@ -205,7 +223,11 @@ export default function NFTGallery() {
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   };
 
   const filterAndSortNFTs = () => {
@@ -242,11 +264,15 @@ export default function NFTGallery() {
     return filtered;
   };
 
-  const totalValue = galleryNFTs.reduce((sum, nft) => sum + nft.estimatedValue, 0);
+  const totalValue = galleryNFTs.reduce(
+    (sum, nft) => sum + nft.estimatedValue,
+    0
+  );
   const totalViews = galleryNFTs.reduce((sum, nft) => sum + nft.views, 0);
   const totalLikes = galleryNFTs.reduce((sum, nft) => sum + nft.likes, 0);
   const avgRarity = Math.round(
-    galleryNFTs.reduce((sum, nft) => sum + nft.rarityScore, 0) / galleryNFTs.length
+    galleryNFTs.reduce((sum, nft) => sum + nft.rarityScore, 0) /
+      galleryNFTs.length
   );
 
   const filteredNFTs = filterAndSortNFTs();
@@ -269,7 +295,9 @@ export default function NFTGallery() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">NFT Gallery</h1>
-              <p className="text-slate-400">Your personal collection showcase with rarity rankings</p>
+              <p className="text-slate-400">
+                Your personal collection showcase with rarity rankings
+              </p>
             </div>
           </div>
         </div>
@@ -281,7 +309,9 @@ export default function NFTGallery() {
               <span className="text-slate-400 text-sm">Collection Size</span>
               <LayoutGrid className="w-4 h-4 text-pink-400" />
             </div>
-            <div className="text-2xl font-bold text-pink-400">{galleryNFTs.length} NFTs</div>
+            <div className="text-2xl font-bold text-pink-400">
+              {galleryNFTs.length} NFTs
+            </div>
             <div className="text-xs text-slate-400 mt-1">Total items</div>
           </div>
 
@@ -290,7 +320,9 @@ export default function NFTGallery() {
               <span className="text-slate-400 text-sm">Total Value</span>
               <TrendingUp className="w-4 h-4 text-green-400" />
             </div>
-            <div className="text-2xl font-bold text-green-400">{formatCurrency(totalValue)}</div>
+            <div className="text-2xl font-bold text-green-400">
+              {formatCurrency(totalValue)}
+            </div>
             <div className="text-xs text-slate-400 mt-1">Estimated worth</div>
           </div>
 
@@ -299,7 +331,9 @@ export default function NFTGallery() {
               <span className="text-slate-400 text-sm">Avg Rarity</span>
               <Star className="w-4 h-4 text-yellow-400" />
             </div>
-            <div className="text-2xl font-bold text-yellow-400">{avgRarity}/100</div>
+            <div className="text-2xl font-bold text-yellow-400">
+              {avgRarity}/100
+            </div>
             <div className="text-xs text-slate-400 mt-1">Rarity score</div>
           </div>
 
@@ -309,7 +343,9 @@ export default function NFTGallery() {
               <Heart className="w-4 h-4 text-red-400" />
             </div>
             <div className="text-2xl font-bold text-red-400">{totalLikes}</div>
-            <div className="text-xs text-slate-400 mt-1">{totalViews} views</div>
+            <div className="text-xs text-slate-400 mt-1">
+              {totalViews} views
+            </div>
           </div>
         </div>
 
@@ -354,7 +390,9 @@ export default function NFTGallery() {
             <div className="flex-1 flex flex-wrap gap-4">
               <select
                 value={filterCategory}
-                onChange={(e) => setFilterCategory(e.target.value as FilterCategory)}
+                onChange={(e) =>
+                  setFilterCategory(e.target.value as FilterCategory)
+                }
                 className="bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-sm"
               >
                 <option value="all">All Categories</option>
@@ -408,7 +446,11 @@ export default function NFTGallery() {
                 <div className="bg-gradient-to-br from-pink-600/20 to-purple-600/20 p-12 flex items-center justify-center relative">
                   <div className="text-8xl">{nft.icon}</div>
                   <div className="absolute top-3 right-3">
-                    <div className={`px-2 py-1 rounded text-xs font-semibold border ${getRarityColor(nft.rarity)}`}>
+                    <div
+                      className={`px-2 py-1 rounded text-xs font-semibold border ${getRarityColor(
+                        nft.rarity
+                      )}`}
+                    >
                       {nft.rarity.toUpperCase()}
                     </div>
                   </div>
@@ -416,16 +458,22 @@ export default function NFTGallery() {
 
                 <div className="p-6">
                   <h3 className="font-bold text-lg mb-1">{nft.name}</h3>
-                  <p className="text-sm text-slate-400 mb-3">{nft.collection}</p>
+                  <p className="text-sm text-slate-400 mb-3">
+                    {nft.collection}
+                  </p>
 
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <div className="bg-slate-700/30 rounded-lg p-2">
                       <div className="text-xs text-slate-400 mb-1">Value</div>
-                      <div className="font-bold text-green-400">{formatCurrency(nft.estimatedValue)}</div>
+                      <div className="font-bold text-green-400">
+                        {formatCurrency(nft.estimatedValue)}
+                      </div>
                     </div>
                     <div className="bg-slate-700/30 rounded-lg p-2">
                       <div className="text-xs text-slate-400 mb-1">Rarity</div>
-                      <div className="font-bold text-yellow-400">{nft.rarityScore}/100</div>
+                      <div className="font-bold text-yellow-400">
+                        {nft.rarityScore}/100
+                      </div>
                     </div>
                   </div>
 
@@ -467,9 +515,15 @@ export default function NFTGallery() {
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <h3 className="font-bold text-xl mb-1">{nft.name}</h3>
-                        <p className="text-sm text-slate-400">{nft.collection}</p>
+                        <p className="text-sm text-slate-400">
+                          {nft.collection}
+                        </p>
                       </div>
-                      <div className={`px-3 py-1 rounded text-xs font-semibold border ${getRarityColor(nft.rarity)}`}>
+                      <div
+                        className={`px-3 py-1 rounded text-xs font-semibold border ${getRarityColor(
+                          nft.rarity
+                        )}`}
+                      >
                         {nft.rarity.toUpperCase()}
                       </div>
                     </div>
@@ -479,11 +533,17 @@ export default function NFTGallery() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       <div className="bg-slate-700/30 rounded-lg p-3">
                         <div className="text-xs text-slate-400 mb-1">Value</div>
-                        <div className="font-bold text-green-400">{formatCurrency(nft.estimatedValue)}</div>
+                        <div className="font-bold text-green-400">
+                          {formatCurrency(nft.estimatedValue)}
+                        </div>
                       </div>
                       <div className="bg-slate-700/30 rounded-lg p-3">
-                        <div className="text-xs text-slate-400 mb-1">Rarity Score</div>
-                        <div className="font-bold text-yellow-400">{nft.rarityScore}/100</div>
+                        <div className="text-xs text-slate-400 mb-1">
+                          Rarity Score
+                        </div>
+                        <div className="font-bold text-yellow-400">
+                          {nft.rarityScore}/100
+                        </div>
                       </div>
                       <div className="bg-slate-700/30 rounded-lg p-3">
                         <div className="text-xs text-slate-400 mb-1">Views</div>
@@ -491,13 +551,18 @@ export default function NFTGallery() {
                       </div>
                       <div className="bg-slate-700/30 rounded-lg p-3">
                         <div className="text-xs text-slate-400 mb-1">Likes</div>
-                        <div className="font-bold text-red-400">{nft.likes}</div>
+                        <div className="font-bold text-red-400">
+                          {nft.likes}
+                        </div>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap gap-2">
                       {nft.attributes.slice(0, 4).map((attr, i) => (
-                        <div key={i} className="px-3 py-1 bg-pink-600/20 border border-pink-600/30 rounded text-xs">
+                        <div
+                          key={i}
+                          className="px-3 py-1 bg-pink-600/20 border border-pink-600/30 rounded text-xs"
+                        >
                           {attr.name}: {attr.value}
                         </div>
                       ))}
@@ -531,7 +596,9 @@ export default function NFTGallery() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-slate-400 mt-6">3D rendering preview - Full 3D view coming soon!</p>
+              <p className="text-xs text-slate-400 mt-6">
+                3D rendering preview - Full 3D view coming soon!
+              </p>
             </div>
           </div>
         )}
@@ -548,22 +615,41 @@ export default function NFTGallery() {
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-2xl mb-2">{selectedNFT.name}</h4>
-                  <p className="text-slate-400 mb-3">{selectedNFT.collection}</p>
-                  <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border mb-4 ${getRarityColor(selectedNFT.rarity)}`}>
-                    {selectedNFT.rarity.toUpperCase()} • Score: {selectedNFT.rarityScore}/100
+                  <h4 className="font-bold text-2xl mb-2">
+                    {selectedNFT.name}
+                  </h4>
+                  <p className="text-slate-400 mb-3">
+                    {selectedNFT.collection}
+                  </p>
+                  <div
+                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border mb-4 ${getRarityColor(
+                      selectedNFT.rarity
+                    )}`}
+                  >
+                    {selectedNFT.rarity.toUpperCase()} • Score:{' '}
+                    {selectedNFT.rarityScore}/100
                   </div>
 
-                  <p className="text-slate-300 mb-4">{selectedNFT.description}</p>
+                  <p className="text-slate-300 mb-4">
+                    {selectedNFT.description}
+                  </p>
 
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <div className="bg-slate-700/30 rounded-lg p-3">
-                      <div className="text-xs text-slate-400 mb-1">Estimated Value</div>
-                      <div className="font-bold text-green-400 text-lg">{formatCurrency(selectedNFT.estimatedValue)}</div>
+                      <div className="text-xs text-slate-400 mb-1">
+                        Estimated Value
+                      </div>
+                      <div className="font-bold text-green-400 text-lg">
+                        {formatCurrency(selectedNFT.estimatedValue)}
+                      </div>
                     </div>
                     <div className="bg-slate-700/30 rounded-lg p-3">
-                      <div className="text-xs text-slate-400 mb-1">Acquired</div>
-                      <div className="font-semibold">{formatDate(selectedNFT.acquiredDate)}</div>
+                      <div className="text-xs text-slate-400 mb-1">
+                        Acquired
+                      </div>
+                      <div className="font-semibold">
+                        {formatDate(selectedNFT.acquiredDate)}
+                      </div>
                     </div>
                   </div>
 
@@ -586,10 +672,14 @@ export default function NFTGallery() {
                 <div className="grid grid-cols-2 gap-3">
                   {selectedNFT.attributes.map((attr, i) => (
                     <div key={i} className="bg-slate-600/30 rounded-lg p-3">
-                      <div className="text-xs text-slate-400 mb-1">{attr.name}</div>
+                      <div className="text-xs text-slate-400 mb-1">
+                        {attr.name}
+                      </div>
                       <div className="flex items-center justify-between">
                         <span className="font-semibold">{attr.value}</span>
-                        <span className="text-xs text-pink-400">{attr.rarity}% rarity</span>
+                        <span className="text-xs text-pink-400">
+                          {attr.rarity}% rarity
+                        </span>
                       </div>
                     </div>
                   ))}

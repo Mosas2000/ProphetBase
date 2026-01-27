@@ -1,7 +1,7 @@
 'use client';
 
-import { TrendingUp, Maximize2, Download, Settings, Plus, Grid3x3, BarChart2 } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { BarChart2, Download, Grid3x3, Maximize2, Plus, Settings, TrendingUp } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 interface Indicator {
   id: string;

@@ -1,7 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Edit3, Save, AlertCircle, CheckCircle, Upload, Download } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle,
+  Download,
+  Edit3,
+  Save,
+  Upload,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // Translation entry
 export interface TranslationEntry {
@@ -33,7 +40,12 @@ export class TranslationEditorManager {
   }
 
   // Translation management
-  addTranslation(key: string, language: string, translation: string, contributor?: string): void {
+  addTranslation(
+    key: string,
+    language: string,
+    translation: string,
+    contributor?: string
+  ): void {
     const entry = this.translations.get(key) || {
       key,
       translations: {},
@@ -44,17 +56,17 @@ export class TranslationEditorManager {
 
     entry.translations[language] = translation;
     entry.lastModified = new Date();
-    
+
     if (contributor && !entry.contributors.includes(contributor)) {
       entry.contributors.push(contributor);
     }
 
     entry.status = this.calculateStatus(entry);
     this.translations.set(key, entry);
-    
+
     // Update translation memory
     this.addToMemory(translation, language);
-    
+
     this.saveToStorage();
     this.notifyListeners();
   }
@@ -118,12 +130,18 @@ export class TranslationEditorManager {
 
   searchMemory(query: string, language: string): TranslationMemory[] {
     return this.memory
-      .filter((m) => m.language === language && m.target.toLowerCase().includes(query.toLowerCase()))
+      .filter(
+        (m) =>
+          m.language === language &&
+          m.target.toLowerCase().includes(query.toLowerCase())
+      )
       .slice(0, 5);
   }
 
   // Status calculation
-  private calculateStatus(entry: TranslationEntry): 'complete' | 'partial' | 'missing' {
+  private calculateStatus(
+    entry: TranslationEntry
+  ): 'complete' | 'partial' | 'missing' {
     const languageCount = Object.keys(entry.translations).length;
     if (languageCount === 0) return 'missing';
     if (languageCount < 5) return 'partial'; // Assuming 5 target languages
@@ -227,14 +245,21 @@ export function useTranslationEditor() {
   }, [manager]);
 
   return {
-    addTranslation: (key: string, language: string, translation: string, contributor?: string) =>
-      manager.addTranslation(key, language, translation, contributor),
-    getTranslation: (key: string, language: string) => manager.getTranslation(key, language),
+    addTranslation: (
+      key: string,
+      language: string,
+      translation: string,
+      contributor?: string
+    ) => manager.addTranslation(key, language, translation, contributor),
+    getTranslation: (key: string, language: string) =>
+      manager.getTranslation(key, language),
     getAllTranslations: () => manager.getAllTranslations(),
-    deleteTranslation: (key: string, language?: string) => manager.deleteTranslation(key, language),
+    deleteTranslation: (key: string, language?: string) =>
+      manager.deleteTranslation(key, language),
     markAsMissing: (key: string) => manager.markAsMissing(key),
     getMissingKeys: () => manager.getMissingKeys(),
-    searchMemory: (query: string, language: string) => manager.searchMemory(query, language),
+    searchMemory: (query: string, language: string) =>
+      manager.searchMemory(query, language),
     getStatistics: () => manager.getStatistics(),
     exportTranslations: () => manager.exportTranslations(),
     importTranslations: (json: string) => manager.importTranslations(json),
@@ -291,7 +316,11 @@ export function TranslationEditorDashboard() {
   };
 
   return (
-    <div className="p-6 bg-slate-800 rounded-xl" role="region" aria-label="Translation Editor">
+    <div
+      className="p-6 bg-slate-800 rounded-xl"
+      role="region"
+      aria-label="Translation Editor"
+    >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Edit3 className="w-6 h-6 text-yellow-400" />
@@ -308,7 +337,12 @@ export function TranslationEditorDashboard() {
           <label className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 rounded cursor-pointer">
             <Upload className="w-4 h-4" />
             Import
-            <input type="file" accept=".json" onChange={handleImport} className="hidden" />
+            <input
+              type="file"
+              accept=".json"
+              onChange={handleImport}
+              className="hidden"
+            />
           </label>
         </div>
       </div>
@@ -410,21 +444,25 @@ export function TranslationEditorDashboard() {
         <div className="p-4 bg-slate-700 rounded-lg">
           <h3 className="font-bold mb-4">Recent Translations</h3>
           <div className="space-y-2 max-h-64 overflow-y-auto">
-            {getAllTranslations().slice(0, 10).map((entry) => (
-              <div key={entry.key} className="p-2 bg-slate-600 rounded">
-                <div className="font-medium text-sm">{entry.key}</div>
-                <div className="text-xs text-slate-400">
-                  {Object.keys(entry.translations).length} language(s)
+            {getAllTranslations()
+              .slice(0, 10)
+              .map((entry) => (
+                <div key={entry.key} className="p-2 bg-slate-600 rounded">
+                  <div className="font-medium text-sm">{entry.key}</div>
+                  <div className="text-xs text-slate-400">
+                    {Object.keys(entry.translations).length} language(s)
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
 
       {missingKeys.length > 0 && (
         <div className="mt-6 p-4 bg-red-900/20 border border-red-600/30 rounded-lg">
-          <h3 className="font-bold mb-3 text-red-400">Missing Translation Keys</h3>
+          <h3 className="font-bold mb-3 text-red-400">
+            Missing Translation Keys
+          </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {missingKeys.slice(0, 12).map((key) => (
               <div key={key} className="text-sm text-red-300 font-mono">

@@ -1,7 +1,7 @@
 'use client';
 
-import { Network, Users, TrendingUp, Layers, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { Layers, Network, ZoomIn, ZoomOut } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Node {
   id: string;
@@ -30,13 +30,20 @@ export default function NetworkGraph() {
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState({ x: 20, y: 30 });
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
-  const [filterType, setFilterType] = useState<'all' | 'whale' | 'trader' | 'bot'>('all');
+  const [filterType, setFilterType] = useState<
+    'all' | 'whale' | 'trader' | 'bot'
+  >('all');
   const [is3D, setIs3D] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Generate network data
   const [nodes] = useState<Node[]>(() => {
-    const nodeTypes: Array<'whale' | 'trader' | 'bot' | 'market'> = ['whale', 'trader', 'bot', 'market'];
+    const nodeTypes: Array<'whale' | 'trader' | 'bot' | 'market'> = [
+      'whale',
+      'trader',
+      'bot',
+      'market',
+    ];
     return Array.from({ length: 50 }, (_, i) => ({
       id: `node-${i}`,
       label: `${nodeTypes[i % 4].toUpperCase()}-${i}`,
@@ -50,7 +57,7 @@ export default function NetworkGraph() {
       z: (Math.random() - 0.5) * 400,
       vx: 0,
       vy: 0,
-      vz: 0
+      vz: 0,
     }));
   });
 
@@ -66,7 +73,7 @@ export default function NetworkGraph() {
             source: node.id,
             target: nodes[targetIdx].id,
             value,
-            type: value > 70 ? 'strong' : value > 40 ? 'medium' : 'weak'
+            type: value > 70 ? 'strong' : value > 40 ? 'medium' : 'weak',
           });
         }
       }
@@ -79,7 +86,9 @@ export default function NetworkGraph() {
     const interval = setInterval(() => {
       nodes.forEach((node) => {
         // Apply forces
-        let fx = 0, fy = 0, fz = 0;
+        let fx = 0,
+          fy = 0,
+          fz = 0;
 
         // Centering force
         fx -= node.x * 0.01;
@@ -103,7 +112,7 @@ export default function NetworkGraph() {
         // Attraction along edges
         edges.forEach((edge) => {
           if (edge.source === node.id) {
-            const target = nodes.find(n => n.id === edge.target);
+            const target = nodes.find((n) => n.id === edge.target);
             if (target) {
               const dx = target.x - node.x;
               const dy = target.y - node.y;
@@ -134,20 +143,29 @@ export default function NetworkGraph() {
 
   const getNodeColor = (type: string) => {
     switch (type) {
-      case 'whale': return '#10b981';
-      case 'trader': return '#6366f1';
-      case 'bot': return '#f59e0b';
-      case 'market': return '#ec4899';
-      default: return '#94a3b8';
+      case 'whale':
+        return '#10b981';
+      case 'trader':
+        return '#6366f1';
+      case 'bot':
+        return '#f59e0b';
+      case 'market':
+        return '#ec4899';
+      default:
+        return '#94a3b8';
     }
   };
 
   const getEdgeColor = (type: string) => {
     switch (type) {
-      case 'strong': return 'rgba(99, 102, 241, 0.6)';
-      case 'medium': return 'rgba(99, 102, 241, 0.4)';
-      case 'weak': return 'rgba(99, 102, 241, 0.2)';
-      default: return 'rgba(99, 102, 241, 0.3)';
+      case 'strong':
+        return 'rgba(99, 102, 241, 0.6)';
+      case 'medium':
+        return 'rgba(99, 102, 241, 0.4)';
+      case 'weak':
+        return 'rgba(99, 102, 241, 0.2)';
+      default:
+        return 'rgba(99, 102, 241, 0.3)';
     }
   };
 
@@ -176,19 +194,18 @@ export default function NetworkGraph() {
 
     return {
       x: x1 * scale * zoom + 400,
-      y: y1 * scale * zoom + 300
+      y: y1 * scale * zoom + 300,
     };
   };
 
-  const filteredNodes = filterType === 'all' 
-    ? nodes 
-    : nodes.filter(n => n.type === filterType);
+  const filteredNodes =
+    filterType === 'all' ? nodes : nodes.filter((n) => n.type === filterType);
 
   const clusters = {
-    whale: nodes.filter(n => n.type === 'whale').length,
-    trader: nodes.filter(n => n.type === 'trader').length,
-    bot: nodes.filter(n => n.type === 'bot').length,
-    market: nodes.filter(n => n.type === 'market').length
+    whale: nodes.filter((n) => n.type === 'whale').length,
+    trader: nodes.filter((n) => n.type === 'trader').length,
+    bot: nodes.filter((n) => n.type === 'bot').length,
+    market: nodes.filter((n) => n.type === 'market').length,
   };
 
   return (
@@ -202,7 +219,9 @@ export default function NetworkGraph() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Network Graph</h1>
-              <p className="text-slate-400">Visualize trader networks and influence mapping</p>
+              <p className="text-slate-400">
+                Visualize trader networks and influence mapping
+              </p>
             </div>
           </div>
 
@@ -295,20 +314,24 @@ export default function NetworkGraph() {
                 const rect = e.currentTarget.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                setRotation(prev => ({
+                setRotation((prev) => ({
                   x: prev.x + (y - 300) * 0.01,
-                  y: prev.y + (x - 400) * 0.01
+                  y: prev.y + (x - 400) * 0.01,
                 }));
               }
             }}
           >
             {/* Draw edges */}
             {edges.map((edge, idx) => {
-              const source = nodes.find(n => n.id === edge.source);
-              const target = nodes.find(n => n.id === edge.target);
+              const source = nodes.find((n) => n.id === edge.source);
+              const target = nodes.find((n) => n.id === edge.target);
               if (!source || !target) return null;
-              
-              if (filterType !== 'all' && source.type !== filterType && target.type !== filterType) {
+
+              if (
+                filterType !== 'all' &&
+                source.type !== filterType &&
+                target.type !== filterType
+              ) {
                 return null;
               }
 
@@ -331,7 +354,7 @@ export default function NetworkGraph() {
             {/* Draw nodes */}
             {filteredNodes.map((node) => {
               const pos = project3D(node.x, node.y, node.z);
-              const size = node.size * (is3D ? (800 / (800 + node.z)) : 1);
+              const size = node.size * (is3D ? 800 / (800 + node.z) : 1);
 
               return (
                 <g
@@ -387,13 +410,18 @@ export default function NetworkGraph() {
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Type</div>
-                  <div className="font-bold capitalize" style={{ color: getNodeColor(selectedNode.type) }}>
+                  <div
+                    className="font-bold capitalize"
+                    style={{ color: getNodeColor(selectedNode.type) }}
+                  >
                     {selectedNode.type}
                   </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Influence</div>
-                  <div className="font-bold text-blue-400">{selectedNode.influence.toFixed(1)}%</div>
+                  <div className="font-bold text-blue-400">
+                    {selectedNode.influence.toFixed(1)}%
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Connections</div>

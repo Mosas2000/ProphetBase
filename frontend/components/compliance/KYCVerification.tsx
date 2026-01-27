@@ -1,7 +1,17 @@
 'use client';
 
+import {
+  AlertCircle,
+  Camera,
+  CheckCircle,
+  Clock,
+  FileText,
+  Shield,
+  Upload,
+  UserCheck,
+  XCircle,
+} from 'lucide-react';
 import React, { useState } from 'react';
-import { UserCheck, Upload, AlertCircle, CheckCircle, Clock, FileText, Camera, Shield, XCircle } from 'lucide-react';
 
 interface VerificationDocument {
   id: string;
@@ -23,9 +33,11 @@ interface KYCLevel {
 }
 
 export default function KYCVerification() {
-  const [kycStatus, setKycStatus] = useState<'not_started' | 'in_progress' | 'completed' | 'rejected'>('in_progress');
+  const [kycStatus, setKycStatus] = useState<
+    'not_started' | 'in_progress' | 'completed' | 'rejected'
+  >('in_progress');
   const [currentLevel, setCurrentLevel] = useState(1);
-  
+
   const [documents, setDocuments] = useState<VerificationDocument[]>([
     {
       id: '1',
@@ -62,7 +74,11 @@ export default function KYCVerification() {
       name: 'Basic',
       withdrawalLimit: 1000,
       tradingLimit: 5000,
-      requirements: ['Email verification', 'Phone verification', 'Basic information'],
+      requirements: [
+        'Email verification',
+        'Phone verification',
+        'Basic information',
+      ],
       completed: true,
     },
     {
@@ -70,7 +86,11 @@ export default function KYCVerification() {
       name: 'Intermediate',
       withdrawalLimit: 10000,
       tradingLimit: 50000,
-      requirements: ['Government-issued ID', 'Proof of address', 'Selfie verification'],
+      requirements: [
+        'Government-issued ID',
+        'Proof of address',
+        'Selfie verification',
+      ],
       completed: false,
     },
     {
@@ -78,7 +98,11 @@ export default function KYCVerification() {
       name: 'Advanced',
       withdrawalLimit: 100000,
       tradingLimit: 500000,
-      requirements: ['Enhanced due diligence', 'Source of funds', 'Video verification'],
+      requirements: [
+        'Enhanced due diligence',
+        'Source of funds',
+        'Video verification',
+      ],
       completed: false,
     },
     {
@@ -86,24 +110,33 @@ export default function KYCVerification() {
       name: 'Professional',
       withdrawalLimit: Infinity,
       tradingLimit: Infinity,
-      requirements: ['Business verification', 'Financial statements', 'Institutional approval'],
+      requirements: [
+        'Business verification',
+        'Financial statements',
+        'Institutional approval',
+      ],
       completed: false,
     },
   ];
 
   const [uploadingDoc, setUploadingDoc] = useState<string | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [selectedDocType, setSelectedDocType] = useState<'passport' | 'driver_license' | 'id_card' | 'proof_of_address'>('passport');
+  const [selectedDocType, setSelectedDocType] = useState<
+    'passport' | 'driver_license' | 'id_card' | 'proof_of_address'
+  >('passport');
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, docType: string) => {
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    docType: string
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     setUploadingDoc(docType);
-    
+
     // Simulate upload
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     const newDoc: VerificationDocument = {
       id: Date.now().toString(),
       type: docType as any,
@@ -113,7 +146,7 @@ export default function KYCVerification() {
       expiryDate: null,
     };
 
-    setDocuments(prev => [...prev, newDoc]);
+    setDocuments((prev) => [...prev, newDoc]);
     setUploadingDoc(null);
     setShowUploadModal(false);
   };
@@ -187,8 +220,12 @@ export default function KYCVerification() {
               <UserCheck className="w-8 h-8 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">KYC Verification</h1>
-              <p className="text-slate-400">Complete your identity verification to unlock higher limits</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                KYC Verification
+              </h1>
+              <p className="text-slate-400">
+                Complete your identity verification to unlock higher limits
+              </p>
             </div>
           </div>
         </div>
@@ -199,16 +236,24 @@ export default function KYCVerification() {
             <div>
               <h2 className="text-xl font-bold mb-2">Verification Status</h2>
               <div className="flex items-center gap-3">
-                <span className={`px-4 py-2 rounded-lg font-medium ${
-                  kycStatus === 'completed' ? 'bg-green-600/20 text-green-400' :
-                  kycStatus === 'in_progress' ? 'bg-yellow-600/20 text-yellow-400' :
-                  kycStatus === 'rejected' ? 'bg-red-600/20 text-red-400' :
-                  'bg-slate-600/20 text-slate-400'
-                }`}>
-                  {kycStatus === 'completed' ? 'Verified' :
-                   kycStatus === 'in_progress' ? 'In Progress' :
-                   kycStatus === 'rejected' ? 'Rejected' :
-                   'Not Started'}
+                <span
+                  className={`px-4 py-2 rounded-lg font-medium ${
+                    kycStatus === 'completed'
+                      ? 'bg-green-600/20 text-green-400'
+                      : kycStatus === 'in_progress'
+                      ? 'bg-yellow-600/20 text-yellow-400'
+                      : kycStatus === 'rejected'
+                      ? 'bg-red-600/20 text-red-400'
+                      : 'bg-slate-600/20 text-slate-400'
+                  }`}
+                >
+                  {kycStatus === 'completed'
+                    ? 'Verified'
+                    : kycStatus === 'in_progress'
+                    ? 'In Progress'
+                    : kycStatus === 'rejected'
+                    ? 'Rejected'
+                    : 'Not Started'}
                 </span>
                 <span className="text-slate-400">Level {currentLevel} / 4</span>
               </div>
@@ -216,10 +261,12 @@ export default function KYCVerification() {
             <div className="text-right">
               <div className="text-sm text-slate-400 mb-1">Current Limits</div>
               <div className="text-lg font-semibold">
-                Withdraw: {formatCurrency(kycLevels[currentLevel - 1].withdrawalLimit)}
+                Withdraw:{' '}
+                {formatCurrency(kycLevels[currentLevel - 1].withdrawalLimit)}
               </div>
               <div className="text-sm text-slate-400">
-                Trade: {formatCurrency(kycLevels[currentLevel - 1].tradingLimit)}
+                Trade:{' '}
+                {formatCurrency(kycLevels[currentLevel - 1].tradingLimit)}
               </div>
             </div>
           </div>
@@ -240,20 +287,28 @@ export default function KYCVerification() {
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <div className="text-xs text-slate-400 mb-1">Level {level.level}</div>
+                  <div className="text-xs text-slate-400 mb-1">
+                    Level {level.level}
+                  </div>
                   <h3 className="text-lg font-bold">{level.name}</h3>
                 </div>
-                {level.completed && <CheckCircle className="w-6 h-6 text-green-400" />}
+                {level.completed && (
+                  <CheckCircle className="w-6 h-6 text-green-400" />
+                )}
               </div>
 
               <div className="space-y-2 mb-4">
                 <div className="text-sm">
                   <div className="text-slate-400">Withdraw Limit</div>
-                  <div className="font-semibold">{formatCurrency(level.withdrawalLimit)}</div>
+                  <div className="font-semibold">
+                    {formatCurrency(level.withdrawalLimit)}
+                  </div>
                 </div>
                 <div className="text-sm">
                   <div className="text-slate-400">Trading Limit</div>
-                  <div className="font-semibold">{formatCurrency(level.tradingLimit)}</div>
+                  <div className="font-semibold">
+                    {formatCurrency(level.tradingLimit)}
+                  </div>
                 </div>
               </div>
 
@@ -283,7 +338,9 @@ export default function KYCVerification() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Full Name</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Full Name
+              </label>
               <input
                 type="text"
                 value={personalInfo.fullName}
@@ -292,7 +349,9 @@ export default function KYCVerification() {
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Date of Birth</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Date of Birth
+              </label>
               <input
                 type="text"
                 value={personalInfo.dateOfBirth}
@@ -301,7 +360,9 @@ export default function KYCVerification() {
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Nationality</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Nationality
+              </label>
               <input
                 type="text"
                 value={personalInfo.nationality}
@@ -310,7 +371,9 @@ export default function KYCVerification() {
               />
             </div>
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Country</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Country
+              </label>
               <input
                 type="text"
                 value={personalInfo.country}
@@ -319,7 +382,9 @@ export default function KYCVerification() {
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm text-slate-400 mb-2">Address</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Address
+              </label>
               <input
                 type="text"
                 value={`${personalInfo.address}, ${personalInfo.city}, ${personalInfo.state} ${personalInfo.zipCode}`}
@@ -353,13 +418,17 @@ export default function KYCVerification() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold">{getDocumentTypeLabel(doc.type)}</h3>
+                        <h3 className="font-semibold">
+                          {getDocumentTypeLabel(doc.type)}
+                        </h3>
                         {getStatusIcon(doc.status)}
                       </div>
                       <div className="text-sm text-slate-400">
                         Uploaded: {formatDate(doc.uploadedDate)}
-                        {doc.reviewedDate && ` • Reviewed: ${formatDate(doc.reviewedDate)}`}
-                        {doc.expiryDate && ` • Expires: ${formatDate(doc.expiryDate)}`}
+                        {doc.reviewedDate &&
+                          ` • Reviewed: ${formatDate(doc.reviewedDate)}`}
+                        {doc.expiryDate &&
+                          ` • Expires: ${formatDate(doc.expiryDate)}`}
                       </div>
                       {doc.status === 'rejected' && doc.rejectionReason && (
                         <div className="mt-2 p-2 bg-red-600/10 border border-red-600/20 rounded text-sm text-red-400">
@@ -368,7 +437,11 @@ export default function KYCVerification() {
                       )}
                     </div>
                   </div>
-                  <span className={`px-3 py-1 rounded-lg text-sm font-medium capitalize ${getStatusColor(doc.status)}`}>
+                  <span
+                    className={`px-3 py-1 rounded-lg text-sm font-medium capitalize ${getStatusColor(
+                      doc.status
+                    )}`}
+                  >
                     {doc.status}
                   </span>
                 </div>
@@ -382,9 +455,11 @@ export default function KYCVerification() {
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full border border-slate-700">
               <h3 className="text-xl font-bold mb-4">Upload Document</h3>
-              
+
               <div className="mb-6">
-                <label className="block text-sm text-slate-400 mb-2">Document Type</label>
+                <label className="block text-sm text-slate-400 mb-2">
+                  Document Type
+                </label>
                 <select
                   value={selectedDocType}
                   onChange={(e) => setSelectedDocType(e.target.value as any)}
@@ -398,7 +473,9 @@ export default function KYCVerification() {
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm text-slate-400 mb-2">Upload File</label>
+                <label className="block text-sm text-slate-400 mb-2">
+                  Upload File
+                </label>
                 <div className="border-2 border-dashed border-slate-600 rounded-lg p-8 text-center hover:border-blue-500 transition-colors cursor-pointer">
                   <input
                     type="file"
@@ -423,7 +500,9 @@ export default function KYCVerification() {
                 <div className="flex items-start gap-2">
                   <Shield className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-slate-300">
-                    <div className="font-semibold text-blue-400 mb-1">Document Requirements:</div>
+                    <div className="font-semibold text-blue-400 mb-1">
+                      Document Requirements:
+                    </div>
                     <ul className="space-y-1 text-xs">
                       <li>• Document must be in color and clearly visible</li>
                       <li>• All four corners must be visible</li>
@@ -457,9 +536,14 @@ export default function KYCVerification() {
           <div className="flex items-start gap-3">
             <Shield className="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-semibold text-blue-400 mb-2">Your Privacy Matters</h3>
+              <h3 className="font-semibold text-blue-400 mb-2">
+                Your Privacy Matters
+              </h3>
               <p className="text-sm text-slate-300">
-                All personal information and documents are encrypted and stored securely in compliance with GDPR, CCPA, and international data protection regulations. We will never share your data with third parties without your explicit consent.
+                All personal information and documents are encrypted and stored
+                securely in compliance with GDPR, CCPA, and international data
+                protection regulations. We will never share your data with third
+                parties without your explicit consent.
               </p>
             </div>
           </div>

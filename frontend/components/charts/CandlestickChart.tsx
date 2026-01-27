@@ -1,6 +1,6 @@
 'use client';
 
-import { Activity, TrendingUp, TrendingDown, Clock, ZoomIn, ZoomOut } from 'lucide-react';
+import { Activity, Clock, TrendingDown, TrendingUp, ZoomIn, ZoomOut } from 'lucide-react';
 import { useState } from 'react';
 
 interface CandleData {

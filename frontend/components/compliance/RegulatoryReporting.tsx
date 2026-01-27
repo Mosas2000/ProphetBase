@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { FileText, Download, Calendar, Filter, TrendingUp, DollarSign, Receipt, FileSpreadsheet } from 'lucide-react';
+import { DollarSign, Download, FileSpreadsheet, FileText, Receipt, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
 
 interface ComplianceReport {
   id: string;

@@ -51,7 +51,10 @@ export class WorkerPool {
   }> = [];
   private busyWorkers: Set<Worker> = new Set();
 
-  constructor(workerUrl: string, size: number = navigator.hardwareConcurrency || 4) {
+  constructor(
+    workerUrl: string,
+    size: number = navigator.hardwareConcurrency || 4
+  ) {
     for (let i = 0; i < size; i++) {
       const worker = new Worker(workerUrl);
       this.workers.push(worker);
@@ -402,7 +405,9 @@ export class WorkerPerformanceMonitor {
 
 // Create worker from function
 export function createWorkerFromFunction(fn: Function): Worker {
-  const blob = new Blob([`(${fn.toString()})()`], { type: 'application/javascript' });
+  const blob = new Blob([`(${fn.toString()})()`], {
+    type: 'application/javascript',
+  });
   const url = URL.createObjectURL(blob);
   return new Worker(url);
 }

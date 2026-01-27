@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { Keyboard, Command, ArrowUp } from 'lucide-react';
+import { ArrowUp, Command, Keyboard } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Keyboard shortcut configuration
 export interface KeyboardShortcut {

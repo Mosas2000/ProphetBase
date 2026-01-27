@@ -1,7 +1,7 @@
 'use client';
 
+import { MessageCircle, MessageSquare, Minus, Newspaper, TrendingDown, TrendingUp, Twitter, Users } from 'lucide-react';
 import React, { useState } from 'react';
-import { MessageSquare, TrendingUp, TrendingDown, Minus, Twitter, MessageCircle, Newspaper, Users } from 'lucide-react';
 
 interface SentimentSource {
   name: string;

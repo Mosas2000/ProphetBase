@@ -1,7 +1,7 @@
 'use client';
 
+import { Mic, Play, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Volume2, VolumeX, Mic, Play } from 'lucide-react';
 
 // Audio cue types
 export interface AudioCue {
@@ -22,7 +22,8 @@ export class AudioDescriptionManager {
 
   constructor() {
     if (typeof window !== 'undefined') {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      this.audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
       this.loadSettings();
     }
   }
@@ -140,7 +141,9 @@ export class VoiceNavigationManager {
 
   constructor() {
     if (typeof window !== 'undefined') {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const SpeechRecognition =
+        (window as any).SpeechRecognition ||
+        (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
         this.recognition = new SpeechRecognition();
         this.recognition.continuous = true;
@@ -148,7 +151,11 @@ export class VoiceNavigationManager {
         this.recognition.lang = 'en-US';
 
         this.recognition.onresult = (event: any) => {
-          const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+          const transcript = event.results[
+            event.results.length - 1
+          ][0].transcript
+            .toLowerCase()
+            .trim();
           this.handleCommand(transcript);
         };
 
@@ -304,8 +311,10 @@ export function useVoiceNavigation() {
 
 // Audio descriptions dashboard
 export function AudioDescriptionsDashboard() {
-  const { enabled, volume, toggleEnabled, setVolume, playBeep } = useAudioDescriptions();
-  const { listening, startListening, stopListening, registerCommand } = useVoiceNavigation();
+  const { enabled, volume, toggleEnabled, setVolume, playBeep } =
+    useAudioDescriptions();
+  const { listening, startListening, stopListening, registerCommand } =
+    useVoiceNavigation();
   const [feedback, setFeedback] = useState<string[]>([]);
 
   useEffect(() => {
@@ -326,7 +335,11 @@ export function AudioDescriptionsDashboard() {
   ];
 
   return (
-    <div className="p-6 bg-slate-800 rounded-xl" role="region" aria-label="Audio Descriptions Settings">
+    <div
+      className="p-6 bg-slate-800 rounded-xl"
+      role="region"
+      aria-label="Audio Descriptions Settings"
+    >
       <div className="flex items-center gap-3 mb-6">
         <Volume2 className="w-6 h-6 text-orange-400" />
         <h2 className="text-2xl font-bold">Audio Descriptions</h2>
@@ -344,13 +357,19 @@ export function AudioDescriptionsDashboard() {
                 }`}
                 aria-label={enabled ? 'Disable audio' : 'Enable audio'}
               >
-                {enabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+                {enabled ? (
+                  <Volume2 className="w-5 h-5" />
+                ) : (
+                  <VolumeX className="w-5 h-5" />
+                )}
               </button>
             </div>
 
             <div className="space-y-3">
               <div>
-                <label className="block text-sm mb-2">Volume: {Math.round(volume * 100)}%</label>
+                <label className="block text-sm mb-2">
+                  Volume: {Math.round(volume * 100)}%
+                </label>
                 <input
                   type="range"
                   min="0"
@@ -430,7 +449,9 @@ export function AudioDescriptionsDashboard() {
                 <div className="w-3 h-3 bg-purple-500 rounded-full" />
                 <div>
                   <div className="font-medium">Interactions</div>
-                  <div className="text-slate-400">Button clicks, form submission</div>
+                  <div className="text-slate-400">
+                    Button clicks, form submission
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -463,5 +484,7 @@ export function AudioDescriptionsDashboard() {
 }
 
 // Export singletons
-export const audioManager = typeof window !== 'undefined' ? new AudioDescriptionManager() : null;
-export const voiceManager = typeof window !== 'undefined' ? new VoiceNavigationManager() : null;
+export const audioManager =
+  typeof window !== 'undefined' ? new AudioDescriptionManager() : null;
+export const voiceManager =
+  typeof window !== 'undefined' ? new VoiceNavigationManager() : null;

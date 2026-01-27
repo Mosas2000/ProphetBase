@@ -1,6 +1,15 @@
 'use client';
 
-import { Award, CheckCircle, Clock, Gift, Lock, Send, Share2, Trophy } from 'lucide-react';
+import {
+  Award,
+  CheckCircle,
+  Clock,
+  Gift,
+  Lock,
+  Send,
+  Share2,
+  Trophy,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface Achievement {
@@ -35,10 +44,14 @@ interface Milestone {
 }
 
 export default function AchievementNFTs() {
-  const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'trading' | 'social' | 'milestones' | 'special'>('all');
+  const [selectedAchievement, setSelectedAchievement] =
+    useState<Achievement | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<
+    'all' | 'trading' | 'social' | 'milestones' | 'special'
+  >('all');
   const [showMintModal, setShowMintModal] = useState(false);
-  const [mintingAchievement, setMintingAchievement] = useState<Achievement | null>(null);
+  const [mintingAchievement, setMintingAchievement] =
+    useState<Achievement | null>(null);
   const [isMinting, setIsMinting] = useState(false);
 
   const [achievements, setAchievements] = useState<Achievement[]>([
@@ -59,8 +72,8 @@ export default function AchievementNFTs() {
       reward: {
         type: 'token',
         amount: 100,
-        description: '100 Prediction Tokens'
-      }
+        description: '100 Prediction Tokens',
+      },
     },
     {
       id: '2',
@@ -79,8 +92,8 @@ export default function AchievementNFTs() {
       reward: {
         type: 'boost',
         amount: 25,
-        description: '25% Trading Fee Discount for 30 days'
-      }
+        description: '25% Trading Fee Discount for 30 days',
+      },
     },
     {
       id: '3',
@@ -99,8 +112,8 @@ export default function AchievementNFTs() {
       reward: {
         type: 'exclusive',
         amount: 1,
-        description: 'Exclusive Diamond Hands Badge'
-      }
+        description: 'Exclusive Diamond Hands Badge',
+      },
     },
     {
       id: '4',
@@ -119,8 +132,8 @@ export default function AchievementNFTs() {
       reward: {
         type: 'token',
         amount: 500,
-        description: '500 Prediction Tokens'
-      }
+        description: '500 Prediction Tokens',
+      },
     },
     {
       id: '5',
@@ -139,8 +152,8 @@ export default function AchievementNFTs() {
       reward: {
         type: 'exclusive',
         amount: 1,
-        description: 'Lifetime VIP Status'
-      }
+        description: 'Lifetime VIP Status',
+      },
     },
     {
       id: '6',
@@ -159,8 +172,8 @@ export default function AchievementNFTs() {
       reward: {
         type: 'token',
         amount: 200,
-        description: '200 Prediction Tokens'
-      }
+        description: '200 Prediction Tokens',
+      },
     },
     {
       id: '7',
@@ -179,8 +192,8 @@ export default function AchievementNFTs() {
       reward: {
         type: 'boost',
         amount: 50,
-        description: '50% Fee Discount Permanently'
-      }
+        description: '50% Fee Discount Permanently',
+      },
     },
     {
       id: '8',
@@ -199,9 +212,9 @@ export default function AchievementNFTs() {
       reward: {
         type: 'exclusive',
         amount: 1,
-        description: 'Hall of Fame Entry'
-      }
-    }
+        description: 'Hall of Fame Entry',
+      },
+    },
   ]);
 
   const [milestones, setMilestones] = useState<Milestone[]>([
@@ -212,7 +225,7 @@ export default function AchievementNFTs() {
       requirement: 10,
       current: 10,
       reward: '🥉 Bronze Achievement',
-      completed: true
+      completed: true,
     },
     {
       id: 'm2',
@@ -221,7 +234,7 @@ export default function AchievementNFTs() {
       requirement: 50,
       current: 50,
       reward: '🥈 Silver Achievement',
-      completed: true
+      completed: true,
     },
     {
       id: 'm3',
@@ -230,7 +243,7 @@ export default function AchievementNFTs() {
       requirement: 100,
       current: 67,
       reward: '🥇 Gold Achievement',
-      completed: false
+      completed: false,
     },
     {
       id: 'm4',
@@ -239,8 +252,8 @@ export default function AchievementNFTs() {
       requirement: 500,
       current: 67,
       reward: '💎 Diamond Achievement',
-      completed: false
-    }
+      completed: false,
+    },
   ]);
 
   const handleMintNFT = async (achievement: Achievement) => {
@@ -250,16 +263,22 @@ export default function AchievementNFTs() {
 
   const confirmMint = async () => {
     if (!mintingAchievement) return;
-    
+
     setIsMinting(true);
     // Simulate minting process
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    setAchievements(prev => prev.map(ach =>
-      ach.id === mintingAchievement.id
-        ? { ...ach, nftMinted: true, nftTokenId: `0x${Date.now().toString(16)}` }
-        : ach
-    ));
+    setAchievements((prev) =>
+      prev.map((ach) =>
+        ach.id === mintingAchievement.id
+          ? {
+              ...ach,
+              nftMinted: true,
+              nftTokenId: `0x${Date.now().toString(16)}`,
+            }
+          : ach
+      )
+    );
 
     setIsMinting(false);
     setShowMintModal(false);
@@ -300,14 +319,14 @@ export default function AchievementNFTs() {
     }
   };
 
-  const filteredAchievements = achievements.filter(ach =>
-    selectedCategory === 'all' || ach.category === selectedCategory
+  const filteredAchievements = achievements.filter(
+    (ach) => selectedCategory === 'all' || ach.category === selectedCategory
   );
 
-  const unlockedCount = achievements.filter(ach => ach.unlocked).length;
-  const mintedCount = achievements.filter(ach => ach.nftMinted).length;
+  const unlockedCount = achievements.filter((ach) => ach.unlocked).length;
+  const mintedCount = achievements.filter((ach) => ach.nftMinted).length;
   const totalRewards = achievements
-    .filter(ach => ach.unlocked && ach.reward.type === 'token')
+    .filter((ach) => ach.unlocked && ach.reward.type === 'token')
     .reduce((sum, ach) => sum + ach.reward.amount, 0);
 
   return (
@@ -320,8 +339,12 @@ export default function AchievementNFTs() {
               <Trophy className="w-8 h-8 text-yellow-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Achievement NFTs</h1>
-              <p className="text-slate-400">Unlock, mint, and showcase your accomplishments</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                Achievement NFTs
+              </h1>
+              <p className="text-slate-400">
+                Unlock, mint, and showcase your accomplishments
+              </p>
             </div>
           </div>
         </div>
@@ -333,8 +356,13 @@ export default function AchievementNFTs() {
               <span className="text-slate-400 text-sm">Unlocked</span>
               <CheckCircle className="w-4 h-4 text-green-400" />
             </div>
-            <div className="text-2xl font-bold text-green-400">{unlockedCount} / {achievements.length}</div>
-            <div className="text-xs text-slate-400 mt-1">{Math.round((unlockedCount / achievements.length) * 100)}% Complete</div>
+            <div className="text-2xl font-bold text-green-400">
+              {unlockedCount} / {achievements.length}
+            </div>
+            <div className="text-xs text-slate-400 mt-1">
+              {Math.round((unlockedCount / achievements.length) * 100)}%
+              Complete
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -342,7 +370,9 @@ export default function AchievementNFTs() {
               <span className="text-slate-400 text-sm">NFTs Minted</span>
               <Award className="w-4 h-4 text-purple-400" />
             </div>
-            <div className="text-2xl font-bold text-purple-400">{mintedCount}</div>
+            <div className="text-2xl font-bold text-purple-400">
+              {mintedCount}
+            </div>
             <div className="text-xs text-slate-400 mt-1">Ready to trade</div>
           </div>
 
@@ -351,7 +381,9 @@ export default function AchievementNFTs() {
               <span className="text-slate-400 text-sm">Total Rewards</span>
               <Gift className="w-4 h-4 text-blue-400" />
             </div>
-            <div className="text-2xl font-bold text-blue-400">{totalRewards}</div>
+            <div className="text-2xl font-bold text-blue-400">
+              {totalRewards}
+            </div>
             <div className="text-xs text-slate-400 mt-1">Tokens earned</div>
           </div>
 
@@ -361,7 +393,10 @@ export default function AchievementNFTs() {
               <Clock className="w-4 h-4 text-yellow-400" />
             </div>
             <div className="text-2xl font-bold text-yellow-400">
-              {achievements.filter(ach => ach.unlocked && !ach.nftMinted).length}
+              {
+                achievements.filter((ach) => ach.unlocked && !ach.nftMinted)
+                  .length
+              }
             </div>
             <div className="text-xs text-slate-400 mt-1">Ready to mint</div>
           </div>
@@ -375,7 +410,7 @@ export default function AchievementNFTs() {
               { id: 'trading', label: 'Trading', icon: TrendingUp },
               { id: 'social', label: 'Social', icon: Share2 },
               { id: 'milestones', label: 'Milestones', icon: Award },
-              { id: 'special', label: 'Special', icon: Gift }
+              { id: 'special', label: 'Special', icon: Gift },
             ].map((cat: any) => (
               <button
                 key={cat.id}
@@ -400,35 +435,56 @@ export default function AchievementNFTs() {
               key={achievement.id}
               onClick={() => setSelectedAchievement(achievement)}
               className={`bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border cursor-pointer transition-all hover:scale-105 ${
-                achievement.unlocked 
-                  ? 'border-slate-700 hover:border-blue-500' 
+                achievement.unlocked
+                  ? 'border-slate-700 hover:border-blue-500'
                   : 'border-slate-800 opacity-60'
               }`}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${getRarityColor(achievement.rarity)} flex items-center justify-center text-3xl`}>
-                  {achievement.unlocked ? achievement.icon : <Lock className="w-8 h-8 text-slate-400" />}
+                <div
+                  className={`w-16 h-16 rounded-xl bg-gradient-to-br ${getRarityColor(
+                    achievement.rarity
+                  )} flex items-center justify-center text-3xl`}
+                >
+                  {achievement.unlocked ? (
+                    achievement.icon
+                  ) : (
+                    <Lock className="w-8 h-8 text-slate-400" />
+                  )}
                 </div>
-                <div className={`px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityBadgeColor(achievement.rarity)}`}>
+                <div
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityBadgeColor(
+                    achievement.rarity
+                  )}`}
+                >
                   {achievement.rarity.toUpperCase()}
                 </div>
               </div>
 
               <h3 className="font-bold text-lg mb-2">{achievement.name}</h3>
-              <p className="text-sm text-slate-400 mb-4">{achievement.description}</p>
+              <p className="text-sm text-slate-400 mb-4">
+                {achievement.description}
+              </p>
 
               {achievement.unlocked ? (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-green-400">
                     <CheckCircle className="w-4 h-4" />
-                    Unlocked {achievement.unlockedDate ? new Date(achievement.unlockedDate).toLocaleDateString() : ''}
+                    Unlocked{' '}
+                    {achievement.unlockedDate
+                      ? new Date(achievement.unlockedDate).toLocaleDateString()
+                      : ''}
                   </div>
 
                   {achievement.nftMinted ? (
                     <div className="space-y-2">
                       <div className="bg-purple-600/10 border border-purple-600/30 rounded-lg p-3">
-                        <div className="text-xs text-purple-400 mb-1">NFT Token ID</div>
-                        <div className="font-mono text-sm">{achievement.nftTokenId}</div>
+                        <div className="text-xs text-purple-400 mb-1">
+                          NFT Token ID
+                        </div>
+                        <div className="font-mono text-sm">
+                          {achievement.nftTokenId}
+                        </div>
                       </div>
                       <div className="flex gap-2">
                         <button className="flex-1 px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
@@ -458,7 +514,9 @@ export default function AchievementNFTs() {
 
                   <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-3">
                     <div className="text-xs text-blue-400 mb-1">Reward</div>
-                    <div className="text-sm font-semibold">{achievement.reward.description}</div>
+                    <div className="text-sm font-semibold">
+                      {achievement.reward.description}
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -467,20 +525,31 @@ export default function AchievementNFTs() {
                     <div className="flex items-center justify-between text-sm mb-2">
                       <span className="text-slate-400">Progress</span>
                       <span className="font-semibold">
-                        {achievement.progress.toLocaleString()} / {achievement.maxProgress.toLocaleString()}
+                        {achievement.progress.toLocaleString()} /{' '}
+                        {achievement.maxProgress.toLocaleString()}
                       </span>
                     </div>
                     <div className="w-full bg-slate-700 rounded-full h-2">
                       <div
                         className="bg-gradient-to-r from-blue-600 to-purple-600 h-full rounded-full"
-                        style={{ width: `${Math.min((achievement.progress / achievement.maxProgress) * 100, 100)}%` }}
+                        style={{
+                          width: `${Math.min(
+                            (achievement.progress / achievement.maxProgress) *
+                              100,
+                            100
+                          )}%`,
+                        }}
                       />
                     </div>
                   </div>
 
                   <div className="bg-slate-700/50 rounded-lg p-3">
-                    <div className="text-xs text-slate-400 mb-1">Locked Reward</div>
-                    <div className="text-sm font-semibold text-slate-300">{achievement.reward.description}</div>
+                    <div className="text-xs text-slate-400 mb-1">
+                      Locked Reward
+                    </div>
+                    <div className="text-sm font-semibold text-slate-300">
+                      {achievement.reward.description}
+                    </div>
                   </div>
                 </div>
               )}
@@ -491,42 +560,57 @@ export default function AchievementNFTs() {
         {/* Milestones Section */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
           <h2 className="text-xl font-bold mb-6">Milestone Tracker</h2>
-          
+
           <div className="space-y-4">
             {milestones.map((milestone) => (
-              <div key={milestone.id} className="bg-slate-700/50 rounded-lg p-4">
+              <div
+                key={milestone.id}
+                className="bg-slate-700/50 rounded-lg p-4"
+              >
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <h3 className="font-semibold">{milestone.title}</h3>
-                    <p className="text-sm text-slate-400">{milestone.description}</p>
+                    <p className="text-sm text-slate-400">
+                      {milestone.description}
+                    </p>
                   </div>
-                  {milestone.completed && <CheckCircle className="w-6 h-6 text-green-400" />}
+                  {milestone.completed && (
+                    <CheckCircle className="w-6 h-6 text-green-400" />
+                  )}
                 </div>
 
                 <div className="mb-3">
                   <div className="flex items-center justify-between text-sm mb-2">
                     <span className="text-slate-400">Progress</span>
                     <span className="font-semibold">
-                      {milestone.current.toLocaleString()} / {milestone.requirement.toLocaleString()}
+                      {milestone.current.toLocaleString()} /{' '}
+                      {milestone.requirement.toLocaleString()}
                     </span>
                   </div>
                   <div className="w-full bg-slate-600 rounded-full h-2">
                     <div
                       className={`h-full rounded-full ${
-                        milestone.completed 
-                          ? 'bg-green-500' 
+                        milestone.completed
+                          ? 'bg-green-500'
                           : 'bg-gradient-to-r from-blue-600 to-purple-600'
                       }`}
-                      style={{ width: `${Math.min((milestone.current / milestone.requirement) * 100, 100)}%` }}
+                      style={{
+                        width: `${Math.min(
+                          (milestone.current / milestone.requirement) * 100,
+                          100
+                        )}%`,
+                      }}
                     />
                   </div>
                 </div>
 
-                <div className={`px-3 py-2 rounded-lg text-sm ${
-                  milestone.completed 
-                    ? 'bg-green-600/20 text-green-400' 
-                    : 'bg-slate-600/20 text-slate-400'
-                }`}>
+                <div
+                  className={`px-3 py-2 rounded-lg text-sm ${
+                    milestone.completed
+                      ? 'bg-green-600/20 text-green-400'
+                      : 'bg-slate-600/20 text-slate-400'
+                  }`}
+                >
                   Reward: {milestone.reward}
                 </div>
               </div>
@@ -541,19 +625,34 @@ export default function AchievementNFTs() {
               <h3 className="text-xl font-bold mb-4">Mint Achievement NFT</h3>
 
               <div className="mb-6">
-                <div className={`w-full h-48 rounded-xl bg-gradient-to-br ${getRarityColor(mintingAchievement.rarity)} flex items-center justify-center text-6xl mb-4`}>
+                <div
+                  className={`w-full h-48 rounded-xl bg-gradient-to-br ${getRarityColor(
+                    mintingAchievement.rarity
+                  )} flex items-center justify-center text-6xl mb-4`}
+                >
                   {mintingAchievement.icon}
                 </div>
 
-                <h4 className="font-bold text-lg mb-2">{mintingAchievement.name}</h4>
-                <p className="text-sm text-slate-400 mb-4">{mintingAchievement.description}</p>
+                <h4 className="font-bold text-lg mb-2">
+                  {mintingAchievement.name}
+                </h4>
+                <p className="text-sm text-slate-400 mb-4">
+                  {mintingAchievement.description}
+                </p>
 
                 <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mb-4">
-                  <div className="text-sm text-blue-400 mb-2">Minting Details:</div>
+                  <div className="text-sm text-blue-400 mb-2">
+                    Minting Details:
+                  </div>
                   <ul className="space-y-1 text-sm text-slate-300">
                     <li>• NFT will be stored on IPFS</li>
                     <li>• Gas fee: ~0.002 ETH (~$5)</li>
-                    <li>• {mintingAchievement.transferrable ? 'Transferrable' : 'Soulbound (Non-transferrable)'}</li>
+                    <li>
+                      •{' '}
+                      {mintingAchievement.transferrable
+                        ? 'Transferrable'
+                        : 'Soulbound (Non-transferrable)'}
+                    </li>
                     <li>• ERC-721 standard compliant</li>
                   </ul>
                 </div>

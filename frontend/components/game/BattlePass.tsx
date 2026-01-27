@@ -1,6 +1,6 @@
 'use client';
 
-import { Award, Lock, Star, Zap, Gift, Crown, Clock, TrendingUp } from 'lucide-react';
+import { Award, Clock, Crown, Gift, Lock, Star, TrendingUp, Zap } from 'lucide-react';
 import { useState } from 'react';
 
 interface Reward {

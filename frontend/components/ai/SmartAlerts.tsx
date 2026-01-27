@@ -1,7 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Bell, TrendingUp, AlertTriangle, Target, Zap, Settings, Activity, MessageSquare } from 'lucide-react';
+import {
+  Activity,
+  AlertTriangle,
+  Bell,
+  MessageSquare,
+  Settings,
+  Target,
+  TrendingUp,
+  Zap,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface Alert {
   id: string;
@@ -27,7 +36,9 @@ interface AlertRule {
 
 export default function SmartAlerts() {
   const [activeTab, setActiveTab] = useState<'alerts' | 'rules'>('alerts');
-  const [filterPriority, setFilterPriority] = useState<'all' | 'critical' | 'high' | 'medium' | 'low'>('all');
+  const [filterPriority, setFilterPriority] = useState<
+    'all' | 'critical' | 'high' | 'medium' | 'low'
+  >('all');
   const [showSettings, setShowSettings] = useState(false);
 
   const [alerts, setAlerts] = useState<Alert[]>([
@@ -36,7 +47,8 @@ export default function SmartAlerts() {
       type: 'price',
       priority: 'critical',
       title: 'Significant Price Movement Detected',
-      message: 'Bitcoin market price increased by 12% in the last hour - highly unusual pattern detected',
+      message:
+        'Bitcoin market price increased by 12% in the last hour - highly unusual pattern detected',
       marketTitle: 'Will Bitcoin reach $100k by Q2 2026?',
       timestamp: new Date(Date.now() - 1000 * 60 * 5),
       actionable: true,
@@ -48,7 +60,8 @@ export default function SmartAlerts() {
       type: 'opportunity',
       priority: 'high',
       title: 'Trading Opportunity Identified',
-      message: 'AI models show 85% confidence for upward movement in next 24 hours',
+      message:
+        'AI models show 85% confidence for upward movement in next 24 hours',
       marketTitle: 'Will Bitcoin reach $100k by Q2 2026?',
       timestamp: new Date(Date.now() - 1000 * 60 * 15),
       actionable: true,
@@ -60,7 +73,8 @@ export default function SmartAlerts() {
       type: 'pattern',
       priority: 'high',
       title: 'Bullish Pattern Confirmed',
-      message: 'Cup and Handle pattern completed with 82% historical success rate',
+      message:
+        'Cup and Handle pattern completed with 82% historical success rate',
       marketTitle: 'Will Bitcoin reach $100k by Q2 2026?',
       timestamp: new Date(Date.now() - 1000 * 60 * 30),
       actionable: true,
@@ -83,7 +97,8 @@ export default function SmartAlerts() {
       type: 'sentiment',
       priority: 'medium',
       title: 'Sentiment Shift Detected',
-      message: 'Social sentiment turned bearish with -15% change in last 6 hours',
+      message:
+        'Social sentiment turned bearish with -15% change in last 6 hours',
       marketTitle: 'Will inflation exceed 3% in 2026?',
       timestamp: new Date(Date.now() - 1000 * 60 * 60),
       actionable: false,
@@ -153,11 +168,12 @@ export default function SmartAlerts() {
     },
   ]);
 
-  const filteredAlerts = filterPriority === 'all' 
-    ? alerts 
-    : alerts.filter(a => a.priority === filterPriority);
+  const filteredAlerts =
+    filterPriority === 'all'
+      ? alerts
+      : alerts.filter((a) => a.priority === filterPriority);
 
-  const unreadCount = alerts.filter(a => !a.isRead).length;
+  const unreadCount = alerts.filter((a) => !a.isRead).length;
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -213,11 +229,11 @@ export default function SmartAlerts() {
   };
 
   const markAsRead = (id: string) => {
-    setAlerts(alerts.map(a => a.id === id ? { ...a, isRead: true } : a));
+    setAlerts(alerts.map((a) => (a.id === id ? { ...a, isRead: true } : a)));
   };
 
   const markAllAsRead = () => {
-    setAlerts(alerts.map(a => ({ ...a, isRead: true })));
+    setAlerts(alerts.map((a) => ({ ...a, isRead: true })));
   };
 
   const getTimeAgo = (date: Date) => {
@@ -248,7 +264,9 @@ export default function SmartAlerts() {
               </div>
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold">Smart Alerts</h1>
-                <p className="text-slate-400">AI-powered intelligent notifications</p>
+                <p className="text-slate-400">
+                  AI-powered intelligent notifications
+                </p>
               </div>
             </div>
             <button
@@ -264,28 +282,32 @@ export default function SmartAlerts() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Total Alerts</div>
-            <div className="text-2xl font-bold text-blue-400">{alerts.length}</div>
+            <div className="text-2xl font-bold text-blue-400">
+              {alerts.length}
+            </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Unread</div>
-            <div className="text-2xl font-bold text-orange-400">{unreadCount}</div>
+            <div className="text-2xl font-bold text-orange-400">
+              {unreadCount}
+            </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Critical</div>
             <div className="text-2xl font-bold text-red-400">
-              {alerts.filter(a => a.priority === 'critical').length}
+              {alerts.filter((a) => a.priority === 'critical').length}
             </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Actionable</div>
             <div className="text-2xl font-bold text-green-400">
-              {alerts.filter(a => a.actionable).length}
+              {alerts.filter((a) => a.actionable).length}
             </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Active Rules</div>
             <div className="text-2xl font-bold text-purple-400">
-              {alertRules.filter(r => r.enabled).length}
+              {alertRules.filter((r) => r.enabled).length}
             </div>
           </div>
         </div>
@@ -347,24 +369,36 @@ export default function SmartAlerts() {
                   <div
                     key={alert.id}
                     className={`bg-slate-700/50 rounded-lg p-4 border transition-all ${
-                      alert.isRead 
-                        ? 'border-slate-600 opacity-70' 
+                      alert.isRead
+                        ? 'border-slate-600 opacity-70'
                         : 'border-blue-500/30 hover:border-blue-500/50'
                     }`}
                   >
                     <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-lg ${getTypeColor(alert.type)} bg-slate-600`}>
+                      <div
+                        className={`p-3 rounded-lg ${getTypeColor(
+                          alert.type
+                        )} bg-slate-600`}
+                      >
                         {getTypeIcon(alert.type)}
                       </div>
 
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <h3 className="font-semibold text-lg mb-1">{alert.title}</h3>
-                            <div className="text-sm text-slate-400">{alert.marketTitle}</div>
+                            <h3 className="font-semibold text-lg mb-1">
+                              {alert.title}
+                            </h3>
+                            <div className="text-sm text-slate-400">
+                              {alert.marketTitle}
+                            </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className={`px-3 py-1 rounded-lg text-xs font-semibold border ${getPriorityColor(alert.priority)}`}>
+                            <span
+                              className={`px-3 py-1 rounded-lg text-xs font-semibold border ${getPriorityColor(
+                                alert.priority
+                              )}`}
+                            >
                               {alert.priority.toUpperCase()}
                             </span>
                             {!alert.isRead && (
@@ -385,9 +419,13 @@ export default function SmartAlerts() {
                           <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-3 mb-3">
                             <div className="flex items-center gap-2 mb-1">
                               <Zap className="w-4 h-4 text-blue-400" />
-                              <span className="text-sm font-semibold text-blue-400">Suggested Action</span>
+                              <span className="text-sm font-semibold text-blue-400">
+                                Suggested Action
+                              </span>
                             </div>
-                            <p className="text-sm text-slate-300">{alert.suggestedAction}</p>
+                            <p className="text-sm text-slate-300">
+                              {alert.suggestedAction}
+                            </p>
                           </div>
                         )}
 
@@ -407,15 +445,24 @@ export default function SmartAlerts() {
             <div className="p-6">
               <div className="space-y-4">
                 {alertRules.map((rule) => (
-                  <div key={rule.id} className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+                  <div
+                    key={rule.id}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg ${getTypeColor(rule.type)} bg-slate-600`}>
+                        <div
+                          className={`p-2 rounded-lg ${getTypeColor(
+                            rule.type
+                          )} bg-slate-600`}
+                        >
                           {getTypeIcon(rule.type)}
                         </div>
                         <div>
                           <h3 className="font-semibold">{rule.name}</h3>
-                          <div className="text-sm text-slate-400 capitalize">{rule.type} Alert</div>
+                          <div className="text-sm text-slate-400 capitalize">
+                            {rule.type} Alert
+                          </div>
                         </div>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
@@ -432,7 +479,9 @@ export default function SmartAlerts() {
                     <div className="bg-slate-600/50 rounded-lg p-3">
                       <div className="text-sm text-slate-300">
                         <span className="text-slate-400">{rule.condition}</span>
-                        <span className="font-semibold text-blue-400 ml-2">{rule.threshold}%</span>
+                        <span className="font-semibold text-blue-400 ml-2">
+                          {rule.threshold}%
+                        </span>
                       </div>
                     </div>
                   </div>

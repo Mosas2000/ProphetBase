@@ -1,6 +1,6 @@
 'use client';
 
-import { Medal, TrendingUp, TrendingDown, Crown, Target } from 'lucide-react';
+import { Crown, Medal, Target, TrendingDown, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 interface Rank {
@@ -26,35 +26,106 @@ export default function RankSystem() {
   const [decayActive, setDecayActive] = useState(true);
 
   const [ranks] = useState<Rank[]>([
-    { id: 'r1', name: 'Bronze', tier: 1, minPoints: 0, maxPoints: 999, icon: '🥉', color: 'text-amber-700' },
-    { id: 'r2', name: 'Silver', tier: 2, minPoints: 1000, maxPoints: 1999, icon: '🥈', color: 'text-slate-400' },
-    { id: 'r3', name: 'Gold', tier: 3, minPoints: 2000, maxPoints: 2999, icon: '🥇', color: 'text-amber-400' },
-    { id: 'r4', name: 'Platinum', tier: 4, minPoints: 3000, maxPoints: 3999, icon: '💎', color: 'text-cyan-400' },
-    { id: 'r5', name: 'Diamond', tier: 5, minPoints: 4000, maxPoints: 4999, icon: '💠', color: 'text-blue-400' },
-    { id: 'r6', name: 'Master', tier: 6, minPoints: 5000, maxPoints: 5999, icon: '⭐', color: 'text-purple-400' },
-    { id: 'r7', name: 'Grandmaster', tier: 7, minPoints: 6000, maxPoints: 6999, icon: '🌟', color: 'text-violet-400' },
-    { id: 'r8', name: 'Legend', tier: 8, minPoints: 7000, maxPoints: 99999, icon: '👑', color: 'text-amber-300' }
+    {
+      id: 'r1',
+      name: 'Bronze',
+      tier: 1,
+      minPoints: 0,
+      maxPoints: 999,
+      icon: '🥉',
+      color: 'text-amber-700',
+    },
+    {
+      id: 'r2',
+      name: 'Silver',
+      tier: 2,
+      minPoints: 1000,
+      maxPoints: 1999,
+      icon: '🥈',
+      color: 'text-slate-400',
+    },
+    {
+      id: 'r3',
+      name: 'Gold',
+      tier: 3,
+      minPoints: 2000,
+      maxPoints: 2999,
+      icon: '🥇',
+      color: 'text-amber-400',
+    },
+    {
+      id: 'r4',
+      name: 'Platinum',
+      tier: 4,
+      minPoints: 3000,
+      maxPoints: 3999,
+      icon: '💎',
+      color: 'text-cyan-400',
+    },
+    {
+      id: 'r5',
+      name: 'Diamond',
+      tier: 5,
+      minPoints: 4000,
+      maxPoints: 4999,
+      icon: '💠',
+      color: 'text-blue-400',
+    },
+    {
+      id: 'r6',
+      name: 'Master',
+      tier: 6,
+      minPoints: 5000,
+      maxPoints: 5999,
+      icon: '⭐',
+      color: 'text-purple-400',
+    },
+    {
+      id: 'r7',
+      name: 'Grandmaster',
+      tier: 7,
+      minPoints: 6000,
+      maxPoints: 6999,
+      icon: '🌟',
+      color: 'text-violet-400',
+    },
+    {
+      id: 'r8',
+      name: 'Legend',
+      tier: 8,
+      minPoints: 7000,
+      maxPoints: 99999,
+      icon: '👑',
+      color: 'text-amber-300',
+    },
   ]);
 
   const [rankHistory] = useState<RankHistory[]>([
     { season: 1, rank: 'Silver', points: 1750, position: 1234 },
     { season: 2, rank: 'Gold', points: 2400, position: 567 },
-    { season: 3, rank: 'Gold', points: 2850, position: 423 }
+    { season: 3, rank: 'Gold', points: 2850, position: 423 },
   ]);
 
   const getCurrentRank = () => {
-    return ranks.find(r => currentPoints >= r.minPoints && currentPoints <= r.maxPoints) || ranks[0];
+    return (
+      ranks.find(
+        (r) => currentPoints >= r.minPoints && currentPoints <= r.maxPoints
+      ) || ranks[0]
+    );
   };
 
   const getNextRank = () => {
     const currentRank = getCurrentRank();
-    return ranks.find(r => r.tier === currentRank.tier + 1);
+    return ranks.find((r) => r.tier === currentRank.tier + 1);
   };
 
   const currentRank = getCurrentRank();
   const nextRank = getNextRank();
   const pointsToNext = nextRank ? nextRank.minPoints - currentPoints : 0;
-  const progressPercent = ((currentPoints - currentRank.minPoints) / (currentRank.maxPoints - currentRank.minPoints)) * 100;
+  const progressPercent =
+    ((currentPoints - currentRank.minPoints) /
+      (currentRank.maxPoints - currentRank.minPoints)) *
+    100;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4 md:p-8">
@@ -65,7 +136,9 @@ export default function RankSystem() {
           </div>
           <div>
             <h1 className="text-3xl md:text-4xl font-bold">Ranked System</h1>
-            <p className="text-slate-400">Compete for glory and exclusive rewards</p>
+            <p className="text-slate-400">
+              Compete for glory and exclusive rewards
+            </p>
           </div>
         </div>
 
@@ -76,23 +149,35 @@ export default function RankSystem() {
               <div className="text-8xl">{currentRank.icon}</div>
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <h2 className={`text-4xl font-bold ${currentRank.color}`}>{currentRank.name}</h2>
+                  <h2 className={`text-4xl font-bold ${currentRank.color}`}>
+                    {currentRank.name}
+                  </h2>
                   <Crown className="w-8 h-8 text-amber-400" />
                 </div>
-                <div className="text-2xl text-slate-300 mb-2">{currentPoints.toLocaleString()} LP</div>
-                <div className="text-slate-400">Season {currentSeason} • Global Rank #423</div>
+                <div className="text-2xl text-slate-300 mb-2">
+                  {currentPoints.toLocaleString()} LP
+                </div>
+                <div className="text-slate-400">
+                  Season {currentSeason} • Global Rank #423
+                </div>
               </div>
             </div>
             <div className="text-right">
               {nextRank && (
                 <>
                   <div className="text-sm text-slate-400 mb-2">Next Rank</div>
-                  <div className={`text-3xl font-bold ${nextRank.color} mb-2`}>{nextRank.name}</div>
-                  <div className="text-lg text-slate-300">{pointsToNext} LP needed</div>
+                  <div className={`text-3xl font-bold ${nextRank.color} mb-2`}>
+                    {nextRank.name}
+                  </div>
+                  <div className="text-lg text-slate-300">
+                    {pointsToNext} LP needed
+                  </div>
                 </>
               )}
               {!nextRank && (
-                <div className="text-2xl font-bold text-amber-400">MAX RANK</div>
+                <div className="text-2xl font-bold text-amber-400">
+                  MAX RANK
+                </div>
               )}
             </div>
           </div>
@@ -101,7 +186,9 @@ export default function RankSystem() {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-slate-400">Rank Progress</span>
-                <span className="text-sm font-bold">{Math.floor(progressPercent)}%</span>
+                <span className="text-sm font-bold">
+                  {Math.floor(progressPercent)}%
+                </span>
               </div>
               <div className="h-4 bg-slate-700 rounded-full overflow-hidden">
                 <div
@@ -149,40 +236,50 @@ export default function RankSystem() {
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-6">
           <h2 className="text-2xl font-bold mb-6">Rank Progression</h2>
           <div className="space-y-4">
-            {ranks.slice().reverse().map((rank) => (
-              <div
-                key={rank.id}
-                className={`p-4 rounded-xl border-2 transition-all ${
-                  rank.id === currentRank.id
-                    ? 'bg-purple-500/20 border-purple-500 scale-105'
-                    : currentPoints >= rank.minPoints
-                    ? 'bg-green-500/10 border-green-500/30'
-                    : 'bg-slate-700/30 border-slate-600/30'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="text-4xl">{rank.icon}</div>
-                    <div>
-                      <h3 className={`text-2xl font-bold ${rank.color}`}>{rank.name}</h3>
-                      <div className="text-sm text-slate-400">
-                        {rank.minPoints.toLocaleString()} - {rank.maxPoints === 99999 ? '∞' : rank.maxPoints.toLocaleString()} LP
+            {ranks
+              .slice()
+              .reverse()
+              .map((rank) => (
+                <div
+                  key={rank.id}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    rank.id === currentRank.id
+                      ? 'bg-purple-500/20 border-purple-500 scale-105'
+                      : currentPoints >= rank.minPoints
+                      ? 'bg-green-500/10 border-green-500/30'
+                      : 'bg-slate-700/30 border-slate-600/30'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="text-4xl">{rank.icon}</div>
+                      <div>
+                        <h3 className={`text-2xl font-bold ${rank.color}`}>
+                          {rank.name}
+                        </h3>
+                        <div className="text-sm text-slate-400">
+                          {rank.minPoints.toLocaleString()} -{' '}
+                          {rank.maxPoints === 99999
+                            ? '∞'
+                            : rank.maxPoints.toLocaleString()}{' '}
+                          LP
+                        </div>
                       </div>
                     </div>
+                    {rank.id === currentRank.id && (
+                      <div className="px-4 py-2 bg-purple-600 rounded-lg font-bold">
+                        Current Rank
+                      </div>
+                    )}
+                    {currentPoints >= rank.minPoints &&
+                      rank.id !== currentRank.id && (
+                        <div className="px-4 py-2 bg-green-500/20 border border-green-500 rounded-lg font-bold text-green-400">
+                          ✓ Achieved
+                        </div>
+                      )}
                   </div>
-                  {rank.id === currentRank.id && (
-                    <div className="px-4 py-2 bg-purple-600 rounded-lg font-bold">
-                      Current Rank
-                    </div>
-                  )}
-                  {currentPoints >= rank.minPoints && rank.id !== currentRank.id && (
-                    <div className="px-4 py-2 bg-green-500/20 border border-green-500 rounded-lg font-bold text-green-400">
-                      ✓ Achieved
-                    </div>
-                  )}
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
 
@@ -197,7 +294,9 @@ export default function RankSystem() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Your Rank:</span>
-                <span className={`font-bold ${currentRank.color}`}>{currentRank.name}</span>
+                <span className={`font-bold ${currentRank.color}`}>
+                  {currentRank.name}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Highest Rank:</span>
@@ -215,7 +314,11 @@ export default function RankSystem() {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-slate-400">Status:</span>
-                <span className={`font-bold ${decayActive ? 'text-orange-400' : 'text-green-400'}`}>
+                <span
+                  className={`font-bold ${
+                    decayActive ? 'text-orange-400' : 'text-green-400'
+                  }`}
+                >
                   {decayActive ? 'Active' : 'Inactive'}
                 </span>
               </div>
@@ -243,16 +346,25 @@ export default function RankSystem() {
           <h3 className="text-xl font-bold mb-4">Season History</h3>
           <div className="space-y-3">
             {rankHistory.map((history) => (
-              <div key={history.season} className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+              <div
+                key={history.season}
+                className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg"
+              >
                 <div className="flex items-center gap-4">
-                  <div className="text-2xl font-bold text-slate-600">S{history.season}</div>
+                  <div className="text-2xl font-bold text-slate-600">
+                    S{history.season}
+                  </div>
                   <div>
                     <div className="font-bold">{history.rank}</div>
-                    <div className="text-sm text-slate-400">{history.points} LP</div>
+                    <div className="text-sm text-slate-400">
+                      {history.points} LP
+                    </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-lg font-bold text-purple-400">#{history.position}</div>
+                  <div className="text-lg font-bold text-purple-400">
+                    #{history.position}
+                  </div>
                   <div className="text-sm text-slate-400">Global Rank</div>
                 </div>
               </div>
