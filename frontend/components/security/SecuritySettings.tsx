@@ -1,7 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Settings, Shield, Bell, Lock, Key, Eye, Mail, Smartphone, AlertTriangle } from 'lucide-react';
+import {
+  AlertTriangle,
+  Bell,
+  Eye,
+  Key,
+  Lock,
+  Mail,
+  Settings,
+  Shield,
+  Smartphone,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface SecurityPreference {
   id: string;
@@ -29,7 +39,9 @@ interface PasswordPolicy {
 }
 
 export default function SecuritySettings() {
-  const [securityPreferences, setSecurityPreferences] = useState<SecurityPreference[]>([
+  const [securityPreferences, setSecurityPreferences] = useState<
+    SecurityPreference[]
+  >([
     {
       id: '1',
       name: 'Two-Factor Authentication',
@@ -102,13 +114,27 @@ export default function SecuritySettings() {
     },
   ]);
 
-  const [notificationSettings, setNotificationSettings] = useState<NotificationSetting[]>([
+  const [notificationSettings, setNotificationSettings] = useState<
+    NotificationSetting[]
+  >([
     { id: '1', type: 'Login Attempts', email: true, sms: true, push: true },
     { id: '2', type: 'Large Transactions', email: true, sms: true, push: true },
-    { id: '3', type: 'Withdrawal Requests', email: true, sms: false, push: true },
+    {
+      id: '3',
+      type: 'Withdrawal Requests',
+      email: true,
+      sms: false,
+      push: true,
+    },
     { id: '4', type: 'Security Alerts', email: true, sms: true, push: true },
     { id: '5', type: 'KYC Updates', email: true, sms: false, push: false },
-    { id: '6', type: 'Market Activities', email: false, sms: false, push: true },
+    {
+      id: '6',
+      type: 'Market Activities',
+      email: false,
+      sms: false,
+      push: true,
+    },
   ]);
 
   const [passwordPolicy, setPasswordPolicy] = useState<PasswordPolicy>({
@@ -125,24 +151,33 @@ export default function SecuritySettings() {
   const [recoveryEmail, setRecoveryEmail] = useState('john.doe@example.com');
   const [recoveryPhone, setRecoveryPhone] = useState('+1 (555) 123-4567');
 
-  const [activeTab, setActiveTab] = useState<'general' | 'notifications' | 'password' | 'recovery'>('general');
+  const [activeTab, setActiveTab] = useState<
+    'general' | 'notifications' | 'password' | 'recovery'
+  >('general');
 
   const togglePreference = (id: string) => {
-    setSecurityPreferences(prev =>
-      prev.map(pref => (pref.id === id ? { ...pref, enabled: !pref.enabled } : pref))
+    setSecurityPreferences((prev) =>
+      prev.map((pref) =>
+        pref.id === id ? { ...pref, enabled: !pref.enabled } : pref
+      )
     );
   };
 
-  const toggleNotification = (id: string, channel: 'email' | 'sms' | 'push') => {
-    setNotificationSettings(prev =>
-      prev.map(setting =>
-        setting.id === id ? { ...setting, [channel]: !setting[channel] } : setting
+  const toggleNotification = (
+    id: string,
+    channel: 'email' | 'sms' | 'push'
+  ) => {
+    setNotificationSettings((prev) =>
+      prev.map((setting) =>
+        setting.id === id
+          ? { ...setting, [channel]: !setting[channel] }
+          : setting
       )
     );
   };
 
   const getPreferencesByCategory = (category: string) => {
-    return securityPreferences.filter(pref => pref.category === category);
+    return securityPreferences.filter((pref) => pref.category === category);
   };
 
   return (
@@ -155,8 +190,12 @@ export default function SecuritySettings() {
               <Settings className="w-8 h-8 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Security Settings</h1>
-              <p className="text-slate-400">Manage your security preferences and account protection</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                Security Settings
+              </h1>
+              <p className="text-slate-400">
+                Manage your security preferences and account protection
+              </p>
             </div>
           </div>
         </div>
@@ -196,10 +235,15 @@ export default function SecuritySettings() {
 
               <div className="space-y-4">
                 {getPreferencesByCategory('authentication').map((pref) => (
-                  <div key={pref.id} className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+                  <div
+                    key={pref.id}
+                    className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg"
+                  >
                     <div className="flex-1">
                       <h3 className="font-semibold mb-1">{pref.name}</h3>
-                      <p className="text-sm text-slate-400">{pref.description}</p>
+                      <p className="text-sm text-slate-400">
+                        {pref.description}
+                      </p>
                     </div>
                     <button
                       onClick={() => togglePreference(pref.id)}
@@ -262,10 +306,15 @@ export default function SecuritySettings() {
 
               <div className="space-y-4">
                 {getPreferencesByCategory('privacy').map((pref) => (
-                  <div key={pref.id} className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+                  <div
+                    key={pref.id}
+                    className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg"
+                  >
                     <div className="flex-1">
                       <h3 className="font-semibold mb-1">{pref.name}</h3>
-                      <p className="text-sm text-slate-400">{pref.description}</p>
+                      <p className="text-sm text-slate-400">
+                        {pref.description}
+                      </p>
                     </div>
                     <button
                       onClick={() => togglePreference(pref.id)}
@@ -296,7 +345,9 @@ export default function SecuritySettings() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-700">
-                    <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Event Type</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                      Event Type
+                    </th>
                     <th className="text-center py-3 px-4 text-sm font-medium text-slate-400">
                       <Mail className="w-4 h-4 mx-auto" />
                       <span className="block mt-1">Email</span>
@@ -313,11 +364,16 @@ export default function SecuritySettings() {
                 </thead>
                 <tbody>
                   {notificationSettings.map((setting) => (
-                    <tr key={setting.id} className="border-b border-slate-700/50">
+                    <tr
+                      key={setting.id}
+                      className="border-b border-slate-700/50"
+                    >
                       <td className="py-4 px-4 font-medium">{setting.type}</td>
                       <td className="py-4 px-4 text-center">
                         <button
-                          onClick={() => toggleNotification(setting.id, 'email')}
+                          onClick={() =>
+                            toggleNotification(setting.id, 'email')
+                          }
                           className={`w-10 h-10 rounded-lg transition-colors ${
                             setting.email
                               ? 'bg-green-600 hover:bg-green-700'
@@ -361,8 +417,13 @@ export default function SecuritySettings() {
               <div className="flex items-start gap-2">
                 <Shield className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-slate-300">
-                  <p className="font-semibold text-blue-400 mb-1">Security Recommendations</p>
-                  <p>We recommend enabling all notification channels for critical security events like login attempts and large transactions.</p>
+                  <p className="font-semibold text-blue-400 mb-1">
+                    Security Recommendations
+                  </p>
+                  <p>
+                    We recommend enabling all notification channels for critical
+                    security events like login attempts and large transactions.
+                  </p>
                 </div>
               </div>
             </div>
@@ -387,7 +448,10 @@ export default function SecuritySettings() {
                     type="number"
                     value={passwordPolicy.minLength}
                     onChange={(e) =>
-                      setPasswordPolicy(prev => ({ ...prev, minLength: Number(e.target.value) }))
+                      setPasswordPolicy((prev) => ({
+                        ...prev,
+                        minLength: Number(e.target.value),
+                      }))
                     }
                     min="8"
                     max="32"
@@ -397,16 +461,28 @@ export default function SecuritySettings() {
 
                 <div className="space-y-3">
                   {[
-                    { key: 'requireUppercase', label: 'Require Uppercase Letters' },
-                    { key: 'requireLowercase', label: 'Require Lowercase Letters' },
+                    {
+                      key: 'requireUppercase',
+                      label: 'Require Uppercase Letters',
+                    },
+                    {
+                      key: 'requireLowercase',
+                      label: 'Require Lowercase Letters',
+                    },
                     { key: 'requireNumbers', label: 'Require Numbers' },
-                    { key: 'requireSpecialChars', label: 'Require Special Characters' },
+                    {
+                      key: 'requireSpecialChars',
+                      label: 'Require Special Characters',
+                    },
                   ].map((item) => (
-                    <div key={item.key} className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+                    <div
+                      key={item.key}
+                      className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg"
+                    >
                       <span>{item.label}</span>
                       <button
                         onClick={() =>
-                          setPasswordPolicy(prev => ({
+                          setPasswordPolicy((prev) => ({
                             ...prev,
                             [item.key]: !prev[item.key as keyof PasswordPolicy],
                           }))
@@ -417,7 +493,9 @@ export default function SecuritySettings() {
                             : 'bg-slate-600 hover:bg-slate-500'
                         }`}
                       >
-                        {passwordPolicy[item.key as keyof PasswordPolicy] ? 'Required' : 'Optional'}
+                        {passwordPolicy[item.key as keyof PasswordPolicy]
+                          ? 'Required'
+                          : 'Optional'}
                       </button>
                     </div>
                   ))}
@@ -431,7 +509,10 @@ export default function SecuritySettings() {
                     type="number"
                     value={passwordPolicy.expiryDays}
                     onChange={(e) =>
-                      setPasswordPolicy(prev => ({ ...prev, expiryDays: Number(e.target.value) }))
+                      setPasswordPolicy((prev) => ({
+                        ...prev,
+                        expiryDays: Number(e.target.value),
+                      }))
                     }
                     min="0"
                     max="365"
@@ -448,21 +529,27 @@ export default function SecuritySettings() {
               <h2 className="text-xl font-bold mb-4">Change Password</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm text-slate-400 mb-2">Current Password</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    Current Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-4 py-3 bg-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-slate-400 mb-2">New Password</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    New Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-4 py-3 bg-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-slate-400 mb-2">Confirm New Password</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    Confirm New Password
+                  </label>
                   <input
                     type="password"
                     className="w-full px-4 py-3 bg-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -487,7 +574,9 @@ export default function SecuritySettings() {
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm text-slate-400 mb-2">Recovery Email</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    Recovery Email
+                  </label>
                   <div className="flex gap-2">
                     <input
                       type="email"
@@ -502,7 +591,9 @@ export default function SecuritySettings() {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-slate-400 mb-2">Recovery Phone</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    Recovery Phone
+                  </label>
                   <div className="flex gap-2">
                     <input
                       type="tel"
@@ -521,7 +612,8 @@ export default function SecuritySettings() {
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
               <h2 className="text-xl font-bold mb-4">Backup Codes</h2>
               <p className="text-slate-400 mb-6">
-                Generate backup codes to access your account if you lose your 2FA device. Store these codes in a safe place.
+                Generate backup codes to access your account if you lose your
+                2FA device. Store these codes in a safe place.
               </p>
               <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors">
                 Generate Backup Codes
@@ -532,7 +624,9 @@ export default function SecuritySettings() {
               <div className="flex items-start gap-3">
                 <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-semibold text-red-400 mb-2">Danger Zone</h3>
+                  <h3 className="font-semibold text-red-400 mb-2">
+                    Danger Zone
+                  </h3>
                   <p className="text-sm text-slate-300 mb-4">
                     These actions are irreversible. Please proceed with caution.
                   </p>

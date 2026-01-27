@@ -1,7 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Shield, AlertTriangle, TrendingUp, Activity, Download, Filter, Search, AlertOctagon } from 'lucide-react';
+import {
+  Activity,
+  AlertOctagon,
+  AlertTriangle,
+  Download,
+  Search,
+  Shield,
+  TrendingUp,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface Transaction {
   id: string;
@@ -135,8 +143,12 @@ export default function AMLScreening() {
 
   const [overallRiskScore, setOverallRiskScore] = useState(62);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState<'all' | 'clear' | 'suspicious' | 'flagged' | 'blocked'>('all');
-  const [selectedTimeframe, setSelectedTimeframe] = useState<'24h' | '7d' | '30d' | 'all'>('24h');
+  const [filterStatus, setFilterStatus] = useState<
+    'all' | 'clear' | 'suspicious' | 'flagged' | 'blocked'
+  >('all');
+  const [selectedTimeframe, setSelectedTimeframe] = useState<
+    '24h' | '7d' | '30d' | 'all'
+  >('24h');
 
   const getRiskColor = (score: number) => {
     if (score >= 80) return 'text-red-400 bg-red-600/20';
@@ -191,14 +203,20 @@ export default function AMLScreening() {
     return `${days}d ago`;
   };
 
-  const filteredTransactions = transactions.filter(tx => {
+  const filteredTransactions = transactions.filter((tx) => {
     if (filterStatus !== 'all' && tx.status !== filterStatus) return false;
-    if (searchTerm && !tx.counterparty.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    if (
+      searchTerm &&
+      !tx.counterparty.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+      return false;
     return true;
   });
 
-  const unresolvedAlerts = alerts.filter(a => !a.resolved).length;
-  const highRiskTransactions = transactions.filter(tx => tx.riskScore >= 80).length;
+  const unresolvedAlerts = alerts.filter((a) => !a.resolved).length;
+  const highRiskTransactions = transactions.filter(
+    (tx) => tx.riskScore >= 80
+  ).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4 md:p-8">
@@ -211,7 +229,9 @@ export default function AMLScreening() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">AML Screening</h1>
-              <p className="text-slate-400">Real-time transaction monitoring and risk assessment</p>
+              <p className="text-slate-400">
+                Real-time transaction monitoring and risk assessment
+              </p>
             </div>
           </div>
         </div>
@@ -223,7 +243,11 @@ export default function AMLScreening() {
               <span className="text-slate-400 text-sm">Overall Risk Score</span>
               <Activity className="w-4 h-4 text-orange-400" />
             </div>
-            <div className={`text-3xl font-bold mb-1 ${getRiskColor(overallRiskScore)}`}>
+            <div
+              className={`text-3xl font-bold mb-1 ${getRiskColor(
+                overallRiskScore
+              )}`}
+            >
               {overallRiskScore}
             </div>
             <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
@@ -247,16 +271,22 @@ export default function AMLScreening() {
               <span className="text-slate-400 text-sm">Active Alerts</span>
               <AlertTriangle className="w-4 h-4 text-red-400" />
             </div>
-            <div className="text-3xl font-bold text-red-400 mb-1">{unresolvedAlerts}</div>
+            <div className="text-3xl font-bold text-red-400 mb-1">
+              {unresolvedAlerts}
+            </div>
             <div className="text-xs text-slate-400">Require attention</div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-slate-400 text-sm">High Risk Transactions</span>
+              <span className="text-slate-400 text-sm">
+                High Risk Transactions
+              </span>
               <AlertOctagon className="w-4 h-4 text-orange-400" />
             </div>
-            <div className="text-3xl font-bold text-orange-400 mb-1">{highRiskTransactions}</div>
+            <div className="text-3xl font-bold text-orange-400 mb-1">
+              {highRiskTransactions}
+            </div>
             <div className="text-xs text-slate-400">Score ≥ 80</div>
           </div>
 
@@ -296,7 +326,11 @@ export default function AMLScreening() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${getSeverityColor(alert.severity)}`}>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium ${getSeverityColor(
+                          alert.severity
+                        )}`}
+                      >
                         {alert.severity.toUpperCase()}
                       </span>
                       <span className="font-semibold">{alert.type}</span>
@@ -306,8 +340,12 @@ export default function AMLScreening() {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-slate-300 mb-2">{alert.description}</p>
-                    <p className="text-xs text-slate-400">{formatDate(alert.timestamp)}</p>
+                    <p className="text-sm text-slate-300 mb-2">
+                      {alert.description}
+                    </p>
+                    <p className="text-xs text-slate-400">
+                      {formatDate(alert.timestamp)}
+                    </p>
                   </div>
                   {!alert.resolved && (
                     <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm transition-colors">
@@ -323,17 +361,23 @@ export default function AMLScreening() {
         {/* Risk Indicators */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
           <h2 className="text-xl font-bold mb-6">Risk Indicators</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {riskIndicators.map((indicator, index) => (
               <div key={index} className="bg-slate-700/50 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold">{indicator.name}</h3>
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${getSeverityColor(indicator.severity)}`}>
+                  <span
+                    className={`px-2 py-1 rounded text-xs font-medium ${getSeverityColor(
+                      indicator.severity
+                    )}`}
+                  >
                     {indicator.severity.toUpperCase()}
                   </span>
                 </div>
-                <p className="text-sm text-slate-400 mb-2">{indicator.description}</p>
+                <p className="text-sm text-slate-400 mb-2">
+                  {indicator.description}
+                </p>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-slate-500">Occurrences</span>
                   <span className="text-lg font-bold">{indicator.count}</span>
@@ -347,7 +391,7 @@ export default function AMLScreening() {
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <h2 className="text-xl font-bold">Transaction Monitoring</h2>
-            
+
             <div className="flex flex-wrap gap-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -359,7 +403,7 @@ export default function AMLScreening() {
                   className="pl-10 pr-4 py-2 bg-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
                 />
               </div>
-              
+
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value as any)}
@@ -394,19 +438,38 @@ export default function AMLScreening() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-700">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Time</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Type</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Amount</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Counterparty</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Risk Score</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Flags</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Status</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Time
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Type
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Amount
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Counterparty
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Risk Score
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Flags
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredTransactions.map((tx) => (
-                  <tr key={tx.id} className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors">
-                    <td className="py-4 px-4 text-sm">{formatRelativeTime(tx.timestamp)}</td>
+                  <tr
+                    key={tx.id}
+                    className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors"
+                  >
+                    <td className="py-4 px-4 text-sm">
+                      {formatRelativeTime(tx.timestamp)}
+                    </td>
                     <td className="py-4 px-4">
                       <span className="capitalize text-sm">{tx.type}</span>
                     </td>
@@ -416,17 +479,26 @@ export default function AMLScreening() {
                       </div>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="font-mono text-sm">{tx.counterparty}</span>
+                      <span className="font-mono text-sm">
+                        {tx.counterparty}
+                      </span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${getRiskColor(tx.riskScore)}`}>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium ${getRiskColor(
+                          tx.riskScore
+                        )}`}
+                      >
                         {tx.riskScore}
                       </span>
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex flex-wrap gap-1">
                         {tx.flags.slice(0, 2).map((flag, idx) => (
-                          <span key={idx} className="px-2 py-0.5 bg-yellow-600/20 text-yellow-400 rounded text-xs">
+                          <span
+                            key={idx}
+                            className="px-2 py-0.5 bg-yellow-600/20 text-yellow-400 rounded text-xs"
+                          >
                             {flag}
                           </span>
                         ))}
@@ -438,7 +510,11 @@ export default function AMLScreening() {
                       </div>
                     </td>
                     <td className="py-4 px-4">
-                      <span className={`px-2 py-1 rounded text-xs font-medium capitalize ${getStatusColor(tx.status)}`}>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium capitalize ${getStatusColor(
+                          tx.status
+                        )}`}
+                      >
                         {tx.status}
                       </span>
                     </td>

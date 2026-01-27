@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Shield, AlertTriangle, TrendingUp, PieChart, Activity, Target } from 'lucide-react';
+import {
+  Activity,
+  AlertTriangle,
+  PieChart,
+  Shield,
+  Target,
+  TrendingUp,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface RiskFactor {
   category: string;
@@ -58,21 +65,25 @@ export default function RiskAssessment() {
           category: 'Market Volatility',
           score: 72,
           weight: 30,
-          description: 'High price volatility in crypto markets with 15-25% monthly swings',
-          recommendation: 'Consider hedging positions with lower volatility assets',
+          description:
+            'High price volatility in crypto markets with 15-25% monthly swings',
+          recommendation:
+            'Consider hedging positions with lower volatility assets',
         },
         {
           category: 'Liquidity Risk',
           score: 42,
           weight: 20,
-          description: 'Strong liquidity with deep order books and high trading volume',
+          description:
+            'Strong liquidity with deep order books and high trading volume',
           recommendation: 'Maintain current position size',
         },
         {
           category: 'Regulatory Risk',
           score: 65,
           weight: 25,
-          description: 'Evolving regulatory landscape with potential policy changes',
+          description:
+            'Evolving regulatory landscape with potential policy changes',
           recommendation: 'Monitor regulatory developments closely',
         },
         {
@@ -95,7 +106,8 @@ export default function RiskAssessment() {
           scenario: 'Major Market Crash (-30%)',
           impact: -42,
           probability: 15,
-          description: 'Crypto market experiences severe correction due to macro factors',
+          description:
+            'Crypto market experiences severe correction due to macro factors',
         },
         {
           scenario: 'Regulatory Crackdown',
@@ -107,13 +119,15 @@ export default function RiskAssessment() {
           scenario: 'Exchange Hack',
           impact: -28,
           probability: 10,
-          description: 'Major exchange security breach impacts market confidence',
+          description:
+            'Major exchange security breach impacts market confidence',
         },
         {
           scenario: 'Bull Market Rally (+50%)',
           impact: +65,
           probability: 30,
-          description: 'Strong institutional adoption drives major price appreciation',
+          description:
+            'Strong institutional adoption drives major price appreciation',
         },
       ],
     },
@@ -141,7 +155,8 @@ export default function RiskAssessment() {
           category: 'Regulatory Risk',
           score: 28,
           weight: 25,
-          description: 'Well-established regulatory framework with low uncertainty',
+          description:
+            'Well-established regulatory framework with low uncertainty',
           recommendation: 'Minimal regulatory concerns',
         },
         {
@@ -176,19 +191,22 @@ export default function RiskAssessment() {
           scenario: 'Supply Chain Recovery',
           impact: +22,
           probability: 45,
-          description: 'Supply chain normalization reduces inflationary pressure',
+          description:
+            'Supply chain normalization reduces inflationary pressure',
         },
         {
           scenario: 'Energy Price Spike',
           impact: -32,
           probability: 20,
-          description: 'Sudden increase in energy costs drives inflation higher',
+          description:
+            'Sudden increase in energy costs drives inflation higher',
         },
       ],
     },
   ]);
 
-  const currentMarket = marketRisks.find(m => m.marketId === selectedMarket) || marketRisks[0];
+  const currentMarket =
+    marketRisks.find((m) => m.marketId === selectedMarket) || marketRisks[0];
 
   const getRiskColor = (score: number) => {
     if (score >= 70) return 'text-red-400';
@@ -229,8 +247,12 @@ export default function RiskAssessment() {
               <Shield className="w-8 h-8 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">AI Risk Assessment</h1>
-              <p className="text-slate-400">Comprehensive risk analysis and portfolio stress testing</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                AI Risk Assessment
+              </h1>
+              <p className="text-slate-400">
+                Comprehensive risk analysis and portfolio stress testing
+              </p>
             </div>
           </div>
         </div>
@@ -238,22 +260,30 @@ export default function RiskAssessment() {
         {/* Portfolio Overview */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
           <h2 className="text-xl font-bold mb-6">Portfolio Risk Overview</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="bg-slate-700/50 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-slate-400">Overall Risk</span>
                 <Shield className="w-4 h-4 text-orange-400" />
               </div>
-              <div className={`text-2xl font-bold ${getRiskColor(portfolioRisk.overall)}`}>
+              <div
+                className={`text-2xl font-bold ${getRiskColor(
+                  portfolioRisk.overall
+                )}`}
+              >
                 {portfolioRisk.overall}
               </div>
               <div className="w-full bg-slate-600 rounded-full h-1.5 mt-3">
                 <div
                   className={`h-full rounded-full ${
-                    portfolioRisk.overall >= 70 ? 'bg-red-500' :
-                    portfolioRisk.overall >= 50 ? 'bg-orange-500' :
-                    portfolioRisk.overall >= 30 ? 'bg-yellow-500' : 'bg-green-500'
+                    portfolioRisk.overall >= 70
+                      ? 'bg-red-500'
+                      : portfolioRisk.overall >= 50
+                      ? 'bg-orange-500'
+                      : portfolioRisk.overall >= 30
+                      ? 'bg-yellow-500'
+                      : 'bg-green-500'
                   }`}
                   style={{ width: `${portfolioRisk.overall}%` }}
                 />
@@ -265,7 +295,11 @@ export default function RiskAssessment() {
                 <span className="text-sm text-slate-400">Volatility</span>
                 <Activity className="w-4 h-4 text-red-400" />
               </div>
-              <div className={`text-2xl font-bold ${getRiskColor(portfolioRisk.volatility)}`}>
+              <div
+                className={`text-2xl font-bold ${getRiskColor(
+                  portfolioRisk.volatility
+                )}`}
+              >
                 {portfolioRisk.volatility}
               </div>
               <div className="w-full bg-slate-600 rounded-full h-1.5 mt-3">
@@ -281,7 +315,11 @@ export default function RiskAssessment() {
                 <span className="text-sm text-slate-400">Concentration</span>
                 <PieChart className="w-4 h-4 text-orange-400" />
               </div>
-              <div className={`text-2xl font-bold ${getRiskColor(portfolioRisk.concentration)}`}>
+              <div
+                className={`text-2xl font-bold ${getRiskColor(
+                  portfolioRisk.concentration
+                )}`}
+              >
                 {portfolioRisk.concentration}
               </div>
               <div className="w-full bg-slate-600 rounded-full h-1.5 mt-3">
@@ -297,7 +335,11 @@ export default function RiskAssessment() {
                 <span className="text-sm text-slate-400">Liquidity</span>
                 <TrendingUp className="w-4 h-4 text-yellow-400" />
               </div>
-              <div className={`text-2xl font-bold ${getRiskColor(portfolioRisk.liquidity)}`}>
+              <div
+                className={`text-2xl font-bold ${getRiskColor(
+                  portfolioRisk.liquidity
+                )}`}
+              >
                 {portfolioRisk.liquidity}
               </div>
               <div className="w-full bg-slate-600 rounded-full h-1.5 mt-3">
@@ -313,7 +355,11 @@ export default function RiskAssessment() {
                 <span className="text-sm text-slate-400">Time Horizon</span>
                 <Target className="w-4 h-4 text-orange-400" />
               </div>
-              <div className={`text-2xl font-bold ${getRiskColor(portfolioRisk.timeHorizon)}`}>
+              <div
+                className={`text-2xl font-bold ${getRiskColor(
+                  portfolioRisk.timeHorizon
+                )}`}
+              >
                 {portfolioRisk.timeHorizon}
               </div>
               <div className="w-full bg-slate-600 rounded-full h-1.5 mt-3">
@@ -328,7 +374,9 @@ export default function RiskAssessment() {
 
         {/* Market Selector */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
-          <label className="block text-sm text-slate-400 mb-2">Select Market for Detailed Analysis</label>
+          <label className="block text-sm text-slate-400 mb-2">
+            Select Market for Detailed Analysis
+          </label>
           <select
             value={selectedMarket}
             onChange={(e) => setSelectedMarket(e.target.value)}
@@ -346,7 +394,11 @@ export default function RiskAssessment() {
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">Market Risk Score</h2>
-            <span className={`px-4 py-2 rounded-lg text-sm font-semibold border ${getRiskLevelColor(currentMarket.riskLevel)}`}>
+            <span
+              className={`px-4 py-2 rounded-lg text-sm font-semibold border ${getRiskLevelColor(
+                currentMarket.riskLevel
+              )}`}
+            >
               {currentMarket.riskLevel} Risk
             </span>
           </div>
@@ -370,28 +422,46 @@ export default function RiskAssessment() {
                   stroke="currentColor"
                   strokeWidth="8"
                   fill="transparent"
-                  strokeDasharray={`${(currentMarket.riskScore / 100) * 351.86} 351.86`}
+                  strokeDasharray={`${
+                    (currentMarket.riskScore / 100) * 351.86
+                  } 351.86`}
                   className={
-                    currentMarket.riskScore >= 70 ? 'text-red-500' :
-                    currentMarket.riskScore >= 50 ? 'text-orange-500' :
-                    currentMarket.riskScore >= 30 ? 'text-yellow-500' : 'text-green-500'
+                    currentMarket.riskScore >= 70
+                      ? 'text-red-500'
+                      : currentMarket.riskScore >= 50
+                      ? 'text-orange-500'
+                      : currentMarket.riskScore >= 30
+                      ? 'text-yellow-500'
+                      : 'text-green-500'
                   }
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className={`text-3xl font-bold ${getRiskColor(currentMarket.riskScore)}`}>
+                <span
+                  className={`text-3xl font-bold ${getRiskColor(
+                    currentMarket.riskScore
+                  )}`}
+                >
                   {currentMarket.riskScore}
                 </span>
               </div>
             </div>
 
             <div className="flex-1">
-              <div className="text-sm text-slate-400 mb-2">Risk Interpretation</div>
+              <div className="text-sm text-slate-400 mb-2">
+                Risk Interpretation
+              </div>
               <p className="text-slate-300">
-                {currentMarket.riskScore >= 70 && 'High risk market with significant volatility and uncertainty. Consider reducing position size or implementing hedging strategies.'}
-                {currentMarket.riskScore >= 50 && currentMarket.riskScore < 70 && 'Moderate risk market with manageable volatility. Suitable for experienced traders with proper risk management.'}
-                {currentMarket.riskScore >= 30 && currentMarket.riskScore < 50 && 'Lower risk market with stable characteristics. Good opportunity for conservative investors.'}
-                {currentMarket.riskScore < 30 && 'Low risk market with minimal volatility. Suitable for risk-averse investors and larger position sizes.'}
+                {currentMarket.riskScore >= 70 &&
+                  'High risk market with significant volatility and uncertainty. Consider reducing position size or implementing hedging strategies.'}
+                {currentMarket.riskScore >= 50 &&
+                  currentMarket.riskScore < 70 &&
+                  'Moderate risk market with manageable volatility. Suitable for experienced traders with proper risk management.'}
+                {currentMarket.riskScore >= 30 &&
+                  currentMarket.riskScore < 50 &&
+                  'Lower risk market with stable characteristics. Good opportunity for conservative investors.'}
+                {currentMarket.riskScore < 30 &&
+                  'Low risk market with minimal volatility. Suitable for risk-averse investors and larger position sizes.'}
               </p>
             </div>
           </div>
@@ -400,42 +470,62 @@ export default function RiskAssessment() {
         {/* Risk Factors */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
           <h2 className="text-xl font-bold mb-6">Risk Factor Breakdown</h2>
-          
+
           <div className="space-y-4">
             {currentMarket.factors.map((factor, idx) => (
               <div key={idx} className="bg-slate-700/50 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <AlertTriangle className={`w-5 h-5 ${getRiskColor(factor.score)}`} />
+                    <AlertTriangle
+                      className={`w-5 h-5 ${getRiskColor(factor.score)}`}
+                    />
                     <div>
                       <h3 className="font-semibold">{factor.category}</h3>
-                      <div className="text-xs text-slate-400">Weight: {factor.weight}%</div>
+                      <div className="text-xs text-slate-400">
+                        Weight: {factor.weight}%
+                      </div>
                     </div>
                   </div>
-                  <div className={`text-2xl font-bold ${getRiskColor(factor.score)}`}>
+                  <div
+                    className={`text-2xl font-bold ${getRiskColor(
+                      factor.score
+                    )}`}
+                  >
                     {factor.score}
                   </div>
                 </div>
 
-                <p className="text-sm text-slate-400 mb-3">{factor.description}</p>
+                <p className="text-sm text-slate-400 mb-3">
+                  {factor.description}
+                </p>
 
                 <div className="flex items-center gap-3 mb-3">
                   <div className="flex-1 bg-slate-600 rounded-full h-2">
                     <div
                       className={`h-full rounded-full ${
-                        factor.score >= 70 ? 'bg-red-500' :
-                        factor.score >= 50 ? 'bg-orange-500' :
-                        factor.score >= 30 ? 'bg-yellow-500' : 'bg-green-500'
+                        factor.score >= 70
+                          ? 'bg-red-500'
+                          : factor.score >= 50
+                          ? 'bg-orange-500'
+                          : factor.score >= 30
+                          ? 'bg-yellow-500'
+                          : 'bg-green-500'
                       }`}
                       style={{ width: `${factor.score}%` }}
                     />
                   </div>
-                  <span className="text-sm text-slate-400 w-12">{factor.score}%</span>
+                  <span className="text-sm text-slate-400 w-12">
+                    {factor.score}%
+                  </span>
                 </div>
 
                 <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-3">
-                  <div className="text-xs text-blue-400 font-semibold mb-1">Recommendation</div>
-                  <div className="text-sm text-slate-300">{factor.recommendation}</div>
+                  <div className="text-xs text-blue-400 font-semibold mb-1">
+                    Recommendation
+                  </div>
+                  <div className="text-sm text-slate-300">
+                    {factor.recommendation}
+                  </div>
                 </div>
               </div>
             ))}
@@ -459,19 +549,30 @@ export default function RiskAssessment() {
               {currentMarket.stressTests.map((test, idx) => (
                 <div key={idx} className="bg-slate-700/50 rounded-lg p-4">
                   <h3 className="font-semibold mb-2">{test.scenario}</h3>
-                  <p className="text-sm text-slate-400 mb-4">{test.description}</p>
+                  <p className="text-sm text-slate-400 mb-4">
+                    {test.description}
+                  </p>
 
                   <div className="space-y-3">
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-slate-400">Potential Impact</span>
-                        <span className={`text-lg font-bold ${getImpactColor(test.impact)}`}>
-                          {test.impact > 0 ? '+' : ''}{test.impact}%
+                        <span className="text-sm text-slate-400">
+                          Potential Impact
+                        </span>
+                        <span
+                          className={`text-lg font-bold ${getImpactColor(
+                            test.impact
+                          )}`}
+                        >
+                          {test.impact > 0 ? '+' : ''}
+                          {test.impact}%
                         </span>
                       </div>
                       <div className="w-full bg-slate-600 rounded-full h-2">
                         <div
-                          className={`h-full rounded-full ${test.impact > 0 ? 'bg-green-500' : 'bg-red-500'}`}
+                          className={`h-full rounded-full ${
+                            test.impact > 0 ? 'bg-green-500' : 'bg-red-500'
+                          }`}
                           style={{ width: `${Math.abs(test.impact)}%` }}
                         />
                       </div>
@@ -479,8 +580,12 @@ export default function RiskAssessment() {
 
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-slate-400">Probability</span>
-                        <span className="text-lg font-bold text-blue-400">{test.probability}%</span>
+                        <span className="text-sm text-slate-400">
+                          Probability
+                        </span>
+                        <span className="text-lg font-bold text-blue-400">
+                          {test.probability}%
+                        </span>
                       </div>
                       <div className="w-full bg-slate-600 rounded-full h-2">
                         <div

@@ -1,6 +1,13 @@
 'use client';
 
-import { ArrowUpDown, ExternalLink, Eye, Filter, Heart, ShoppingCart, TrendingDown, TrendingUp } from 'lucide-react';
+import {
+  ExternalLink,
+  Eye,
+  Heart,
+  ShoppingCart,
+  TrendingDown,
+  TrendingUp,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface MarketplaceNFT {
@@ -35,10 +42,16 @@ interface Collection {
 }
 
 export default function MarketplaceIntegration() {
-  const [activeTab, setActiveTab] = useState<'browse' | 'collections' | 'my-listings'>('browse');
+  const [activeTab, setActiveTab] = useState<
+    'browse' | 'collections' | 'my-listings'
+  >('browse');
   const [selectedCollection, setSelectedCollection] = useState<string>('all');
-  const [priceRange, setPriceRange] = useState<'all' | 'under-100' | '100-500' | '500-1000' | 'over-1000'>('all');
-  const [sortBy, setSortBy] = useState<'price-low' | 'price-high' | 'recent' | 'volume'>('recent');
+  const [priceRange, setPriceRange] = useState<
+    'all' | 'under-100' | '100-500' | '500-1000' | 'over-1000'
+  >('all');
+  const [sortBy, setSortBy] = useState<
+    'price-low' | 'price-high' | 'recent' | 'volume'
+  >('recent');
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [showListModal, setShowListModal] = useState(false);
   const [selectedNFT, setSelectedNFT] = useState<MarketplaceNFT | null>(null);
@@ -55,7 +68,7 @@ export default function MarketplaceIntegration() {
       items: 10000,
       owners: 3421,
       priceChange: 15.4,
-      icon: '🎴'
+      icon: '🎴',
     },
     {
       id: 'achievement-nfts',
@@ -67,7 +80,7 @@ export default function MarketplaceIntegration() {
       items: 5000,
       owners: 2156,
       priceChange: -5.2,
-      icon: '🏆'
+      icon: '🏆',
     },
     {
       id: 'profile-pics',
@@ -79,7 +92,7 @@ export default function MarketplaceIntegration() {
       items: 15000,
       owners: 5623,
       priceChange: 22.8,
-      icon: '👤'
+      icon: '👤',
     },
     {
       id: 'seasonal',
@@ -91,8 +104,8 @@ export default function MarketplaceIntegration() {
       items: 3000,
       owners: 1847,
       priceChange: 8.6,
-      icon: '❄️'
-    }
+      icon: '❄️',
+    },
   ]);
 
   const [marketplaceNFTs, setMarketplaceNFTs] = useState<MarketplaceNFT[]>([
@@ -111,7 +124,7 @@ export default function MarketplaceIntegration() {
       openseaUrl: 'https://opensea.io/assets/0x1a2b3c',
       imageUrl: '',
       listed: true,
-      icon: '👑'
+      icon: '👑',
     },
     {
       id: '2',
@@ -128,7 +141,7 @@ export default function MarketplaceIntegration() {
       openseaUrl: 'https://opensea.io/assets/0x4d5e6f',
       imageUrl: '',
       listed: true,
-      icon: '💎'
+      icon: '💎',
     },
     {
       id: '3',
@@ -145,7 +158,7 @@ export default function MarketplaceIntegration() {
       openseaUrl: 'https://opensea.io/assets/0x7g8h9i',
       imageUrl: '',
       listed: true,
-      icon: '💠'
+      icon: '💠',
     },
     {
       id: '4',
@@ -162,7 +175,7 @@ export default function MarketplaceIntegration() {
       openseaUrl: 'https://opensea.io/assets/0xj1k2l3',
       imageUrl: '',
       listed: true,
-      icon: '❄️'
+      icon: '❄️',
     },
     {
       id: '5',
@@ -179,7 +192,7 @@ export default function MarketplaceIntegration() {
       openseaUrl: 'https://opensea.io/assets/0xm4n5o6',
       imageUrl: '',
       listed: true,
-      icon: '🌟'
+      icon: '🌟',
     },
     {
       id: '6',
@@ -196,8 +209,8 @@ export default function MarketplaceIntegration() {
       openseaUrl: 'https://opensea.io/assets/0xp7q8r9',
       imageUrl: '',
       listed: true,
-      icon: '⚡'
-    }
+      icon: '⚡',
+    },
   ]);
 
   const [myNFTs] = useState<MarketplaceNFT[]>([
@@ -216,7 +229,7 @@ export default function MarketplaceIntegration() {
       openseaUrl: 'https://opensea.io/assets/0xs1t2u3',
       imageUrl: '',
       listed: false,
-      icon: '✨'
+      icon: '✨',
     },
     {
       id: '8',
@@ -233,8 +246,8 @@ export default function MarketplaceIntegration() {
       openseaUrl: 'https://opensea.io/assets/0xv4w5x6',
       imageUrl: '',
       listed: false,
-      icon: '🎨'
-    }
+      icon: '🎨',
+    },
   ]);
 
   const getRarityColor = (rarity: string) => {
@@ -271,12 +284,14 @@ export default function MarketplaceIntegration() {
 
     // Collection filter
     if (selectedCollection !== 'all') {
-      filtered = filtered.filter(nft => nft.collection === selectedCollection);
+      filtered = filtered.filter(
+        (nft) => nft.collection === selectedCollection
+      );
     }
 
     // Price filter
     if (priceRange !== 'all') {
-      filtered = filtered.filter(nft => {
+      filtered = filtered.filter((nft) => {
         switch (priceRange) {
           case 'under-100':
             return nft.price < 100;
@@ -313,7 +328,9 @@ export default function MarketplaceIntegration() {
   const handleBuyNFT = () => {
     if (selectedNFT) {
       // Simulate purchase
-      alert(`Purchased ${selectedNFT.name} for ${formatCurrency(selectedNFT.price)}`);
+      alert(
+        `Purchased ${selectedNFT.name} for ${formatCurrency(selectedNFT.price)}`
+      );
       setShowBuyModal(false);
       setSelectedNFT(null);
     }
@@ -343,8 +360,12 @@ export default function MarketplaceIntegration() {
               <ShoppingCart className="w-8 h-8 text-purple-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">NFT Marketplace</h1>
-              <p className="text-slate-400">Buy, sell, and trade NFTs with OpenSea integration</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                NFT Marketplace
+              </h1>
+              <p className="text-slate-400">
+                Buy, sell, and trade NFTs with OpenSea integration
+              </p>
             </div>
           </div>
         </div>
@@ -356,8 +377,12 @@ export default function MarketplaceIntegration() {
               <span className="text-slate-400 text-sm">24h Volume</span>
               <TrendingUp className="w-4 h-4 text-green-400" />
             </div>
-            <div className="text-2xl font-bold text-green-400">{formatCurrency(totalVolume)}</div>
-            <div className="text-xs text-slate-400 mt-1">+12.3% from yesterday</div>
+            <div className="text-2xl font-bold text-green-400">
+              {formatCurrency(totalVolume)}
+            </div>
+            <div className="text-xs text-slate-400 mt-1">
+              +12.3% from yesterday
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -365,8 +390,12 @@ export default function MarketplaceIntegration() {
               <span className="text-slate-400 text-sm">Total Collections</span>
               <Eye className="w-4 h-4 text-blue-400" />
             </div>
-            <div className="text-2xl font-bold text-blue-400">{collections.length}</div>
-            <div className="text-xs text-slate-400 mt-1">Active collections</div>
+            <div className="text-2xl font-bold text-blue-400">
+              {collections.length}
+            </div>
+            <div className="text-xs text-slate-400 mt-1">
+              Active collections
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -374,8 +403,12 @@ export default function MarketplaceIntegration() {
               <span className="text-slate-400 text-sm">Listed NFTs</span>
               <ShoppingCart className="w-4 h-4 text-purple-400" />
             </div>
-            <div className="text-2xl font-bold text-purple-400">{marketplaceNFTs.length}</div>
-            <div className="text-xs text-slate-400 mt-1">Available to purchase</div>
+            <div className="text-2xl font-bold text-purple-400">
+              {marketplaceNFTs.length}
+            </div>
+            <div className="text-xs text-slate-400 mt-1">
+              Available to purchase
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -383,7 +416,9 @@ export default function MarketplaceIntegration() {
               <span className="text-slate-400 text-sm">My NFTs</span>
               <Heart className="w-4 h-4 text-pink-400" />
             </div>
-            <div className="text-2xl font-bold text-pink-400">{myNFTs.length}</div>
+            <div className="text-2xl font-bold text-pink-400">
+              {myNFTs.length}
+            </div>
             <div className="text-xs text-slate-400 mt-1">In your wallet</div>
           </div>
         </div>
@@ -429,7 +464,9 @@ export default function MarketplaceIntegration() {
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700 mb-6">
               <div className="flex flex-wrap gap-4">
                 <div className="flex-1 min-w-[200px]">
-                  <label className="block text-sm text-slate-400 mb-2">Collection</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    Collection
+                  </label>
                   <select
                     value={selectedCollection}
                     onChange={(e) => setSelectedCollection(e.target.value)}
@@ -445,7 +482,9 @@ export default function MarketplaceIntegration() {
                 </div>
 
                 <div className="flex-1 min-w-[200px]">
-                  <label className="block text-sm text-slate-400 mb-2">Price Range</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    Price Range
+                  </label>
                   <select
                     value={priceRange}
                     onChange={(e) => setPriceRange(e.target.value as any)}
@@ -460,7 +499,9 @@ export default function MarketplaceIntegration() {
                 </div>
 
                 <div className="flex-1 min-w-[200px]">
-                  <label className="block text-sm text-slate-400 mb-2">Sort By</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    Sort By
+                  </label>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
@@ -493,31 +534,57 @@ export default function MarketplaceIntegration() {
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="font-bold text-lg">{nft.name}</h3>
-                      <div className={`px-2 py-1 rounded text-xs font-semibold border ${getRarityColor(nft.rarity)}`}>
+                      <div
+                        className={`px-2 py-1 rounded text-xs font-semibold border ${getRarityColor(
+                          nft.rarity
+                        )}`}
+                      >
                         {nft.rarity.toUpperCase()}
                       </div>
                     </div>
 
-                    <div className="text-sm text-slate-400 mb-4">Token ID: {nft.tokenId}</div>
+                    <div className="text-sm text-slate-400 mb-4">
+                      Token ID: {nft.tokenId}
+                    </div>
 
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div>
-                        <div className="text-xs text-slate-400 mb-1">Current Price</div>
-                        <div className="font-bold text-lg text-purple-400">{formatCurrency(nft.price)}</div>
+                        <div className="text-xs text-slate-400 mb-1">
+                          Current Price
+                        </div>
+                        <div className="font-bold text-lg text-purple-400">
+                          {formatCurrency(nft.price)}
+                        </div>
                       </div>
                       <div>
-                        <div className="text-xs text-slate-400 mb-1">Floor Price</div>
-                        <div className="font-semibold">{formatCurrency(nft.floorPrice)}</div>
+                        <div className="text-xs text-slate-400 mb-1">
+                          Floor Price
+                        </div>
+                        <div className="font-semibold">
+                          {formatCurrency(nft.floorPrice)}
+                        </div>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-1">
                         <span className="text-slate-400">24h Vol:</span>
-                        <span className="font-semibold">{formatCurrency(nft.volume24h)}</span>
+                        <span className="font-semibold">
+                          {formatCurrency(nft.volume24h)}
+                        </span>
                       </div>
-                      <div className={`flex items-center gap-1 ${nft.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {nft.priceChange24h >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                      <div
+                        className={`flex items-center gap-1 ${
+                          nft.priceChange24h >= 0
+                            ? 'text-green-400'
+                            : 'text-red-400'
+                        }`}
+                      >
+                        {nft.priceChange24h >= 0 ? (
+                          <TrendingUp className="w-3 h-3" />
+                        ) : (
+                          <TrendingDown className="w-3 h-3" />
+                        )}
                         {formatPercent(nft.priceChange24h)}
                       </div>
                     </div>
@@ -557,26 +624,45 @@ export default function MarketplaceIntegration() {
                   <div className="text-7xl">{collection.icon}</div>
 
                   <div className="flex-1">
-                    <h3 className="font-bold text-xl mb-2">{collection.name}</h3>
-                    <p className="text-slate-400 text-sm mb-4">{collection.description}</p>
+                    <h3 className="font-bold text-xl mb-2">
+                      {collection.name}
+                    </h3>
+                    <p className="text-slate-400 text-sm mb-4">
+                      {collection.description}
+                    </p>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <div className="bg-slate-700/50 rounded-lg p-3">
-                        <div className="text-xs text-slate-400 mb-1">Floor Price</div>
-                        <div className="font-bold text-purple-400">{formatCurrency(collection.floorPrice)}</div>
+                        <div className="text-xs text-slate-400 mb-1">
+                          Floor Price
+                        </div>
+                        <div className="font-bold text-purple-400">
+                          {formatCurrency(collection.floorPrice)}
+                        </div>
                       </div>
                       <div className="bg-slate-700/50 rounded-lg p-3">
-                        <div className="text-xs text-slate-400 mb-1">24h Volume</div>
-                        <div className="font-bold text-blue-400">{formatCurrency(collection.volume24h)}</div>
+                        <div className="text-xs text-slate-400 mb-1">
+                          24h Volume
+                        </div>
+                        <div className="font-bold text-blue-400">
+                          {formatCurrency(collection.volume24h)}
+                        </div>
                       </div>
                       <div className="bg-slate-700/50 rounded-lg p-3">
-                        <div className="text-xs text-slate-400 mb-1">Total Volume</div>
-                        <div className="font-bold">{formatCurrency(collection.totalVolume)}</div>
-                      </div>
-                      <div className="bg-slate-700/50 rounded-lg p-3">
-                        <div className="text-xs text-slate-400 mb-1">Items / Owners</div>
+                        <div className="text-xs text-slate-400 mb-1">
+                          Total Volume
+                        </div>
                         <div className="font-bold">
-                          {collection.items.toLocaleString()} / {collection.owners.toLocaleString()}
+                          {formatCurrency(collection.totalVolume)}
+                        </div>
+                      </div>
+                      <div className="bg-slate-700/50 rounded-lg p-3">
+                        <div className="text-xs text-slate-400 mb-1">
+                          Items / Owners
+                        </div>
+                        <div className="font-bold">
+                          {collection.items.toLocaleString()} /{' '}
+                          {collection.owners.toLocaleString()}
                         </div>
                       </div>
                     </div>
@@ -584,10 +670,16 @@ export default function MarketplaceIntegration() {
                     <div className="mt-4 flex items-center gap-2">
                       <div
                         className={`flex items-center gap-1 text-sm ${
-                          collection.priceChange >= 0 ? 'text-green-400' : 'text-red-400'
+                          collection.priceChange >= 0
+                            ? 'text-green-400'
+                            : 'text-red-400'
                         }`}
                       >
-                        {collection.priceChange >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                        {collection.priceChange >= 0 ? (
+                          <TrendingUp className="w-4 h-4" />
+                        ) : (
+                          <TrendingDown className="w-4 h-4" />
+                        )}
                         {formatPercent(collection.priceChange)} 24h
                       </div>
                     </div>
@@ -604,12 +696,18 @@ export default function MarketplaceIntegration() {
             {myNFTs.length === 0 ? (
               <div className="text-center py-12">
                 <Heart className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                <p className="text-slate-400">You don't own any NFTs yet. Browse the marketplace to get started!</p>
+                <p className="text-slate-400">
+                  You don't own any NFTs yet. Browse the marketplace to get
+                  started!
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {myNFTs.map((nft) => (
-                  <div key={nft.id} className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 overflow-hidden">
+                  <div
+                    key={nft.id}
+                    className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 overflow-hidden"
+                  >
                     <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 p-12 flex items-center justify-center">
                       <div className="text-8xl">{nft.icon}</div>
                     </div>
@@ -617,21 +715,35 @@ export default function MarketplaceIntegration() {
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="font-bold text-lg">{nft.name}</h3>
-                        <div className={`px-2 py-1 rounded text-xs font-semibold border ${getRarityColor(nft.rarity)}`}>
+                        <div
+                          className={`px-2 py-1 rounded text-xs font-semibold border ${getRarityColor(
+                            nft.rarity
+                          )}`}
+                        >
                           {nft.rarity.toUpperCase()}
                         </div>
                       </div>
 
-                      <div className="text-sm text-slate-400 mb-4">Token ID: {nft.tokenId}</div>
+                      <div className="text-sm text-slate-400 mb-4">
+                        Token ID: {nft.tokenId}
+                      </div>
 
                       <div className="grid grid-cols-2 gap-4 mb-4">
                         <div>
-                          <div className="text-xs text-slate-400 mb-1">Floor Price</div>
-                          <div className="font-bold">{formatCurrency(nft.floorPrice)}</div>
+                          <div className="text-xs text-slate-400 mb-1">
+                            Floor Price
+                          </div>
+                          <div className="font-bold">
+                            {formatCurrency(nft.floorPrice)}
+                          </div>
                         </div>
                         <div>
-                          <div className="text-xs text-slate-400 mb-1">Last Sale</div>
-                          <div className="font-semibold">{formatCurrency(nft.lastSale)}</div>
+                          <div className="text-xs text-slate-400 mb-1">
+                            Last Sale
+                          </div>
+                          <div className="font-semibold">
+                            {formatCurrency(nft.lastSale)}
+                          </div>
                         </div>
                       </div>
 
@@ -674,7 +786,11 @@ export default function MarketplaceIntegration() {
               <div className="text-center mb-6">
                 <div className="text-7xl mb-3">{selectedNFT.icon}</div>
                 <h4 className="font-bold text-lg mb-2">{selectedNFT.name}</h4>
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(selectedNFT.rarity)}`}>
+                <div
+                  className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(
+                    selectedNFT.rarity
+                  )}`}
+                >
                   {selectedNFT.rarity.toUpperCase()}
                 </div>
               </div>
@@ -682,7 +798,9 @@ export default function MarketplaceIntegration() {
               <div className="bg-purple-600/10 border border-purple-600/30 rounded-lg p-4 mb-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-slate-400">Price:</span>
-                  <span className="font-bold text-xl">{formatCurrency(selectedNFT.price)}</span>
+                  <span className="font-bold text-xl">
+                    {formatCurrency(selectedNFT.price)}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-400">Floor Price:</span>
@@ -735,7 +853,9 @@ export default function MarketplaceIntegration() {
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm text-slate-400 mb-2">Listing Price (USD)</label>
+                <label className="block text-sm text-slate-400 mb-2">
+                  Listing Price (USD)
+                </label>
                 <input
                   type="number"
                   value={listPrice}
@@ -743,7 +863,9 @@ export default function MarketplaceIntegration() {
                   placeholder="Enter price..."
                   className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-lg"
                 />
-                <div className="text-xs text-slate-400 mt-2">Floor price: {formatCurrency(selectedNFT.floorPrice)}</div>
+                <div className="text-xs text-slate-400 mt-2">
+                  Floor price: {formatCurrency(selectedNFT.floorPrice)}
+                </div>
               </div>
 
               <div className="flex gap-3">

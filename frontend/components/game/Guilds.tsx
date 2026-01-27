@@ -1,6 +1,14 @@
 'use client';
 
-import { Users, Shield, Trophy, Crown, TrendingUp, MessageCircle, Settings } from 'lucide-react';
+import {
+  Crown,
+  MessageCircle,
+  Settings,
+  Shield,
+  TrendingUp,
+  Trophy,
+  Users,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface Guild {
@@ -33,46 +41,155 @@ interface GuildTournament {
 }
 
 export default function Guilds() {
-  const [activeTab, setActiveTab] = useState<'browse' | 'my-guild' | 'tournaments'>('browse');
+  const [activeTab, setActiveTab] = useState<
+    'browse' | 'my-guild' | 'tournaments'
+  >('browse');
   const [selectedGuild, setSelectedGuild] = useState<Guild | null>(null);
 
   const [guilds] = useState<Guild[]>([
-    { id: 'g1', name: 'Market Masters', tag: 'MM', level: 25, members: 48, maxMembers: 50, treasury: 125000, rank: 1, isJoined: true },
-    { id: 'g2', name: 'Bulls United', tag: 'BULL', level: 22, members: 45, maxMembers: 50, treasury: 98000, rank: 2, isJoined: false },
-    { id: 'g3', name: 'Bear Clan', tag: 'BEAR', level: 20, members: 42, maxMembers: 50, treasury: 87000, rank: 3, isJoined: false },
-    { id: 'g4', name: 'Diamond Hands', tag: 'DIAM', level: 18, members: 38, maxMembers: 50, treasury: 72000, rank: 4, isJoined: false },
-    { id: 'g5', name: 'Whale Watch', tag: 'WHAL', level: 16, members: 35, maxMembers: 40, treasury: 61000, rank: 5, isJoined: false }
+    {
+      id: 'g1',
+      name: 'Market Masters',
+      tag: 'MM',
+      level: 25,
+      members: 48,
+      maxMembers: 50,
+      treasury: 125000,
+      rank: 1,
+      isJoined: true,
+    },
+    {
+      id: 'g2',
+      name: 'Bulls United',
+      tag: 'BULL',
+      level: 22,
+      members: 45,
+      maxMembers: 50,
+      treasury: 98000,
+      rank: 2,
+      isJoined: false,
+    },
+    {
+      id: 'g3',
+      name: 'Bear Clan',
+      tag: 'BEAR',
+      level: 20,
+      members: 42,
+      maxMembers: 50,
+      treasury: 87000,
+      rank: 3,
+      isJoined: false,
+    },
+    {
+      id: 'g4',
+      name: 'Diamond Hands',
+      tag: 'DIAM',
+      level: 18,
+      members: 38,
+      maxMembers: 50,
+      treasury: 72000,
+      rank: 4,
+      isJoined: false,
+    },
+    {
+      id: 'g5',
+      name: 'Whale Watch',
+      tag: 'WHAL',
+      level: 16,
+      members: 35,
+      maxMembers: 40,
+      treasury: 61000,
+      rank: 5,
+      isJoined: false,
+    },
   ]);
 
   const [members] = useState<GuildMember[]>([
-    { id: 'm1', name: 'TraderPro', role: 'leader', contribution: 25000, joinDate: '2025-01-01' },
-    { id: 'm2', name: 'MarketGuru', role: 'officer', contribution: 18000, joinDate: '2025-01-05' },
-    { id: 'm3', name: 'BullRunner', role: 'officer', contribution: 15000, joinDate: '2025-01-10' },
-    { id: 'm4', name: 'ChartMaster', role: 'member', contribution: 12000, joinDate: '2025-01-12' },
-    { id: 'm5', name: 'You', role: 'member', contribution: 10000, joinDate: '2025-01-15' }
+    {
+      id: 'm1',
+      name: 'TraderPro',
+      role: 'leader',
+      contribution: 25000,
+      joinDate: '2025-01-01',
+    },
+    {
+      id: 'm2',
+      name: 'MarketGuru',
+      role: 'officer',
+      contribution: 18000,
+      joinDate: '2025-01-05',
+    },
+    {
+      id: 'm3',
+      name: 'BullRunner',
+      role: 'officer',
+      contribution: 15000,
+      joinDate: '2025-01-10',
+    },
+    {
+      id: 'm4',
+      name: 'ChartMaster',
+      role: 'member',
+      contribution: 12000,
+      joinDate: '2025-01-12',
+    },
+    {
+      id: 'm5',
+      name: 'You',
+      role: 'member',
+      contribution: 10000,
+      joinDate: '2025-01-15',
+    },
   ]);
 
   const [tournaments] = useState<GuildTournament[]>([
-    { id: 't1', name: 'Guild Championship', status: 'active', guilds: 32, prizePool: 500000, startDate: '2025-01-20' },
-    { id: 't2', name: 'Spring Cup', status: 'upcoming', guilds: 64, prizePool: 750000, startDate: '2025-02-01' },
-    { id: 't3', name: 'Winter Finals', status: 'completed', guilds: 32, prizePool: 500000, startDate: '2025-12-15' }
+    {
+      id: 't1',
+      name: 'Guild Championship',
+      status: 'active',
+      guilds: 32,
+      prizePool: 500000,
+      startDate: '2025-01-20',
+    },
+    {
+      id: 't2',
+      name: 'Spring Cup',
+      status: 'upcoming',
+      guilds: 64,
+      prizePool: 750000,
+      startDate: '2025-02-01',
+    },
+    {
+      id: 't3',
+      name: 'Winter Finals',
+      status: 'completed',
+      guilds: 32,
+      prizePool: 500000,
+      startDate: '2025-12-15',
+    },
   ]);
 
-  const myGuild = guilds.find(g => g.isJoined);
+  const myGuild = guilds.find((g) => g.isJoined);
 
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'leader': return 'text-amber-400';
-      case 'officer': return 'text-purple-400';
-      default: return 'text-slate-400';
+      case 'leader':
+        return 'text-amber-400';
+      case 'officer':
+        return 'text-purple-400';
+      default:
+        return 'text-slate-400';
     }
   };
 
   const getRoleBadge = (role: string) => {
     switch (role) {
-      case 'leader': return '👑';
-      case 'officer': return '⭐';
-      default: return '';
+      case 'leader':
+        return '👑';
+      case 'officer':
+        return '⭐';
+      default:
+        return '';
     }
   };
 
@@ -85,7 +202,9 @@ export default function Guilds() {
           </div>
           <div>
             <h1 className="text-3xl md:text-4xl font-bold">Guilds</h1>
-            <p className="text-slate-400">Join forces with traders and compete together</p>
+            <p className="text-slate-400">
+              Join forces with traders and compete together
+            </p>
           </div>
         </div>
 
@@ -125,18 +244,26 @@ export default function Guilds() {
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-2xl font-bold">{guild.name}</h3>
-                        <span className="px-2 py-1 bg-slate-700 rounded text-sm font-mono">[{guild.tag}]</span>
-                        {guild.rank <= 3 && <Crown className="w-5 h-5 text-amber-400" />}
+                        <span className="px-2 py-1 bg-slate-700 rounded text-sm font-mono">
+                          [{guild.tag}]
+                        </span>
+                        {guild.rank <= 3 && (
+                          <Crown className="w-5 h-5 text-amber-400" />
+                        )}
                       </div>
                       <div className="flex items-center gap-4 text-sm text-slate-400">
                         <span>Rank #{guild.rank}</span>
                         <span>Level {guild.level}</span>
-                        <span>{guild.members}/{guild.maxMembers} members</span>
+                        <span>
+                          {guild.members}/{guild.maxMembers} members
+                        </span>
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-emerald-400">{guild.treasury.toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-emerald-400">
+                      {guild.treasury.toLocaleString()}
+                    </div>
                     <div className="text-sm text-slate-400">Guild Treasury</div>
                     {!guild.isJoined ? (
                       <button className="mt-2 px-6 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-medium">
@@ -167,12 +294,20 @@ export default function Guilds() {
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <h2 className="text-3xl font-bold">{myGuild.name}</h2>
-                      <span className="px-3 py-1 bg-slate-700 rounded-lg font-mono text-lg">[{myGuild.tag}]</span>
+                      <span className="px-3 py-1 bg-slate-700 rounded-lg font-mono text-lg">
+                        [{myGuild.tag}]
+                      </span>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-amber-400 font-bold">Rank #{myGuild.rank}</span>
-                      <span className="text-emerald-400">Level {myGuild.level}</span>
-                      <span className="text-slate-400">{myGuild.members}/{myGuild.maxMembers} members</span>
+                      <span className="text-amber-400 font-bold">
+                        Rank #{myGuild.rank}
+                      </span>
+                      <span className="text-emerald-400">
+                        Level {myGuild.level}
+                      </span>
+                      <span className="text-slate-400">
+                        {myGuild.members}/{myGuild.maxMembers} members
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -188,14 +323,18 @@ export default function Guilds() {
                     <TrendingUp className="w-5 h-5 text-emerald-400" />
                     <span className="text-slate-400">Guild Treasury</span>
                   </div>
-                  <div className="text-2xl font-bold text-emerald-400">{myGuild.treasury.toLocaleString()}</div>
+                  <div className="text-2xl font-bold text-emerald-400">
+                    {myGuild.treasury.toLocaleString()}
+                  </div>
                 </div>
                 <div className="bg-slate-800/50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Users className="w-5 h-5 text-purple-400" />
                     <span className="text-slate-400">Active Members</span>
                   </div>
-                  <div className="text-2xl font-bold text-purple-400">{myGuild.members}</div>
+                  <div className="text-2xl font-bold text-purple-400">
+                    {myGuild.members}
+                  </div>
                 </div>
                 <div className="bg-slate-800/50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -217,20 +356,29 @@ export default function Guilds() {
                     className="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="text-2xl font-bold text-slate-600">#{index + 1}</div>
+                      <div className="text-2xl font-bold text-slate-600">
+                        #{index + 1}
+                      </div>
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-bold">{member.name}</span>
                           <span>{getRoleBadge(member.role)}</span>
-                          <span className={`text-sm ${getRoleColor(member.role)}`}>
-                            {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
+                          <span
+                            className={`text-sm ${getRoleColor(member.role)}`}
+                          >
+                            {member.role.charAt(0).toUpperCase() +
+                              member.role.slice(1)}
                           </span>
                         </div>
-                        <div className="text-sm text-slate-400">Joined {member.joinDate}</div>
+                        <div className="text-sm text-slate-400">
+                          Joined {member.joinDate}
+                        </div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-emerald-400">{member.contribution.toLocaleString()}</div>
+                      <div className="text-lg font-bold text-emerald-400">
+                        {member.contribution.toLocaleString()}
+                      </div>
                       <div className="text-sm text-slate-400">Contribution</div>
                     </div>
                   </div>
@@ -248,16 +396,24 @@ export default function Guilds() {
                 <div className="p-3 bg-slate-700/50 rounded-lg">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-bold">TraderPro</span>
-                    <span className="text-xs text-slate-400">2 minutes ago</span>
+                    <span className="text-xs text-slate-400">
+                      2 minutes ago
+                    </span>
                   </div>
-                  <p className="text-slate-300">Great job everyone on today's tournament!</p>
+                  <p className="text-slate-300">
+                    Great job everyone on today's tournament!
+                  </p>
                 </div>
                 <div className="p-3 bg-slate-700/50 rounded-lg">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-bold">MarketGuru</span>
-                    <span className="text-xs text-slate-400">5 minutes ago</span>
+                    <span className="text-xs text-slate-400">
+                      5 minutes ago
+                    </span>
                   </div>
-                  <p className="text-slate-300">Next target: reach 150k treasury 🚀</p>
+                  <p className="text-slate-300">
+                    Next target: reach 150k treasury 🚀
+                  </p>
                 </div>
               </div>
               <input
@@ -282,31 +438,42 @@ export default function Guilds() {
                     <div className="flex items-center gap-3 mb-2">
                       <Trophy className="w-8 h-8 text-amber-400" />
                       <h3 className="text-2xl font-bold">{tournament.name}</h3>
-                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${
-                        tournament.status === 'active' ? 'bg-green-500/20 text-green-400' :
-                        tournament.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' :
-                        'bg-slate-500/20 text-slate-400'
-                      }`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-bold ${
+                          tournament.status === 'active'
+                            ? 'bg-green-500/20 text-green-400'
+                            : tournament.status === 'upcoming'
+                            ? 'bg-blue-500/20 text-blue-400'
+                            : 'bg-slate-500/20 text-slate-400'
+                        }`}
+                      >
                         {tournament.status.toUpperCase()}
                       </span>
                     </div>
                     <div className="flex items-center gap-4 text-slate-400">
                       <span>{tournament.guilds} guilds</span>
-                      <span>Prize Pool: {tournament.prizePool.toLocaleString()} tokens</span>
+                      <span>
+                        Prize Pool: {tournament.prizePool.toLocaleString()}{' '}
+                        tokens
+                      </span>
                       <span>Starts: {tournament.startDate}</span>
                     </div>
                   </div>
                   <button
                     className={`px-6 py-3 rounded-lg font-medium ${
-                      tournament.status === 'active' ? 'bg-green-600 hover:bg-green-700' :
-                      tournament.status === 'upcoming' ? 'bg-emerald-600 hover:bg-emerald-700' :
-                      'bg-slate-600 cursor-not-allowed'
+                      tournament.status === 'active'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : tournament.status === 'upcoming'
+                        ? 'bg-emerald-600 hover:bg-emerald-700'
+                        : 'bg-slate-600 cursor-not-allowed'
                     }`}
                     disabled={tournament.status === 'completed'}
                   >
-                    {tournament.status === 'active' ? 'View Brackets' :
-                     tournament.status === 'upcoming' ? 'Register Guild' :
-                     'Completed'}
+                    {tournament.status === 'active'
+                      ? 'View Brackets'
+                      : tournament.status === 'upcoming'
+                      ? 'Register Guild'
+                      : 'Completed'}
                   </button>
                 </div>
               </div>
@@ -318,7 +485,9 @@ export default function Guilds() {
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-12 border border-slate-700 text-center">
             <Shield className="w-16 h-16 text-slate-600 mx-auto mb-4" />
             <h3 className="text-2xl font-bold mb-2">Not in a Guild</h3>
-            <p className="text-slate-400 mb-6">Join or create a guild to unlock cooperative features</p>
+            <p className="text-slate-400 mb-6">
+              Join or create a guild to unlock cooperative features
+            </p>
             <button className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold">
               Browse Guilds
             </button>

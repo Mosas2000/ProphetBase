@@ -1,7 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import { RefreshCw, PieChart, TrendingUp, Target, Settings, Zap, DollarSign, BarChart3 } from 'lucide-react';
+import {
+  BarChart3,
+  DollarSign,
+  PieChart,
+  RefreshCw,
+  Settings,
+  Target,
+  TrendingUp,
+  Zap,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface Asset {
   marketId: string;
@@ -78,11 +87,14 @@ export default function AutoRebalancing() {
       targetAllocation: 15,
       currentValue: 500,
       currentShares: 833,
-      price: 0.60,
+      price: 0.6,
     },
   ]);
 
-  const totalValue = portfolio.reduce((sum, asset) => sum + asset.currentValue, 0);
+  const totalValue = portfolio.reduce(
+    (sum, asset) => sum + asset.currentValue,
+    0
+  );
 
   const [rebalanceActions] = useState<RebalanceAction[]>([
     {
@@ -122,7 +134,7 @@ export default function AutoRebalancing() {
       currentShares: 833,
       targetShares: 1250,
       sharesToTrade: 417,
-      value: +250.20,
+      value: +250.2,
       reason: 'Underweight by 5% - increase for diversification',
     },
   ]);
@@ -158,10 +170,13 @@ export default function AutoRebalancing() {
     }, 3000);
   };
 
-  const estimatedCost = rebalanceActions
-    .reduce((sum, action) => sum + Math.abs(action.value), 0) * 0.01; // 1% trading fee
+  const estimatedCost =
+    rebalanceActions.reduce((sum, action) => sum + Math.abs(action.value), 0) *
+    0.01; // 1% trading fee
 
-  const taxImpact = strategy.taxOptimization ? estimatedCost * 0.5 : estimatedCost;
+  const taxImpact = strategy.taxOptimization
+    ? estimatedCost * 0.5
+    : estimatedCost;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4 md:p-8">
@@ -174,8 +189,12 @@ export default function AutoRebalancing() {
                 <RefreshCw className="w-8 h-8 text-blue-400" />
               </div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold">Auto Rebalancing</h1>
-                <p className="text-slate-400">AI-driven portfolio optimization</p>
+                <h1 className="text-3xl md:text-4xl font-bold">
+                  Auto Rebalancing
+                </h1>
+                <p className="text-slate-400">
+                  AI-driven portfolio optimization
+                </p>
               </div>
             </div>
             <button
@@ -191,13 +210,20 @@ export default function AutoRebalancing() {
         {showSettings && (
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
             <h2 className="text-xl font-bold mb-6">Rebalancing Settings</h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm text-slate-400 mb-2">Rebalancing Frequency</label>
+                <label className="block text-sm text-slate-400 mb-2">
+                  Rebalancing Frequency
+                </label>
                 <select
                   value={strategy.frequency}
-                  onChange={(e) => setStrategy({...strategy, frequency: e.target.value as any})}
+                  onChange={(e) =>
+                    setStrategy({
+                      ...strategy,
+                      frequency: e.target.value as any,
+                    })
+                  }
                   className="w-full px-4 py-3 bg-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 >
                   <option value="weekly">Weekly</option>
@@ -208,10 +234,17 @@ export default function AutoRebalancing() {
               </div>
 
               <div>
-                <label className="block text-sm text-slate-400 mb-2">Risk Tolerance</label>
+                <label className="block text-sm text-slate-400 mb-2">
+                  Risk Tolerance
+                </label>
                 <select
                   value={strategy.riskTolerance}
-                  onChange={(e) => setStrategy({...strategy, riskTolerance: e.target.value as any})}
+                  onChange={(e) =>
+                    setStrategy({
+                      ...strategy,
+                      riskTolerance: e.target.value as any,
+                    })
+                  }
                   className="w-full px-4 py-3 bg-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 >
                   <option value="conservative">Conservative</option>
@@ -221,21 +254,35 @@ export default function AutoRebalancing() {
               </div>
 
               <div>
-                <label className="block text-sm text-slate-400 mb-2">Minimum Trade Size ($)</label>
+                <label className="block text-sm text-slate-400 mb-2">
+                  Minimum Trade Size ($)
+                </label>
                 <input
                   type="number"
                   value={strategy.minTradeSize}
-                  onChange={(e) => setStrategy({...strategy, minTradeSize: parseInt(e.target.value)})}
+                  onChange={(e) =>
+                    setStrategy({
+                      ...strategy,
+                      minTradeSize: parseInt(e.target.value),
+                    })
+                  }
                   className="w-full px-4 py-3 bg-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-sm text-slate-400 mb-2">Maximum Single Trade ($)</label>
+                <label className="block text-sm text-slate-400 mb-2">
+                  Maximum Single Trade ($)
+                </label>
                 <input
                   type="number"
                   value={strategy.maxSingleTrade}
-                  onChange={(e) => setStrategy({...strategy, maxSingleTrade: parseInt(e.target.value)})}
+                  onChange={(e) =>
+                    setStrategy({
+                      ...strategy,
+                      maxSingleTrade: parseInt(e.target.value),
+                    })
+                  }
                   className="w-full px-4 py-3 bg-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
@@ -245,10 +292,17 @@ export default function AutoRebalancing() {
                   <input
                     type="checkbox"
                     checked={strategy.taxOptimization}
-                    onChange={(e) => setStrategy({...strategy, taxOptimization: e.target.checked})}
+                    onChange={(e) =>
+                      setStrategy({
+                        ...strategy,
+                        taxOptimization: e.target.checked,
+                      })
+                    }
                     className="w-5 h-5 bg-slate-700 rounded border-slate-600 focus:ring-2 focus:ring-blue-500"
                   />
-                  <span className="text-sm">Enable tax-loss harvesting optimization</span>
+                  <span className="text-sm">
+                    Enable tax-loss harvesting optimization
+                  </span>
                 </label>
               </div>
             </div>
@@ -262,7 +316,9 @@ export default function AutoRebalancing() {
               <DollarSign className="w-5 h-5 text-blue-400" />
               <span className="text-sm text-slate-400">Total Value</span>
             </div>
-            <div className="text-2xl font-bold">${totalValue.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              ${totalValue.toLocaleString()}
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -279,7 +335,12 @@ export default function AutoRebalancing() {
               <span className="text-sm text-slate-400">Max Drift</span>
             </div>
             <div className="text-2xl font-bold text-yellow-400">
-              {Math.max(...portfolio.map(a => getDriftPercentage(a.currentAllocation, a.targetAllocation)))}%
+              {Math.max(
+                ...portfolio.map((a) =>
+                  getDriftPercentage(a.currentAllocation, a.targetAllocation)
+                )
+              )}
+              %
             </div>
           </div>
 
@@ -289,36 +350,59 @@ export default function AutoRebalancing() {
               <span className="text-sm text-slate-400">Rebalance Needed</span>
             </div>
             <div className="text-2xl font-bold text-red-400">
-              {rebalanceActions.filter(a => a.action !== 'hold').length}
+              {rebalanceActions.filter((a) => a.action !== 'hold').length}
             </div>
           </div>
         </div>
 
         {/* Current Allocation */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
-          <h2 className="text-xl font-bold mb-6">Current vs Target Allocation</h2>
-          
+          <h2 className="text-xl font-bold mb-6">
+            Current vs Target Allocation
+          </h2>
+
           <div className="space-y-4">
             {portfolio.map((asset) => {
-              const drift = getDriftPercentage(asset.currentAllocation, asset.targetAllocation);
+              const drift = getDriftPercentage(
+                asset.currentAllocation,
+                asset.targetAllocation
+              );
               return (
-                <div key={asset.marketId} className="bg-slate-700/50 rounded-lg p-4">
+                <div
+                  key={asset.marketId}
+                  className="bg-slate-700/50 rounded-lg p-4"
+                >
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <h3 className="font-semibold mb-1">{asset.marketTitle}</h3>
+                      <h3 className="font-semibold mb-1">
+                        {asset.marketTitle}
+                      </h3>
                       <div className="text-sm text-slate-400">
-                        ${asset.currentValue.toLocaleString()} • {asset.currentShares.toLocaleString()} shares @ ${asset.price}
+                        ${asset.currentValue.toLocaleString()} •{' '}
+                        {asset.currentShares.toLocaleString()} shares @ $
+                        {asset.price}
                       </div>
                     </div>
-                    <div className={`text-xl font-bold ${getDriftColor(drift)}`}>
-                      {drift > 0 && (drift === asset.currentAllocation - asset.targetAllocation ? '+' : '')}
-                      {(asset.currentAllocation - asset.targetAllocation).toFixed(1)}%
+                    <div
+                      className={`text-xl font-bold ${getDriftColor(drift)}`}
+                    >
+                      {drift > 0 &&
+                        (drift ===
+                        asset.currentAllocation - asset.targetAllocation
+                          ? '+'
+                          : '')}
+                      {(
+                        asset.currentAllocation - asset.targetAllocation
+                      ).toFixed(1)}
+                      %
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
-                      <div className="text-xs text-slate-400 mb-2">Current: {asset.currentAllocation}%</div>
+                      <div className="text-xs text-slate-400 mb-2">
+                        Current: {asset.currentAllocation}%
+                      </div>
                       <div className="w-full bg-slate-600 rounded-full h-2">
                         <div
                           className="h-full bg-blue-500 rounded-full"
@@ -327,7 +411,9 @@ export default function AutoRebalancing() {
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-slate-400 mb-2">Target: {asset.targetAllocation}%</div>
+                      <div className="text-xs text-slate-400 mb-2">
+                        Target: {asset.targetAllocation}%
+                      </div>
                       <div className="w-full bg-slate-600 rounded-full h-2">
                         <div
                           className="h-full bg-green-500 rounded-full"
@@ -354,7 +440,10 @@ export default function AutoRebalancing() {
             <h2 className="text-xl font-bold">Recommended Actions</h2>
             <div className="flex items-center gap-3">
               <div className="text-sm text-slate-400">
-                Estimated Cost: <span className="text-white font-semibold">${estimatedCost.toFixed(2)}</span>
+                Estimated Cost:{' '}
+                <span className="text-white font-semibold">
+                  ${estimatedCost.toFixed(2)}
+                </span>
               </div>
               {strategy.taxOptimization && (
                 <div className="text-sm text-green-400">
@@ -366,31 +455,57 @@ export default function AutoRebalancing() {
 
           <div className="space-y-4 mb-6">
             {rebalanceActions.map((action) => (
-              <div key={action.marketId} className="bg-slate-700/50 rounded-lg p-4">
+              <div
+                key={action.marketId}
+                className="bg-slate-700/50 rounded-lg p-4"
+              >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="font-semibold">{action.marketTitle}</h3>
-                      <span className={`px-3 py-1 rounded-lg text-xs font-semibold border uppercase ${getActionColor(action.action)}`}>
+                      <span
+                        className={`px-3 py-1 rounded-lg text-xs font-semibold border uppercase ${getActionColor(
+                          action.action
+                        )}`}
+                      >
                         {action.action}
                       </span>
                     </div>
-                    <p className="text-sm text-slate-400 mb-3">{action.reason}</p>
+                    <p className="text-sm text-slate-400 mb-3">
+                      {action.reason}
+                    </p>
 
                     {action.action !== 'hold' && (
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <div className="text-slate-400 mb-1">Current Shares</div>
-                          <div className="font-semibold">{action.currentShares.toLocaleString()}</div>
+                          <div className="text-slate-400 mb-1">
+                            Current Shares
+                          </div>
+                          <div className="font-semibold">
+                            {action.currentShares.toLocaleString()}
+                          </div>
                         </div>
                         <div>
-                          <div className="text-slate-400 mb-1">Target Shares</div>
-                          <div className="font-semibold">{action.targetShares.toLocaleString()}</div>
+                          <div className="text-slate-400 mb-1">
+                            Target Shares
+                          </div>
+                          <div className="font-semibold">
+                            {action.targetShares.toLocaleString()}
+                          </div>
                         </div>
                         <div>
-                          <div className="text-slate-400 mb-1">Shares to {action.action}</div>
-                          <div className={`font-semibold ${action.action === 'buy' ? 'text-green-400' : 'text-red-400'}`}>
-                            {action.action === 'buy' ? '+' : '-'}{Math.abs(action.sharesToTrade).toLocaleString()}
+                          <div className="text-slate-400 mb-1">
+                            Shares to {action.action}
+                          </div>
+                          <div
+                            className={`font-semibold ${
+                              action.action === 'buy'
+                                ? 'text-green-400'
+                                : 'text-red-400'
+                            }`}
+                          >
+                            {action.action === 'buy' ? '+' : '-'}
+                            {Math.abs(action.sharesToTrade).toLocaleString()}
                           </div>
                         </div>
                       </div>
@@ -400,8 +515,13 @@ export default function AutoRebalancing() {
                   {action.action !== 'hold' && (
                     <div className="text-right ml-4">
                       <div className="text-sm text-slate-400 mb-1">Value</div>
-                      <div className={`text-xl font-bold ${action.value > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {action.value > 0 ? '+' : ''}${Math.abs(action.value).toFixed(2)}
+                      <div
+                        className={`text-xl font-bold ${
+                          action.value > 0 ? 'text-green-400' : 'text-red-400'
+                        }`}
+                      >
+                        {action.value > 0 ? '+' : ''}$
+                        {Math.abs(action.value).toFixed(2)}
                       </div>
                     </div>
                   )}
@@ -438,10 +558,14 @@ export default function AutoRebalancing() {
           <div className="flex items-start gap-3">
             <TrendingUp className="w-5 h-5 text-blue-400 mt-0.5" />
             <div>
-              <div className="font-semibold text-blue-400 mb-1">AI-Powered Optimization</div>
+              <div className="font-semibold text-blue-400 mb-1">
+                AI-Powered Optimization
+              </div>
               <div className="text-sm text-slate-300">
-                Our AI analyzes market conditions, tax implications, and transaction costs to optimize your rebalancing strategy. 
-                {strategy.taxOptimization && ' Tax-loss harvesting is enabled to minimize your tax burden.'}
+                Our AI analyzes market conditions, tax implications, and
+                transaction costs to optimize your rebalancing strategy.
+                {strategy.taxOptimization &&
+                  ' Tax-loss harvesting is enabled to minimize your tax burden.'}
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Clock, Gift, Lock, Snowflake, Sparkles, Star, TrendingUp, Zap } from 'lucide-react';
+import { Calendar, Clock, Gift, Lock, Sparkles, Star, TrendingUp, Zap } from 'lucide-react';
 import { useState } from 'react';
 
 interface SeasonalNFT {

@@ -1,7 +1,7 @@
 'use client';
 
+import { Check, Eye, Palette } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Palette, Eye, Check } from 'lucide-react';
 
 // High contrast themes
 export interface ContrastTheme {

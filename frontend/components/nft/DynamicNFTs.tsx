@@ -56,7 +56,9 @@ interface UpgradeOption {
 export default function DynamicNFTs() {
   const [selectedNFT, setSelectedNFT] = useState<DynamicNFT | null>(null);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [selectedUpgrade, setSelectedUpgrade] = useState<UpgradeOption | null>(null);
+  const [selectedUpgrade, setSelectedUpgrade] = useState<UpgradeOption | null>(
+    null
+  );
 
   const [dynamicNFTs, setDynamicNFTs] = useState<DynamicNFT[]>([
     {
@@ -73,17 +75,23 @@ export default function DynamicNFTs() {
         volume: 125000,
         winRate: 72,
         streak: 12,
-        reputation: 945
+        reputation: 945,
       },
       evolutionStage: 3,
       maxEvolution: 5,
-      achievements: ['First Win', '100 Predictions', '10 Day Streak', 'High Roller', 'Perfect Week'],
+      achievements: [
+        'First Win',
+        '100 Predictions',
+        '10 Day Streak',
+        'High Roller',
+        'Perfect Week',
+      ],
       performance: {
         totalPredictions: 342,
         correctPredictions: 246,
         totalVolume: 125000,
         avgPredictionAccuracy: 87.3,
-        longestStreak: 18
+        longestStreak: 18,
       },
       upgrades: [
         {
@@ -91,36 +99,36 @@ export default function DynamicNFTs() {
           name: 'Enhanced Analytics',
           description: '+10% accuracy tracking',
           cost: 500,
-          unlocked: true
+          unlocked: true,
         },
         {
           id: 'u2',
           name: 'Volume Multiplier',
           description: '2x trading volume tracking',
           cost: 1000,
-          unlocked: true
+          unlocked: true,
         },
         {
           id: 'u3',
           name: 'Streak Shield',
           description: 'Protect your streak once per week',
           cost: 2000,
-          unlocked: false
+          unlocked: false,
         },
         {
           id: 'u4',
           name: 'Legendary Aura',
           description: '+50 reputation per win',
           cost: 5000,
-          unlocked: false
-        }
+          unlocked: false,
+        },
       ],
       icon: '🔮',
       metadata: {
         lastUpdated: new Date(Date.now() - 1000 * 60 * 30),
         contractAddress: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb1',
-        ipfsUrl: 'ipfs://QmX5j8kZN2QvBFGH7LqF6yRZ3mKpVq'
-      }
+        ipfsUrl: 'ipfs://QmX5j8kZN2QvBFGH7LqF6yRZ3mKpVq',
+      },
     },
     {
       id: '2',
@@ -136,7 +144,7 @@ export default function DynamicNFTs() {
         volume: 45000,
         winRate: 62,
         streak: 5,
-        reputation: 520
+        reputation: 520,
       },
       evolutionStage: 2,
       maxEvolution: 5,
@@ -146,7 +154,7 @@ export default function DynamicNFTs() {
         correctPredictions: 97,
         totalVolume: 45000,
         avgPredictionAccuracy: 68.5,
-        longestStreak: 8
+        longestStreak: 8,
       },
       upgrades: [
         {
@@ -154,29 +162,29 @@ export default function DynamicNFTs() {
           name: 'Enhanced Analytics',
           description: '+10% accuracy tracking',
           cost: 500,
-          unlocked: true
+          unlocked: true,
         },
         {
           id: 'u2',
           name: 'Volume Multiplier',
           description: '2x trading volume tracking',
           cost: 1000,
-          unlocked: false
+          unlocked: false,
         },
         {
           id: 'u3',
           name: 'Streak Shield',
           description: 'Protect your streak once per week',
           cost: 2000,
-          unlocked: false
-        }
+          unlocked: false,
+        },
       ],
       icon: '⚡',
       metadata: {
         lastUpdated: new Date(Date.now() - 1000 * 60 * 60 * 2),
         contractAddress: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb1',
-        ipfsUrl: 'ipfs://QmY6k9lO4QwCGIHMsRrW7zS4nLq'
-      }
+        ipfsUrl: 'ipfs://QmY6k9lO4QwCGIHMsRrW7zS4nLq',
+      },
     },
     {
       id: '3',
@@ -192,7 +200,7 @@ export default function DynamicNFTs() {
         volume: 12000,
         winRate: 48,
         streak: 2,
-        reputation: 180
+        reputation: 180,
       },
       evolutionStage: 1,
       maxEvolution: 5,
@@ -202,7 +210,7 @@ export default function DynamicNFTs() {
         correctPredictions: 23,
         totalVolume: 12000,
         avgPredictionAccuracy: 52.4,
-        longestStreak: 4
+        longestStreak: 4,
       },
       upgrades: [
         {
@@ -210,23 +218,23 @@ export default function DynamicNFTs() {
           name: 'Enhanced Analytics',
           description: '+10% accuracy tracking',
           cost: 500,
-          unlocked: false
+          unlocked: false,
         },
         {
           id: 'u2',
           name: 'Volume Multiplier',
           description: '2x trading volume tracking',
           cost: 1000,
-          unlocked: false
-        }
+          unlocked: false,
+        },
       ],
       icon: '🌟',
       metadata: {
         lastUpdated: new Date(Date.now() - 1000 * 60 * 60 * 6),
         contractAddress: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb1',
-        ipfsUrl: 'ipfs://QmZ7l0mP5RxDHJNtTsV8oMr'
-      }
-    }
+        ipfsUrl: 'ipfs://QmZ7l0mP5RxDHJNtTsV8oMr',
+      },
+    },
   ]);
 
   const getRarityColor = (rarity: string) => {
@@ -291,7 +299,7 @@ export default function DynamicNFTs() {
           ...nft,
           upgrades: nft.upgrades.map((u) =>
             u.id === selectedUpgrade.id ? { ...u, unlocked: true } : u
-          )
+          ),
         };
       }
       return nft;
@@ -321,7 +329,10 @@ export default function DynamicNFTs() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Dynamic NFTs</h1>
-              <p className="text-slate-400">NFTs that evolve based on your trading performance and statistics</p>
+              <p className="text-slate-400">
+                NFTs that evolve based on your trading performance and
+                statistics
+              </p>
             </div>
           </div>
         </div>
@@ -333,7 +344,9 @@ export default function DynamicNFTs() {
               <span className="text-slate-400 text-sm">Total NFTs</span>
               <Zap className="w-4 h-4 text-indigo-400" />
             </div>
-            <div className="text-2xl font-bold text-indigo-400">{dynamicNFTs.length}</div>
+            <div className="text-2xl font-bold text-indigo-400">
+              {dynamicNFTs.length}
+            </div>
             <div className="text-xs text-slate-400 mt-1">Evolving NFTs</div>
           </div>
 
@@ -343,7 +356,10 @@ export default function DynamicNFTs() {
               <ArrowUp className="w-4 h-4 text-green-400" />
             </div>
             <div className="text-2xl font-bold text-green-400">
-              {Math.round(dynamicNFTs.reduce((sum, nft) => sum + nft.level, 0) / dynamicNFTs.length)}
+              {Math.round(
+                dynamicNFTs.reduce((sum, nft) => sum + nft.level, 0) /
+                  dynamicNFTs.length
+              )}
             </div>
             <div className="text-xs text-slate-400 mt-1">Across all NFTs</div>
           </div>
@@ -354,7 +370,9 @@ export default function DynamicNFTs() {
               <TrendingUp className="w-4 h-4 text-blue-400" />
             </div>
             <div className="text-2xl font-bold text-blue-400">
-              {formatCurrency(dynamicNFTs.reduce((sum, nft) => sum + nft.stats.volume, 0))}
+              {formatCurrency(
+                dynamicNFTs.reduce((sum, nft) => sum + nft.stats.volume, 0)
+              )}
             </div>
             <div className="text-xs text-slate-400 mt-1">Combined stats</div>
           </div>
@@ -365,9 +383,15 @@ export default function DynamicNFTs() {
               <BarChart2 className="w-4 h-4 text-purple-400" />
             </div>
             <div className="text-2xl font-bold text-purple-400">
-              {Math.round(dynamicNFTs.reduce((sum, nft) => sum + nft.stats.accuracy, 0) / dynamicNFTs.length)}%
+              {Math.round(
+                dynamicNFTs.reduce((sum, nft) => sum + nft.stats.accuracy, 0) /
+                  dynamicNFTs.length
+              )}
+              %
             </div>
-            <div className="text-xs text-slate-400 mt-1">Performance metric</div>
+            <div className="text-xs text-slate-400 mt-1">
+              Performance metric
+            </div>
           </div>
         </div>
 
@@ -385,7 +409,11 @@ export default function DynamicNFTs() {
                     <div className="text-6xl">{nft.icon}</div>
                     <div>
                       <h3 className="font-bold text-xl mb-1">{nft.name}</h3>
-                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(nft.rarity)}`}>
+                      <div
+                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(
+                          nft.rarity
+                        )}`}
+                      >
                         {nft.rarity.toUpperCase()}
                       </div>
                     </div>
@@ -393,7 +421,9 @@ export default function DynamicNFTs() {
 
                   <div className="text-right">
                     <div className="text-xs text-slate-400 mb-1">Level</div>
-                    <div className="text-3xl font-bold text-indigo-400">{nft.level}</div>
+                    <div className="text-3xl font-bold text-indigo-400">
+                      {nft.level}
+                    </div>
                   </div>
                 </div>
 
@@ -402,24 +432,33 @@ export default function DynamicNFTs() {
                   <div className="flex items-center justify-between text-sm mb-2">
                     <span className="text-slate-300">Experience</span>
                     <span className="font-semibold">
-                      {nft.experience} / {nft.experience + nft.experienceToNext} XP
+                      {nft.experience} / {nft.experience + nft.experienceToNext}{' '}
+                      XP
                     </span>
                   </div>
                   <div className="w-full bg-slate-700 rounded-full h-2">
                     <div
                       className="bg-gradient-to-r from-indigo-600 to-purple-600 h-2 rounded-full transition-all"
                       style={{
-                        width: `${(nft.experience / (nft.experience + nft.experienceToNext)) * 100}%`
+                        width: `${
+                          (nft.experience /
+                            (nft.experience + nft.experienceToNext)) *
+                          100
+                        }%`,
                       }}
                     />
                   </div>
-                  <div className="text-xs text-slate-400 mt-1">{nft.experienceToNext} XP to next level</div>
+                  <div className="text-xs text-slate-400 mt-1">
+                    {nft.experienceToNext} XP to next level
+                  </div>
                 </div>
 
                 {/* Evolution Stage */}
                 <div className="bg-slate-700/50 rounded-lg p-3">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-slate-300">Evolution Stage</span>
+                    <span className="text-sm text-slate-300">
+                      Evolution Stage
+                    </span>
                     <span className="font-semibold">
                       {nft.evolutionStage} / {nft.maxEvolution}
                     </span>
@@ -449,7 +488,11 @@ export default function DynamicNFTs() {
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-slate-700/30 rounded-lg p-3">
                     <div className="text-xs text-slate-400 mb-1">Accuracy</div>
-                    <div className={`text-2xl font-bold ${getStatColor(nft.stats.accuracy)}`}>
+                    <div
+                      className={`text-2xl font-bold ${getStatColor(
+                        nft.stats.accuracy
+                      )}`}
+                    >
                       {nft.stats.accuracy}%
                     </div>
                     <div className="w-full bg-slate-600 rounded-full h-1 mt-2">
@@ -468,7 +511,11 @@ export default function DynamicNFTs() {
 
                   <div className="bg-slate-700/30 rounded-lg p-3">
                     <div className="text-xs text-slate-400 mb-1">Win Rate</div>
-                    <div className={`text-2xl font-bold ${getStatColor(nft.stats.winRate)}`}>
+                    <div
+                      className={`text-2xl font-bold ${getStatColor(
+                        nft.stats.winRate
+                      )}`}
+                    >
                       {nft.stats.winRate}%
                     </div>
                     <div className="w-full bg-slate-600 rounded-full h-1 mt-2">
@@ -487,22 +534,36 @@ export default function DynamicNFTs() {
 
                   <div className="bg-slate-700/30 rounded-lg p-3">
                     <div className="text-xs text-slate-400 mb-1">Volume</div>
-                    <div className="text-lg font-bold">{formatCurrency(nft.stats.volume)}</div>
+                    <div className="text-lg font-bold">
+                      {formatCurrency(nft.stats.volume)}
+                    </div>
                   </div>
 
                   <div className="bg-slate-700/30 rounded-lg p-3">
-                    <div className="text-xs text-slate-400 mb-1">Current Streak</div>
-                    <div className="text-lg font-bold text-orange-400">{nft.stats.streak} 🔥</div>
+                    <div className="text-xs text-slate-400 mb-1">
+                      Current Streak
+                    </div>
+                    <div className="text-lg font-bold text-orange-400">
+                      {nft.stats.streak} 🔥
+                    </div>
                   </div>
 
                   <div className="bg-slate-700/30 rounded-lg p-3">
-                    <div className="text-xs text-slate-400 mb-1">Reputation</div>
-                    <div className="text-lg font-bold text-purple-400">{nft.stats.reputation}</div>
+                    <div className="text-xs text-slate-400 mb-1">
+                      Reputation
+                    </div>
+                    <div className="text-lg font-bold text-purple-400">
+                      {nft.stats.reputation}
+                    </div>
                   </div>
 
                   <div className="bg-slate-700/30 rounded-lg p-3">
-                    <div className="text-xs text-slate-400 mb-1">Total Predictions</div>
-                    <div className="text-lg font-bold">{nft.performance.totalPredictions}</div>
+                    <div className="text-xs text-slate-400 mb-1">
+                      Total Predictions
+                    </div>
+                    <div className="text-lg font-bold">
+                      {nft.performance.totalPredictions}
+                    </div>
                   </div>
                 </div>
 
@@ -514,13 +575,19 @@ export default function DynamicNFTs() {
                       <div
                         key={upgrade.id}
                         className={`bg-slate-700/30 rounded-lg p-3 border ${
-                          upgrade.unlocked ? 'border-green-500/30' : 'border-slate-600'
+                          upgrade.unlocked
+                            ? 'border-green-500/30'
+                            : 'border-slate-600'
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
-                            <div className="font-semibold text-sm mb-1">{upgrade.name}</div>
-                            <div className="text-xs text-slate-400">{upgrade.description}</div>
+                            <div className="font-semibold text-sm mb-1">
+                              {upgrade.name}
+                            </div>
+                            <div className="text-xs text-slate-400">
+                              {upgrade.description}
+                            </div>
                           </div>
                           {upgrade.unlocked ? (
                             <div className="px-3 py-1 bg-green-600/20 border border-green-600/30 rounded text-green-400 text-xs">
@@ -546,7 +613,9 @@ export default function DynamicNFTs() {
 
                 {/* Achievements */}
                 <div className="mb-6">
-                  <h4 className="font-bold mb-3">Achievements ({nft.achievements.length})</h4>
+                  <h4 className="font-bold mb-3">
+                    Achievements ({nft.achievements.length})
+                  </h4>
                   <div className="flex flex-wrap gap-2">
                     {nft.achievements.map((achievement, i) => (
                       <div
@@ -569,11 +638,15 @@ export default function DynamicNFTs() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-slate-400">Contract:</span>
-                      <span className="font-mono text-xs">{nft.metadata.contractAddress.slice(0, 10)}...</span>
+                      <span className="font-mono text-xs">
+                        {nft.metadata.contractAddress.slice(0, 10)}...
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-slate-400">IPFS:</span>
-                      <span className="font-mono text-xs">{nft.metadata.ipfsUrl.slice(0, 20)}...</span>
+                      <span className="font-mono text-xs">
+                        {nft.metadata.ipfsUrl.slice(0, 20)}...
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-slate-400">Last Updated:</span>
@@ -599,15 +672,20 @@ export default function DynamicNFTs() {
 
               <div className="bg-indigo-600/10 border border-indigo-600/30 rounded-lg p-4 mb-6">
                 <h5 className="font-bold mb-2">{selectedUpgrade.name}</h5>
-                <p className="text-sm text-slate-300 mb-3">{selectedUpgrade.description}</p>
+                <p className="text-sm text-slate-300 mb-3">
+                  {selectedUpgrade.description}
+                </p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-400">Upgrade Cost:</span>
-                  <span className="font-bold text-xl">{formatCurrency(selectedUpgrade.cost)}</span>
+                  <span className="font-bold text-xl">
+                    {formatCurrency(selectedUpgrade.cost)}
+                  </span>
                 </div>
               </div>
 
               <p className="text-sm text-slate-400 mb-6">
-                This upgrade will be recorded on-chain and the NFT metadata will be updated on IPFS.
+                This upgrade will be recorded on-chain and the NFT metadata will
+                be updated on IPFS.
               </p>
 
               <div className="flex gap-3">

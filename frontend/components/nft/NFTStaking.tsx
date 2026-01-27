@@ -59,7 +59,7 @@ export default function NFTStaking() {
       boostedReward: 500,
       totalEarned: 22500,
       icon: '👑',
-      canUnstake: false
+      canUnstake: false,
     },
     {
       id: '2',
@@ -73,7 +73,7 @@ export default function NFTStaking() {
       boostedReward: 150,
       totalEarned: 5250,
       icon: '💎',
-      canUnstake: true
+      canUnstake: true,
     },
     {
       id: '3',
@@ -87,14 +87,14 @@ export default function NFTStaking() {
       boostedReward: 50,
       totalEarned: 1000,
       icon: '🌟',
-      canUnstake: false
-    }
+      canUnstake: false,
+    },
   ]);
 
   const [unstakedNFTs, setUnstakedNFTs] = useState<UnstakedNFT[]>([
     { id: '4', name: 'Uncommon Analyst #3421', rarity: 'uncommon', icon: '✨' },
     { id: '5', name: 'Common Novice #8765', rarity: 'common', icon: '🎴' },
-    { id: '6', name: 'Rare Strategist #2341', rarity: 'rare', icon: '🌟' }
+    { id: '6', name: 'Rare Strategist #2341', rarity: 'rare', icon: '🌟' },
   ]);
 
   const [stakingPools] = useState<StakingPool[]>([
@@ -108,7 +108,7 @@ export default function NFTStaking() {
       bonusAPY: 0,
       totalStaked: 2500000,
       participants: 1247,
-      icon: '🔓'
+      icon: '🔓',
     },
     {
       id: 'pool2',
@@ -120,7 +120,7 @@ export default function NFTStaking() {
       bonusAPY: 20,
       totalStaked: 5800000,
       participants: 3421,
-      icon: '⏱️'
+      icon: '⏱️',
     },
     {
       id: 'pool3',
@@ -132,7 +132,7 @@ export default function NFTStaking() {
       bonusAPY: 120,
       totalStaked: 12400000,
       participants: 8934,
-      icon: '🔒'
+      icon: '🔒',
     },
     {
       id: 'pool4',
@@ -144,8 +144,8 @@ export default function NFTStaking() {
       bonusAPY: 400,
       totalStaked: 8900000,
       participants: 2156,
-      icon: '👑'
-    }
+      icon: '👑',
+    },
   ]);
 
   const getRarityMultiplier = (rarity: string): number => {
@@ -182,7 +182,10 @@ export default function NFTStaking() {
     }
   };
 
-  const calculateEstimatedRewards = (nft: UnstakedNFT | null, days: number): number => {
+  const calculateEstimatedRewards = (
+    nft: UnstakedNFT | null,
+    days: number
+  ): number => {
     if (!nft) return 0;
     const multiplier = getRarityMultiplier(nft.rarity);
     const baseDaily = 10; // base reward per day
@@ -208,11 +211,11 @@ export default function NFTStaking() {
       boostedReward: baseDaily * multiplier,
       totalEarned: 0,
       icon: selectedNFT.icon,
-      canUnstake: lockDays === 0
+      canUnstake: lockDays === 0,
     };
 
     setStakedNFTs([...stakedNFTs, newStaked]);
-    setUnstakedNFTs(unstakedNFTs.filter(nft => nft.id !== selectedNFT.id));
+    setUnstakedNFTs(unstakedNFTs.filter((nft) => nft.id !== selectedNFT.id));
     setShowStakeModal(false);
     setSelectedNFT(null);
   };
@@ -224,18 +227,24 @@ export default function NFTStaking() {
       id: unstakingNFT.id,
       name: unstakingNFT.name,
       rarity: unstakingNFT.rarity,
-      icon: unstakingNFT.icon
+      icon: unstakingNFT.icon,
     };
 
     setUnstakedNFTs([...unstakedNFTs, unstakedNFT]);
-    setStakedNFTs(stakedNFTs.filter(nft => nft.id !== unstakingNFT.id));
+    setStakedNFTs(stakedNFTs.filter((nft) => nft.id !== unstakingNFT.id));
     setShowUnstakeModal(false);
     setUnstakingNFT(null);
   };
 
   const totalStaked = stakedNFTs.length;
-  const totalEarnings = stakedNFTs.reduce((sum, nft) => sum + nft.totalEarned, 0);
-  const dailyEarnings = stakedNFTs.reduce((sum, nft) => sum + nft.boostedReward, 0);
+  const totalEarnings = stakedNFTs.reduce(
+    (sum, nft) => sum + nft.totalEarned,
+    0
+  );
+  const dailyEarnings = stakedNFTs.reduce(
+    (sum, nft) => sum + nft.boostedReward,
+    0
+  );
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -246,7 +255,11 @@ export default function NFTStaking() {
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   };
 
   const getDaysRemaining = (date: Date) => {
@@ -266,7 +279,9 @@ export default function NFTStaking() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">NFT Staking</h1>
-              <p className="text-slate-400">Stake your NFTs to earn passive rewards with rarity multipliers</p>
+              <p className="text-slate-400">
+                Stake your NFTs to earn passive rewards with rarity multipliers
+              </p>
             </div>
           </div>
         </div>
@@ -278,7 +293,9 @@ export default function NFTStaking() {
               <span className="text-slate-400 text-sm">Total Staked</span>
               <Lock className="w-4 h-4 text-green-400" />
             </div>
-            <div className="text-2xl font-bold text-green-400">{totalStaked} NFTs</div>
+            <div className="text-2xl font-bold text-green-400">
+              {totalStaked} NFTs
+            </div>
             <div className="text-xs text-slate-400 mt-1">Currently earning</div>
           </div>
 
@@ -287,7 +304,9 @@ export default function NFTStaking() {
               <span className="text-slate-400 text-sm">Total Earned</span>
               <TrendingUp className="w-4 h-4 text-blue-400" />
             </div>
-            <div className="text-2xl font-bold text-blue-400">{formatCurrency(totalEarnings)}</div>
+            <div className="text-2xl font-bold text-blue-400">
+              {formatCurrency(totalEarnings)}
+            </div>
             <div className="text-xs text-slate-400 mt-1">All-time rewards</div>
           </div>
 
@@ -296,7 +315,9 @@ export default function NFTStaking() {
               <span className="text-slate-400 text-sm">Daily Earnings</span>
               <Zap className="w-4 h-4 text-yellow-400" />
             </div>
-            <div className="text-2xl font-bold text-yellow-400">{formatCurrency(dailyEarnings)}</div>
+            <div className="text-2xl font-bold text-yellow-400">
+              {formatCurrency(dailyEarnings)}
+            </div>
             <div className="text-xs text-slate-400 mt-1">Current rate</div>
           </div>
 
@@ -305,7 +326,9 @@ export default function NFTStaking() {
               <span className="text-slate-400 text-sm">Available NFTs</span>
               <Star className="w-4 h-4 text-purple-400" />
             </div>
-            <div className="text-2xl font-bold text-purple-400">{unstakedNFTs.length}</div>
+            <div className="text-2xl font-bold text-purple-400">
+              {unstakedNFTs.length}
+            </div>
             <div className="text-xs text-slate-400 mt-1">Ready to stake</div>
           </div>
         </div>
@@ -328,29 +351,43 @@ export default function NFTStaking() {
               >
                 <div className="text-4xl mb-3">{pool.icon}</div>
                 <h3 className="font-bold text-lg mb-2">{pool.name}</h3>
-                <p className="text-sm text-slate-400 mb-4">{pool.description}</p>
+                <p className="text-sm text-slate-400 mb-4">
+                  {pool.description}
+                </p>
 
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-slate-400">Base APY</span>
-                    <span className="font-semibold text-green-400">{pool.baseAPY}%</span>
+                    <span className="font-semibold text-green-400">
+                      {pool.baseAPY}%
+                    </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-slate-400">Bonus APY</span>
-                    <span className="font-semibold text-blue-400">+{pool.bonusAPY}%</span>
+                    <span className="font-semibold text-blue-400">
+                      +{pool.bonusAPY}%
+                    </span>
                   </div>
                   {pool.minLockDays > 0 && (
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-slate-400">Lock Period</span>
-                      <span className="font-semibold">{pool.minLockDays} days</span>
+                      <span className="font-semibold">
+                        {pool.minLockDays} days
+                      </span>
                     </div>
                   )}
                 </div>
 
                 <div className="bg-slate-600/30 rounded-lg p-3">
-                  <div className="text-xs text-slate-400 mb-1">Total Staked</div>
-                  <div className="font-semibold">{formatCurrency(pool.totalStaked)}</div>
-                  <div className="text-xs text-slate-400 mt-1">{pool.participants.toLocaleString()} participants</div>
+                  <div className="text-xs text-slate-400 mb-1">
+                    Total Staked
+                  </div>
+                  <div className="font-semibold">
+                    {formatCurrency(pool.totalStaked)}
+                  </div>
+                  <div className="text-xs text-slate-400 mt-1">
+                    {pool.participants.toLocaleString()} participants
+                  </div>
                 </div>
               </div>
             ))}
@@ -364,19 +401,29 @@ export default function NFTStaking() {
           {stakedNFTs.length === 0 ? (
             <div className="text-center py-12">
               <Lock className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-400">No NFTs staked yet. Start staking to earn rewards!</p>
+              <p className="text-slate-400">
+                No NFTs staked yet. Start staking to earn rewards!
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
               {stakedNFTs.map((nft) => (
-                <div key={nft.id} className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+                <div
+                  key={nft.id}
+                  className="bg-slate-700/50 rounded-xl p-6 border border-slate-600"
+                >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-4">
                       <div className="text-5xl">{nft.icon}</div>
                       <div>
                         <h3 className="font-bold text-lg mb-1">{nft.name}</h3>
-                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(nft.rarity)}`}>
-                          {nft.rarity.toUpperCase()} • {nft.rarityMultiplier}x Multiplier
+                        <div
+                          className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(
+                            nft.rarity
+                          )}`}
+                        >
+                          {nft.rarity.toUpperCase()} • {nft.rarityMultiplier}x
+                          Multiplier
                         </div>
                       </div>
                     </div>
@@ -394,8 +441,12 @@ export default function NFTStaking() {
                       </button>
                     ) : (
                       <div className="text-right">
-                        <div className="text-xs text-slate-400 mb-1">Unlocks in</div>
-                        <div className="font-semibold text-yellow-400">{getDaysRemaining(nft.unlockDate)} days</div>
+                        <div className="text-xs text-slate-400 mb-1">
+                          Unlocks in
+                        </div>
+                        <div className="font-semibold text-yellow-400">
+                          {getDaysRemaining(nft.unlockDate)} days
+                        </div>
                       </div>
                     )}
                   </div>
@@ -403,23 +454,39 @@ export default function NFTStaking() {
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                     <div className="bg-slate-600/30 rounded-lg p-3">
                       <div className="text-xs text-slate-400 mb-1">Staked</div>
-                      <div className="font-semibold">{formatDate(nft.stakedDate)}</div>
+                      <div className="font-semibold">
+                        {formatDate(nft.stakedDate)}
+                      </div>
                     </div>
                     <div className="bg-slate-600/30 rounded-lg p-3">
-                      <div className="text-xs text-slate-400 mb-1">Lock Period</div>
+                      <div className="text-xs text-slate-400 mb-1">
+                        Lock Period
+                      </div>
                       <div className="font-semibold">{nft.lockPeriod} days</div>
                     </div>
                     <div className="bg-slate-600/30 rounded-lg p-3">
-                      <div className="text-xs text-slate-400 mb-1">Daily Rewards</div>
-                      <div className="font-semibold text-green-400">{formatCurrency(nft.boostedReward)}</div>
+                      <div className="text-xs text-slate-400 mb-1">
+                        Daily Rewards
+                      </div>
+                      <div className="font-semibold text-green-400">
+                        {formatCurrency(nft.boostedReward)}
+                      </div>
                     </div>
                     <div className="bg-slate-600/30 rounded-lg p-3">
-                      <div className="text-xs text-slate-400 mb-1">Total Earned</div>
-                      <div className="font-semibold text-blue-400">{formatCurrency(nft.totalEarned)}</div>
+                      <div className="text-xs text-slate-400 mb-1">
+                        Total Earned
+                      </div>
+                      <div className="font-semibold text-blue-400">
+                        {formatCurrency(nft.totalEarned)}
+                      </div>
                     </div>
                     <div className="bg-slate-600/30 rounded-lg p-3">
-                      <div className="text-xs text-slate-400 mb-1">Unlock Date</div>
-                      <div className="font-semibold">{formatDate(nft.unlockDate)}</div>
+                      <div className="text-xs text-slate-400 mb-1">
+                        Unlock Date
+                      </div>
+                      <div className="font-semibold">
+                        {formatDate(nft.unlockDate)}
+                      </div>
                     </div>
                   </div>
 
@@ -449,7 +516,9 @@ export default function NFTStaking() {
           {unstakedNFTs.length === 0 ? (
             <div className="text-center py-12">
               <Star className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-400">All your NFTs are currently staked!</p>
+              <p className="text-slate-400">
+                All your NFTs are currently staked!
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -464,7 +533,11 @@ export default function NFTStaking() {
                 >
                   <div className="text-6xl mb-4">{nft.icon}</div>
                   <h3 className="font-bold mb-2">{nft.name}</h3>
-                  <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(nft.rarity)}`}>
+                  <div
+                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(
+                      nft.rarity
+                    )}`}
+                  >
                     {nft.rarity.toUpperCase()}
                   </div>
                   <div className="mt-4 text-sm text-slate-400">
@@ -485,13 +558,20 @@ export default function NFTStaking() {
               <div className="text-center mb-6">
                 <div className="text-7xl mb-3">{selectedNFT.icon}</div>
                 <h4 className="font-bold text-lg mb-2">{selectedNFT.name}</h4>
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(selectedNFT.rarity)}`}>
-                  {selectedNFT.rarity.toUpperCase()} • {getRarityMultiplier(selectedNFT.rarity)}x
+                <div
+                  className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(
+                    selectedNFT.rarity
+                  )}`}
+                >
+                  {selectedNFT.rarity.toUpperCase()} •{' '}
+                  {getRarityMultiplier(selectedNFT.rarity)}x
                 </div>
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm text-slate-400 mb-2">Lock Period (days)</label>
+                <label className="block text-sm text-slate-400 mb-2">
+                  Lock Period (days)
+                </label>
                 <input
                   type="range"
                   min="0"
@@ -504,16 +584,30 @@ export default function NFTStaking() {
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-semibold">{lockDays} days</span>
                   <span className="text-sm text-slate-400">
-                    {lockDays === 0 ? 'Flexible' : `Locked until ${formatDate(new Date(Date.now() + 1000 * 60 * 60 * 24 * lockDays))}`}
+                    {lockDays === 0
+                      ? 'Flexible'
+                      : `Locked until ${formatDate(
+                          new Date(Date.now() + 1000 * 60 * 60 * 24 * lockDays)
+                        )}`}
                   </span>
                 </div>
               </div>
 
               <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 mb-6">
-                <div className="text-sm text-blue-400 mb-2">Estimated Rewards:</div>
-                <div className="text-2xl font-bold">{formatCurrency(calculateEstimatedRewards(selectedNFT, lockDays))}</div>
+                <div className="text-sm text-blue-400 mb-2">
+                  Estimated Rewards:
+                </div>
+                <div className="text-2xl font-bold">
+                  {formatCurrency(
+                    calculateEstimatedRewards(selectedNFT, lockDays)
+                  )}
+                </div>
                 <div className="text-xs text-slate-400 mt-1">
-                  {formatCurrency(calculateEstimatedRewards(selectedNFT, lockDays) / (lockDays || 1))} per day
+                  {formatCurrency(
+                    calculateEstimatedRewards(selectedNFT, lockDays) /
+                      (lockDays || 1)
+                  )}{' '}
+                  per day
                 </div>
               </div>
 
@@ -551,12 +645,17 @@ export default function NFTStaking() {
               </div>
 
               <div className="bg-green-600/10 border border-green-600/30 rounded-lg p-4 mb-6">
-                <div className="text-sm text-green-400 mb-2">Total Rewards Earned:</div>
-                <div className="text-2xl font-bold">{formatCurrency(unstakingNFT.totalEarned)}</div>
+                <div className="text-sm text-green-400 mb-2">
+                  Total Rewards Earned:
+                </div>
+                <div className="text-2xl font-bold">
+                  {formatCurrency(unstakingNFT.totalEarned)}
+                </div>
               </div>
 
               <p className="text-sm text-slate-400 mb-6">
-                Unstaking will return your NFT to your wallet and claim all accumulated rewards.
+                Unstaking will return your NFT to your wallet and claim all
+                accumulated rewards.
               </p>
 
               <div className="flex gap-3">

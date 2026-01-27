@@ -1,6 +1,6 @@
 'use client';
 
-import { Zap, Lock, RefreshCw, Award, TrendingUp, Star } from 'lucide-react';
+import { Award, Lock, RefreshCw, Star, TrendingUp, Zap } from 'lucide-react';
 import { useState } from 'react';
 
 interface Skill {

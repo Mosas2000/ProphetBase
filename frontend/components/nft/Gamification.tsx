@@ -1,6 +1,16 @@
 'use client';
 
-import { Award, Gift, Lock, Star, Target, TrendingUp, Trophy, Unlock, Zap } from 'lucide-react';
+import {
+  Award,
+  Gift,
+  Lock,
+  Star,
+  Target,
+  TrendingUp,
+  Trophy,
+  Unlock,
+  Zap,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface PlayerLevel {
@@ -58,13 +68,15 @@ interface Quest {
 }
 
 export default function Gamification() {
-  const [activeTab, setActiveTab] = useState<'progression' | 'achievements' | 'collection' | 'quests'>('progression');
+  const [activeTab, setActiveTab] = useState<
+    'progression' | 'achievements' | 'collection' | 'quests'
+  >('progression');
 
   const [playerLevel] = useState<PlayerLevel>({
     level: 28,
     experience: 8450,
     experienceToNext: 2550,
-    title: 'Master Prophet'
+    title: 'Master Prophet',
   });
 
   const [achievements] = useState<Achievement[]>([
@@ -77,7 +89,7 @@ export default function Gamification() {
       target: 1000,
       unlocked: false,
       reward: 'Legendary Trading NFT',
-      icon: '📈'
+      icon: '📈',
     },
     {
       id: 'a2',
@@ -88,7 +100,7 @@ export default function Gamification() {
       target: 500,
       unlocked: true,
       reward: 'Epic Social Badge',
-      icon: '🦋'
+      icon: '🦋',
     },
     {
       id: 'a3',
@@ -99,7 +111,7 @@ export default function Gamification() {
       target: 50,
       unlocked: false,
       reward: 'Rare Collector Badge',
-      icon: '🎨'
+      icon: '🎨',
     },
     {
       id: 'a4',
@@ -110,7 +122,7 @@ export default function Gamification() {
       target: 100,
       unlocked: false,
       reward: 'Legendary Century NFT',
-      icon: '💯'
+      icon: '💯',
     },
     {
       id: 'a5',
@@ -121,7 +133,7 @@ export default function Gamification() {
       target: 100000,
       unlocked: false,
       reward: 'Epic Profit Badge',
-      icon: '💰'
+      icon: '💰',
     },
     {
       id: 'a6',
@@ -132,8 +144,8 @@ export default function Gamification() {
       target: 20,
       unlocked: false,
       reward: 'Legendary Streak NFT',
-      icon: '🔥'
-    }
+      icon: '🔥',
+    },
   ]);
 
   const [collectionBonuses] = useState<CollectionBonus[]>([
@@ -146,7 +158,7 @@ export default function Gamification() {
       bonus: '2x Trading Volume Tracking',
       bonusType: 'multiplier',
       unlocked: false,
-      icon: '🃏'
+      icon: '🃏',
     },
     {
       id: 'cb2',
@@ -157,7 +169,7 @@ export default function Gamification() {
       bonus: '25% Fee Discount',
       bonusType: 'discount',
       unlocked: true,
-      icon: '🏆'
+      icon: '🏆',
     },
     {
       id: 'cb3',
@@ -168,7 +180,7 @@ export default function Gamification() {
       bonus: 'Exclusive Seasonal Drops',
       bonusType: 'exclusive',
       unlocked: false,
-      icon: '❄️'
+      icon: '❄️',
     },
     {
       id: 'cb4',
@@ -179,8 +191,8 @@ export default function Gamification() {
       bonus: 'Custom Profile Frames',
       bonusType: 'reward',
       unlocked: false,
-      icon: '🖼️'
-    }
+      icon: '🖼️',
+    },
   ]);
 
   const [perks] = useState<Perk[]>([
@@ -191,7 +203,7 @@ export default function Gamification() {
       requiredLevel: 5,
       unlocked: true,
       benefit: 'Premium analytics dashboard',
-      icon: '📊'
+      icon: '📊',
     },
     {
       id: 'p2',
@@ -200,7 +212,7 @@ export default function Gamification() {
       requiredLevel: 10,
       unlocked: true,
       benefit: '24/7 priority assistance',
-      icon: '🎧'
+      icon: '🎧',
     },
     {
       id: 'p3',
@@ -209,7 +221,7 @@ export default function Gamification() {
       requiredLevel: 15,
       unlocked: true,
       benefit: '10% fee discount',
-      icon: '💵'
+      icon: '💵',
     },
     {
       id: 'p4',
@@ -218,7 +230,7 @@ export default function Gamification() {
       requiredLevel: 20,
       unlocked: true,
       benefit: '24h early access',
-      icon: '🚀'
+      icon: '🚀',
     },
     {
       id: 'p5',
@@ -227,7 +239,7 @@ export default function Gamification() {
       requiredLevel: 25,
       unlocked: true,
       benefit: 'Exclusive badges',
-      icon: '⭐'
+      icon: '⭐',
     },
     {
       id: 'p6',
@@ -236,7 +248,7 @@ export default function Gamification() {
       requiredLevel: 30,
       unlocked: false,
       benefit: 'VIP lounge access',
-      icon: '👑'
+      icon: '👑',
     },
     {
       id: 'p7',
@@ -245,8 +257,8 @@ export default function Gamification() {
       requiredLevel: 50,
       unlocked: false,
       benefit: '3x reward multiplier',
-      icon: '⚡'
-    }
+      icon: '⚡',
+    },
   ]);
 
   const [quests] = useState<Quest[]>([
@@ -260,7 +272,7 @@ export default function Gamification() {
       reward: '500 XP + Common NFT',
       expiresIn: 6,
       completed: false,
-      icon: '📅'
+      icon: '📅',
     },
     {
       id: 'q2',
@@ -272,7 +284,7 @@ export default function Gamification() {
       reward: '1,500 XP + Rare NFT',
       expiresIn: 18,
       completed: false,
-      icon: '🎯'
+      icon: '🎯',
     },
     {
       id: 'q3',
@@ -284,7 +296,7 @@ export default function Gamification() {
       reward: '1,000 XP + Uncommon NFT',
       expiresIn: 12,
       completed: true,
-      icon: '⭐'
+      icon: '⭐',
     },
     {
       id: 'q4',
@@ -296,7 +308,7 @@ export default function Gamification() {
       reward: '5,000 XP + Epic NFT',
       expiresIn: 72,
       completed: false,
-      icon: '🏅'
+      icon: '🏅',
     },
     {
       id: 'q5',
@@ -308,8 +320,8 @@ export default function Gamification() {
       reward: '10,000 XP + Legendary NFT',
       expiresIn: 168,
       completed: false,
-      icon: '👑'
-    }
+      icon: '👑',
+    },
   ]);
 
   const getDifficultyColor = (difficulty: string) => {
@@ -358,7 +370,9 @@ export default function Gamification() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Gamification</h1>
-              <p className="text-slate-400">Level up, unlock perks, and earn exclusive rewards</p>
+              <p className="text-slate-400">
+                Level up, unlock perks, and earn exclusive rewards
+              </p>
             </div>
           </div>
         </div>
@@ -370,8 +384,12 @@ export default function Gamification() {
               <span className="text-slate-400 text-sm">Current Level</span>
               <Zap className="w-4 h-4 text-emerald-400" />
             </div>
-            <div className="text-2xl font-bold text-emerald-400">{playerLevel.level}</div>
-            <div className="text-xs text-slate-400 mt-1">{playerLevel.title}</div>
+            <div className="text-2xl font-bold text-emerald-400">
+              {playerLevel.level}
+            </div>
+            <div className="text-xs text-slate-400 mt-1">
+              {playerLevel.title}
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -390,7 +408,9 @@ export default function Gamification() {
               <span className="text-slate-400 text-sm">Active Perks</span>
               <Star className="w-4 h-4 text-blue-400" />
             </div>
-            <div className="text-2xl font-bold text-blue-400">{unlockedPerks}</div>
+            <div className="text-2xl font-bold text-blue-400">
+              {unlockedPerks}
+            </div>
             <div className="text-xs text-slate-400 mt-1">Unlocked benefits</div>
           </div>
 
@@ -457,27 +477,41 @@ export default function Gamification() {
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
               <div className="flex items-start justify-between mb-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">Level {playerLevel.level}</h2>
-                  <div className="text-emerald-400 font-semibold">{playerLevel.title}</div>
+                  <h2 className="text-2xl font-bold mb-2">
+                    Level {playerLevel.level}
+                  </h2>
+                  <div className="text-emerald-400 font-semibold">
+                    {playerLevel.title}
+                  </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold text-emerald-400">{playerLevel.experience.toLocaleString()}</div>
+                  <div className="text-3xl font-bold text-emerald-400">
+                    {playerLevel.experience.toLocaleString()}
+                  </div>
                   <div className="text-xs text-slate-400">Total XP</div>
                 </div>
               </div>
 
               <div className="mb-4">
                 <div className="flex items-center justify-between text-sm mb-2">
-                  <span className="text-slate-300">Progress to Level {playerLevel.level + 1}</span>
+                  <span className="text-slate-300">
+                    Progress to Level {playerLevel.level + 1}
+                  </span>
                   <span className="font-semibold">
-                    {playerLevel.experience} / {playerLevel.experience + playerLevel.experienceToNext} XP
+                    {playerLevel.experience} /{' '}
+                    {playerLevel.experience + playerLevel.experienceToNext} XP
                   </span>
                 </div>
                 <div className="w-full bg-slate-700 rounded-full h-3">
                   <div
                     className="bg-gradient-to-r from-emerald-600 to-green-600 h-3 rounded-full transition-all"
                     style={{
-                      width: `${(playerLevel.experience / (playerLevel.experience + playerLevel.experienceToNext)) * 100}%`
+                      width: `${
+                        (playerLevel.experience /
+                          (playerLevel.experience +
+                            playerLevel.experienceToNext)) *
+                        100
+                      }%`,
                     }}
                   />
                 </div>
@@ -506,10 +540,14 @@ export default function Gamification() {
                         <div className="text-4xl">{perk.icon}</div>
                         <div className="flex-1">
                           <h3 className="font-bold mb-1">{perk.name}</h3>
-                          <p className="text-sm text-slate-400 mb-2">{perk.description}</p>
+                          <p className="text-sm text-slate-400 mb-2">
+                            {perk.description}
+                          </p>
                           <div className="text-sm">
                             <span className="text-slate-400">Benefit:</span>
-                            <span className="font-semibold text-emerald-400 ml-2">{perk.benefit}</span>
+                            <span className="font-semibold text-emerald-400 ml-2">
+                              {perk.benefit}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -542,7 +580,9 @@ export default function Gamification() {
               <div
                 key={achievement.id}
                 className={`bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border ${
-                  achievement.unlocked ? 'border-yellow-500/50' : 'border-slate-700'
+                  achievement.unlocked
+                    ? 'border-yellow-500/50'
+                    : 'border-slate-700'
                 }`}
               >
                 <div className="flex items-start gap-4 mb-4">
@@ -552,7 +592,9 @@ export default function Gamification() {
                       <h3 className="font-bold text-lg">{achievement.name}</h3>
                       {getCategoryIcon(achievement.category)}
                     </div>
-                    <p className="text-sm text-slate-400 mb-3">{achievement.description}</p>
+                    <p className="text-sm text-slate-400 mb-3">
+                      {achievement.description}
+                    </p>
 
                     {achievement.unlocked ? (
                       <div className="px-3 py-1 bg-yellow-600/20 border border-yellow-600/30 rounded text-yellow-400 text-sm inline-flex items-center gap-2">
@@ -565,13 +607,19 @@ export default function Gamification() {
                           <div className="flex items-center justify-between text-sm mb-2">
                             <span className="text-slate-400">Progress</span>
                             <span className="font-semibold">
-                              {achievement.progress.toLocaleString()} / {achievement.target.toLocaleString()}
+                              {achievement.progress.toLocaleString()} /{' '}
+                              {achievement.target.toLocaleString()}
                             </span>
                           </div>
                           <div className="w-full bg-slate-700 rounded-full h-2">
                             <div
                               className="bg-gradient-to-r from-yellow-600 to-orange-600 h-2 rounded-full transition-all"
-                              style={{ width: `${(achievement.progress / achievement.target) * 100}%` }}
+                              style={{
+                                width: `${
+                                  (achievement.progress / achievement.target) *
+                                  100
+                                }%`,
+                              }}
                             />
                           </div>
                         </div>
@@ -582,7 +630,9 @@ export default function Gamification() {
 
                 <div className="bg-slate-700/30 rounded-lg p-3">
                   <div className="text-xs text-slate-400 mb-1">Reward</div>
-                  <div className="font-semibold text-emerald-400">{achievement.reward}</div>
+                  <div className="font-semibold text-emerald-400">
+                    {achievement.reward}
+                  </div>
                 </div>
               </div>
             ))}
@@ -598,7 +648,8 @@ export default function Gamification() {
                 <div>
                   <h2 className="text-xl font-bold mb-2">Collection Bonuses</h2>
                   <p className="text-slate-300">
-                    Complete NFT collections to unlock powerful bonuses and exclusive benefits!
+                    Complete NFT collections to unlock powerful bonuses and
+                    exclusive benefits!
                   </p>
                 </div>
               </div>
@@ -609,14 +660,18 @@ export default function Gamification() {
                 <div
                   key={bonus.id}
                   className={`bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border ${
-                    bonus.unlocked ? 'border-emerald-500/50' : 'border-slate-700'
+                    bonus.unlocked
+                      ? 'border-emerald-500/50'
+                      : 'border-slate-700'
                   }`}
                 >
                   <div className="flex items-start gap-4 mb-4">
                     <div className="text-5xl">{bonus.icon}</div>
                     <div className="flex-1">
                       <h3 className="font-bold text-lg mb-2">{bonus.name}</h3>
-                      <p className="text-sm text-slate-400 mb-4">{bonus.description}</p>
+                      <p className="text-sm text-slate-400 mb-4">
+                        {bonus.description}
+                      </p>
 
                       <div className="mb-4">
                         <div className="flex items-center justify-between text-sm mb-2">
@@ -632,14 +687,20 @@ export default function Gamification() {
                                 ? 'bg-gradient-to-r from-emerald-600 to-green-600'
                                 : 'bg-gradient-to-r from-blue-600 to-purple-600'
                             }`}
-                            style={{ width: `${(bonus.currentNFTs / bonus.requiredNFTs) * 100}%` }}
+                            style={{
+                              width: `${
+                                (bonus.currentNFTs / bonus.requiredNFTs) * 100
+                              }%`,
+                            }}
                           />
                         </div>
                       </div>
 
                       <div className="bg-slate-700/30 rounded-lg p-3 mb-3">
                         <div className="text-xs text-slate-400 mb-1">Bonus</div>
-                        <div className="font-semibold text-emerald-400">{bonus.bonus}</div>
+                        <div className="font-semibold text-emerald-400">
+                          {bonus.bonus}
+                        </div>
                       </div>
 
                       {bonus.unlocked ? (
@@ -649,7 +710,8 @@ export default function Gamification() {
                         </div>
                       ) : (
                         <div className="text-sm text-slate-400">
-                          {bonus.requiredNFTs - bonus.currentNFTs} more NFTs needed
+                          {bonus.requiredNFTs - bonus.currentNFTs} more NFTs
+                          needed
                         </div>
                       )}
                     </div>
@@ -676,11 +738,17 @@ export default function Gamification() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="font-bold text-lg">{quest.name}</h3>
-                        <div className={`px-2 py-1 rounded text-xs font-semibold border ${getDifficultyColor(quest.difficulty)}`}>
+                        <div
+                          className={`px-2 py-1 rounded text-xs font-semibold border ${getDifficultyColor(
+                            quest.difficulty
+                          )}`}
+                        >
                           {quest.difficulty.toUpperCase()}
                         </div>
                       </div>
-                      <p className="text-sm text-slate-400 mb-3">{quest.description}</p>
+                      <p className="text-sm text-slate-400 mb-3">
+                        {quest.description}
+                      </p>
 
                       {quest.completed ? (
                         <div className="px-3 py-1 bg-green-600/20 border border-green-600/30 rounded text-green-400 text-sm inline-flex items-center gap-2">
@@ -693,21 +761,32 @@ export default function Gamification() {
                             <div className="flex items-center justify-between text-sm mb-2">
                               <span className="text-slate-400">Progress</span>
                               <span className="font-semibold">
-                                {typeof quest.progress === 'number' && quest.progress > 100
+                                {typeof quest.progress === 'number' &&
+                                quest.progress > 100
                                   ? `$${quest.progress.toLocaleString()}`
                                   : quest.progress}{' '}
-                                / {typeof quest.target === 'number' && quest.target > 100 ? `$${quest.target.toLocaleString()}` : quest.target}
+                                /{' '}
+                                {typeof quest.target === 'number' &&
+                                quest.target > 100
+                                  ? `$${quest.target.toLocaleString()}`
+                                  : quest.target}
                               </span>
                             </div>
                             <div className="w-full bg-slate-700 rounded-full h-2">
                               <div
                                 className="bg-gradient-to-r from-emerald-600 to-green-600 h-2 rounded-full transition-all"
-                                style={{ width: `${(quest.progress / quest.target) * 100}%` }}
+                                style={{
+                                  width: `${
+                                    (quest.progress / quest.target) * 100
+                                  }%`,
+                                }}
                               />
                             </div>
                           </div>
 
-                          <div className="text-xs text-orange-400">Expires in {quest.expiresIn}h</div>
+                          <div className="text-xs text-orange-400">
+                            Expires in {quest.expiresIn}h
+                          </div>
                         </>
                       )}
                     </div>
@@ -715,7 +794,9 @@ export default function Gamification() {
 
                   <div className="bg-slate-700/30 rounded-lg p-3 text-right">
                     <div className="text-xs text-slate-400 mb-1">Reward</div>
-                    <div className="font-semibold text-sm text-emerald-400">{quest.reward}</div>
+                    <div className="font-semibold text-sm text-emerald-400">
+                      {quest.reward}
+                    </div>
                   </div>
                 </div>
               </div>

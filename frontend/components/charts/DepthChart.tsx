@@ -1,7 +1,7 @@
 'use client';
 
-import { TrendingDown, TrendingUp, Activity, RefreshCw } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Activity, RefreshCw, TrendingDown, TrendingUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface OrderBookLevel {
   price: number;
@@ -21,9 +21,13 @@ export default function DepthChart() {
     bids: [],
     asks: [],
     midPrice: 50000,
-    spread: 0
+    spread: 0,
   });
-  const [hoveredLevel, setHoveredLevel] = useState<{ price: number; volume: number; side: 'bid' | 'ask' } | null>(null);
+  const [hoveredLevel, setHoveredLevel] = useState<{
+    price: number;
+    volume: number;
+    side: 'bid' | 'ask';
+  } | null>(null);
   const [maxDepth, setMaxDepth] = useState(50);
 
   // Generate order book data
@@ -32,7 +36,7 @@ export default function DepthChart() {
       const midPrice = 50000 + (Math.random() - 0.5) * 100;
       const bids: OrderBookLevel[] = [];
       const asks: OrderBookLevel[] = [];
-      
+
       let bidTotal = 0;
       let askTotal = 0;
 
@@ -74,12 +78,12 @@ export default function DepthChart() {
   // Calculate support and resistance zones
   const supportZones = depthData.bids
     .filter((_, i) => i % 5 === 0)
-    .filter(bid => bid.volume > 3)
+    .filter((bid) => bid.volume > 3)
     .slice(0, 3);
 
   const resistanceZones = depthData.asks
     .filter((_, i) => i % 5 === 0)
-    .filter(ask => ask.volume > 3)
+    .filter((ask) => ask.volume > 3)
     .slice(0, 3);
 
   return (
@@ -94,8 +98,12 @@ export default function DepthChart() {
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-3xl md:text-4xl font-bold">Depth Chart</h1>
-                  <p className="text-slate-400">Real-time order book visualization with liquidity zones</p>
+                  <h1 className="text-3xl md:text-4xl font-bold">
+                    Depth Chart
+                  </h1>
+                  <p className="text-slate-400">
+                    Real-time order book visualization with liquidity zones
+                  </p>
                 </div>
                 <button className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded transition-colors">
                   <RefreshCw className="w-4 h-4" />
@@ -110,11 +118,15 @@ export default function DepthChart() {
             <div className="grid grid-cols-3 gap-4">
               <div>
                 <div className="text-xs text-slate-400 mb-1">Mid Price</div>
-                <div className="text-2xl font-bold">${depthData.midPrice.toFixed(2)}</div>
+                <div className="text-2xl font-bold">
+                  ${depthData.midPrice.toFixed(2)}
+                </div>
               </div>
               <div>
                 <div className="text-xs text-slate-400 mb-1">Spread</div>
-                <div className="text-2xl font-bold text-amber-400">${depthData.spread.toFixed(2)}</div>
+                <div className="text-2xl font-bold text-amber-400">
+                  ${depthData.spread.toFixed(2)}
+                </div>
               </div>
               <div>
                 <div className="text-xs text-slate-400 mb-1">Spread %</div>
@@ -148,7 +160,11 @@ export default function DepthChart() {
             </div>
           </div>
 
-          <svg width="100%" height={chartHeight} viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+          <svg
+            width="100%"
+            height={chartHeight}
+            viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+          >
             {/* Background grid */}
             {[0, 0.25, 0.5, 0.75, 1].map((ratio) => (
               <line
@@ -208,7 +224,8 @@ export default function DepthChart() {
                   .reverse()
                   .map((bid, i) => {
                     const x = midX - (i / depthData.bids.length) * midX;
-                    const y = chartHeight - (bid.total / maxTotal) * chartHeight;
+                    const y =
+                      chartHeight - (bid.total / maxTotal) * chartHeight;
                     return `L ${x},${y}`;
                   })
                   .join(' ')}
@@ -224,11 +241,14 @@ export default function DepthChart() {
             <path
               d={`
                 M ${midX},${chartHeight}
-                ${depthData.asks.map((ask, i) => {
-                  const x = midX + (i / depthData.asks.length) * midX;
-                  const y = chartHeight - (ask.total / maxTotal) * chartHeight;
-                  return `L ${x},${y}`;
-                }).join(' ')}
+                ${depthData.asks
+                  .map((ask, i) => {
+                    const x = midX + (i / depthData.asks.length) * midX;
+                    const y =
+                      chartHeight - (ask.total / maxTotal) * chartHeight;
+                    return `L ${x},${y}`;
+                  })
+                  .join(' ')}
                 L ${chartWidth},${chartHeight}
                 Z
               `}
@@ -249,23 +269,32 @@ export default function DepthChart() {
             />
 
             {/* Hover indicators */}
-            {depthData.bids.slice().reverse().map((bid, i) => {
-              const x = midX - (i / depthData.bids.length) * midX;
-              const y = chartHeight - (bid.total / maxTotal) * chartHeight;
-              return (
-                <circle
-                  key={`bid-point-${i}`}
-                  cx={x}
-                  cy={y}
-                  r="4"
-                  fill="#10b981"
-                  opacity="0"
-                  className="cursor-pointer hover:opacity-100"
-                  onMouseEnter={() => setHoveredLevel({ price: bid.price, volume: bid.volume, side: 'bid' })}
-                  onMouseLeave={() => setHoveredLevel(null)}
-                />
-              );
-            })}
+            {depthData.bids
+              .slice()
+              .reverse()
+              .map((bid, i) => {
+                const x = midX - (i / depthData.bids.length) * midX;
+                const y = chartHeight - (bid.total / maxTotal) * chartHeight;
+                return (
+                  <circle
+                    key={`bid-point-${i}`}
+                    cx={x}
+                    cy={y}
+                    r="4"
+                    fill="#10b981"
+                    opacity="0"
+                    className="cursor-pointer hover:opacity-100"
+                    onMouseEnter={() =>
+                      setHoveredLevel({
+                        price: bid.price,
+                        volume: bid.volume,
+                        side: 'bid',
+                      })
+                    }
+                    onMouseLeave={() => setHoveredLevel(null)}
+                  />
+                );
+              })}
 
             {depthData.asks.map((ask, i) => {
               const x = midX + (i / depthData.asks.length) * midX;
@@ -279,7 +308,13 @@ export default function DepthChart() {
                   fill="#ef4444"
                   opacity="0"
                   className="cursor-pointer hover:opacity-100"
-                  onMouseEnter={() => setHoveredLevel({ price: ask.price, volume: ask.volume, side: 'ask' })}
+                  onMouseEnter={() =>
+                    setHoveredLevel({
+                      price: ask.price,
+                      volume: ask.volume,
+                      side: 'ask',
+                    })
+                  }
                   onMouseLeave={() => setHoveredLevel(null)}
                 />
               );
@@ -301,10 +336,24 @@ export default function DepthChart() {
             <text x="5" y="20" fill="#10b981" fontSize="12" fontWeight="600">
               Bids: ${depthData.bids[0]?.price.toFixed(2)}
             </text>
-            <text x={chartWidth - 5} y="20" textAnchor="end" fill="#ef4444" fontSize="12" fontWeight="600">
+            <text
+              x={chartWidth - 5}
+              y="20"
+              textAnchor="end"
+              fill="#ef4444"
+              fontSize="12"
+              fontWeight="600"
+            >
               Asks: ${depthData.asks[0]?.price.toFixed(2)}
             </text>
-            <text x={midX} y="20" textAnchor="middle" fill="#fbbf24" fontSize="12" fontWeight="600">
+            <text
+              x={midX}
+              y="20"
+              textAnchor="middle"
+              fill="#fbbf24"
+              fontSize="12"
+              fontWeight="600"
+            >
               Mid: ${depthData.midPrice.toFixed(2)}
             </text>
           </svg>
@@ -315,17 +364,27 @@ export default function DepthChart() {
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Side</div>
-                  <div className={`font-bold ${hoveredLevel.side === 'bid' ? 'text-green-400' : 'text-red-400'}`}>
+                  <div
+                    className={`font-bold ${
+                      hoveredLevel.side === 'bid'
+                        ? 'text-green-400'
+                        : 'text-red-400'
+                    }`}
+                  >
                     {hoveredLevel.side === 'bid' ? 'BID' : 'ASK'}
                   </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Price</div>
-                  <div className="font-bold">${hoveredLevel.price.toFixed(2)}</div>
+                  <div className="font-bold">
+                    ${hoveredLevel.price.toFixed(2)}
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Volume</div>
-                  <div className="font-bold">{hoveredLevel.volume.toFixed(3)} BTC</div>
+                  <div className="font-bold">
+                    {hoveredLevel.volume.toFixed(3)} BTC
+                  </div>
                 </div>
               </div>
             </div>
@@ -343,7 +402,13 @@ export default function DepthChart() {
               {depthData.bids[depthData.bids.length - 1]?.total.toFixed(2)} BTC
             </div>
             <div className="text-sm text-slate-400">
-              ${(depthData.bids[depthData.bids.length - 1]?.total * depthData.midPrice / 1000).toFixed(1)}K
+              $
+              {(
+                (depthData.bids[depthData.bids.length - 1]?.total *
+                  depthData.midPrice) /
+                1000
+              ).toFixed(1)}
+              K
             </div>
           </div>
 
@@ -356,7 +421,13 @@ export default function DepthChart() {
               {depthData.asks[depthData.asks.length - 1]?.total.toFixed(2)} BTC
             </div>
             <div className="text-sm text-slate-400">
-              ${(depthData.asks[depthData.asks.length - 1]?.total * depthData.midPrice / 1000).toFixed(1)}K
+              $
+              {(
+                (depthData.asks[depthData.asks.length - 1]?.total *
+                  depthData.midPrice) /
+                1000
+              ).toFixed(1)}
+              K
             </div>
           </div>
 
@@ -374,7 +445,9 @@ export default function DepthChart() {
               <Activity className="w-5 h-5 text-red-400" />
               <h3 className="font-bold text-slate-300">Resistance Zones</h3>
             </div>
-            <div className="text-2xl font-bold mb-1">{resistanceZones.length}</div>
+            <div className="text-2xl font-bold mb-1">
+              {resistanceZones.length}
+            </div>
             <div className="text-sm text-slate-400">Strong sell walls</div>
           </div>
         </div>

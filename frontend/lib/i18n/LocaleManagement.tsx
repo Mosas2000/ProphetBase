@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Calendar, DollarSign, Clock, MapPin } from 'lucide-react';
+import { Calendar, Clock, DollarSign, MapPin } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // Locale configuration
 export interface LocaleConfig {
@@ -84,7 +84,10 @@ export class LocaleManager {
     const defaultOptions: Intl.DateTimeFormatOptions = {
       dateStyle: this.config.dateFormat,
     };
-    return new Intl.DateTimeFormat(this.config.locale, options || defaultOptions).format(date);
+    return new Intl.DateTimeFormat(
+      this.config.locale,
+      options || defaultOptions
+    ).format(date);
   }
 
   formatTime(date: Date, options?: Intl.DateTimeFormatOptions): string {
@@ -93,7 +96,10 @@ export class LocaleManager {
       minute: 'numeric',
       hour12: this.config.timeFormat === '12h',
     };
-    return new Intl.DateTimeFormat(this.config.locale, options || defaultOptions).format(date);
+    return new Intl.DateTimeFormat(
+      this.config.locale,
+      options || defaultOptions
+    ).format(date);
   }
 
   formatDateTime(date: Date, options?: Intl.DateTimeFormatOptions): string {
@@ -101,11 +107,16 @@ export class LocaleManager {
       dateStyle: this.config.dateFormat,
       timeStyle: 'short',
     };
-    return new Intl.DateTimeFormat(this.config.locale, options || defaultOptions).format(date);
+    return new Intl.DateTimeFormat(
+      this.config.locale,
+      options || defaultOptions
+    ).format(date);
   }
 
   formatRelativeTime(date: Date): string {
-    const rtf = new Intl.RelativeTimeFormat(this.config.locale, { numeric: 'auto' });
+    const rtf = new Intl.RelativeTimeFormat(this.config.locale, {
+      numeric: 'auto',
+    });
     const now = new Date();
     const diffInSeconds = Math.floor((date.getTime() - now.getTime()) / 1000);
 
@@ -131,7 +142,11 @@ export class LocaleManager {
     return new Intl.NumberFormat(this.config.locale, options).format(value);
   }
 
-  formatCurrency(value: number, currency?: string, options?: Intl.NumberFormatOptions): string {
+  formatCurrency(
+    value: number,
+    currency?: string,
+    options?: Intl.NumberFormatOptions
+  ): string {
     return new Intl.NumberFormat(this.config.locale, {
       style: 'currency',
       currency: currency || this.config.currency,
@@ -245,16 +260,25 @@ export function useLocaleManagement() {
 
   return {
     config,
-    formatDate: (date: Date, options?: Intl.DateTimeFormatOptions) => manager.formatDate(date, options),
-    formatTime: (date: Date, options?: Intl.DateTimeFormatOptions) => manager.formatTime(date, options),
-    formatDateTime: (date: Date, options?: Intl.DateTimeFormatOptions) => manager.formatDateTime(date, options),
+    formatDate: (date: Date, options?: Intl.DateTimeFormatOptions) =>
+      manager.formatDate(date, options),
+    formatTime: (date: Date, options?: Intl.DateTimeFormatOptions) =>
+      manager.formatTime(date, options),
+    formatDateTime: (date: Date, options?: Intl.DateTimeFormatOptions) =>
+      manager.formatDateTime(date, options),
     formatRelativeTime: (date: Date) => manager.formatRelativeTime(date),
-    formatNumber: (value: number, options?: Intl.NumberFormatOptions) => manager.formatNumber(value, options),
-    formatCurrency: (value: number, currency?: string, options?: Intl.NumberFormatOptions) => 
-      manager.formatCurrency(value, currency, options),
-    formatPercent: (value: number, options?: Intl.NumberFormatOptions) => manager.formatPercent(value, options),
+    formatNumber: (value: number, options?: Intl.NumberFormatOptions) =>
+      manager.formatNumber(value, options),
+    formatCurrency: (
+      value: number,
+      currency?: string,
+      options?: Intl.NumberFormatOptions
+    ) => manager.formatCurrency(value, currency, options),
+    formatPercent: (value: number, options?: Intl.NumberFormatOptions) =>
+      manager.formatPercent(value, options),
     formatCompact: (value: number) => manager.formatCompact(value),
-    convertToTimezone: (date: Date, timezone?: string) => manager.convertToTimezone(date, timezone),
+    convertToTimezone: (date: Date, timezone?: string) =>
+      manager.convertToTimezone(date, timezone),
     setLocale: (locale: string) => manager.setLocale(locale),
     setCurrency: (currency: string) => manager.setCurrency(currency),
     setTimezone: (timezone: string) => manager.setTimezone(timezone),
@@ -283,7 +307,11 @@ export function LocaleManagementDashboard() {
   const [sampleCurrency] = useState(9999.99);
 
   return (
-    <div className="p-6 bg-slate-800 rounded-xl" role="region" aria-label="Locale Management">
+    <div
+      className="p-6 bg-slate-800 rounded-xl"
+      role="region"
+      aria-label="Locale Management"
+    >
       <div className="flex items-center gap-3 mb-6">
         <MapPin className="w-6 h-6 text-teal-400" />
         <h2 className="text-2xl font-bold">Locale Management</h2>
@@ -299,7 +327,9 @@ export function LocaleManagementDashboard() {
                   key={key}
                   onClick={() => applyPreset(key)}
                   className={`w-full p-3 rounded-lg text-left transition-colors ${
-                    config.locale === key ? 'bg-blue-600' : 'bg-slate-600 hover:bg-slate-500'
+                    config.locale === key
+                      ? 'bg-blue-600'
+                      : 'bg-slate-600 hover:bg-slate-500'
                   }`}
                 >
                   {key}
@@ -329,7 +359,13 @@ export function LocaleManagementDashboard() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">First Day:</span>
-                <span className="font-mono">{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][config.firstDayOfWeek]}</span>
+                <span className="font-mono">
+                  {
+                    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
+                      config.firstDayOfWeek
+                    ]
+                  }
+                </span>
               </div>
             </div>
           </div>
@@ -352,15 +388,21 @@ export function LocaleManagementDashboard() {
               </div>
               <div>
                 <span className="text-slate-400">DateTime: </span>
-                <span className="font-medium">{formatDateTime(sampleDate)}</span>
+                <span className="font-medium">
+                  {formatDateTime(sampleDate)}
+                </span>
               </div>
               <div>
                 <span className="text-slate-400">Relative: </span>
-                <span className="font-medium">{formatRelativeTime(new Date(Date.now() - 3600000))}</span>
+                <span className="font-medium">
+                  {formatRelativeTime(new Date(Date.now() - 3600000))}
+                </span>
               </div>
               <div>
                 <span className="text-slate-400">Timezone: </span>
-                <span className="font-medium text-xs">{convertToTimezone(sampleDate)}</span>
+                <span className="font-medium text-xs">
+                  {convertToTimezone(sampleDate)}
+                </span>
               </div>
             </div>
           </div>
@@ -373,11 +415,15 @@ export function LocaleManagementDashboard() {
             <div className="space-y-2 text-sm">
               <div>
                 <span className="text-slate-400">Number: </span>
-                <span className="font-medium">{formatNumber(sampleNumber)}</span>
+                <span className="font-medium">
+                  {formatNumber(sampleNumber)}
+                </span>
               </div>
               <div>
                 <span className="text-slate-400">Currency: </span>
-                <span className="font-medium">{formatCurrency(sampleCurrency)}</span>
+                <span className="font-medium">
+                  {formatCurrency(sampleCurrency)}
+                </span>
               </div>
               <div>
                 <span className="text-slate-400">Percent: </span>
@@ -385,7 +431,9 @@ export function LocaleManagementDashboard() {
               </div>
               <div>
                 <span className="text-slate-400">Compact: </span>
-                <span className="font-medium">{formatCompact(sampleNumber)}</span>
+                <span className="font-medium">
+                  {formatCompact(sampleNumber)}
+                </span>
               </div>
             </div>
           </div>
@@ -399,7 +447,9 @@ export function LocaleManagementDashboard() {
               {['America/New_York', 'Europe/London', 'Asia/Tokyo'].map((tz) => (
                 <div key={tz}>
                   <span className="text-slate-400 text-xs">{tz}: </span>
-                  <span className="font-medium text-xs">{convertToTimezone(sampleDate, tz)}</span>
+                  <span className="font-medium text-xs">
+                    {convertToTimezone(sampleDate, tz)}
+                  </span>
                 </div>
               ))}
             </div>

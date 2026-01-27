@@ -1,6 +1,15 @@
 'use client';
 
-import { LayoutGrid, Plus, Save, Upload, Settings, Maximize2, Minimize2, X } from 'lucide-react';
+import {
+  LayoutGrid,
+  Maximize2,
+  Minimize2,
+  Plus,
+  Save,
+  Settings,
+  Upload,
+  X,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface Widget {
@@ -20,15 +29,36 @@ interface Layout {
 
 export default function CustomDashboard() {
   const [widgets, setWidgets] = useState<Widget[]>([
-    { id: '1', type: 'chart', title: 'Price Chart', position: { x: 0, y: 0 }, size: { width: 600, height: 400 }, minimized: false },
-    { id: '2', type: 'stats', title: 'Market Stats', position: { x: 620, y: 0 }, size: { width: 300, height: 200 }, minimized: false },
-    { id: '3', type: 'volume', title: 'Volume Profile', position: { x: 0, y: 420 }, size: { width: 450, height: 300 }, minimized: false }
+    {
+      id: '1',
+      type: 'chart',
+      title: 'Price Chart',
+      position: { x: 0, y: 0 },
+      size: { width: 600, height: 400 },
+      minimized: false,
+    },
+    {
+      id: '2',
+      type: 'stats',
+      title: 'Market Stats',
+      position: { x: 620, y: 0 },
+      size: { width: 300, height: 200 },
+      minimized: false,
+    },
+    {
+      id: '3',
+      type: 'volume',
+      title: 'Volume Profile',
+      position: { x: 0, y: 420 },
+      size: { width: 450, height: 300 },
+      minimized: false,
+    },
   ]);
 
   const [savedLayouts, setSavedLayouts] = useState<Layout[]>([
     { id: '1', name: 'Default', widgets: [...widgets] },
     { id: '2', name: 'Trading View', widgets: [] },
-    { id: '3', name: 'Analysis', widgets: [] }
+    { id: '3', name: 'Analysis', widgets: [] },
   ]);
 
   const [selectedLayout, setSelectedLayout] = useState('1');
@@ -42,7 +72,7 @@ export default function CustomDashboard() {
     { type: 'heatmap', title: 'Heatmap', icon: '🔥' },
     { type: 'depth', title: 'Order Book', icon: '📚' },
     { type: 'volume', title: 'Volume Profile', icon: '📉' },
-    { type: 'correlation', title: 'Correlation Matrix', icon: '🔗' }
+    { type: 'correlation', title: 'Correlation Matrix', icon: '🔗' },
   ];
 
   const addWidget = (type: string, title: string) => {
@@ -52,41 +82,49 @@ export default function CustomDashboard() {
       title,
       position: { x: 50, y: 50 },
       size: { width: 400, height: 300 },
-      minimized: false
+      minimized: false,
     };
     setWidgets([...widgets, newWidget]);
     setShowWidgetLibrary(false);
   };
 
   const removeWidget = (id: string) => {
-    setWidgets(widgets.filter(w => w.id !== id));
+    setWidgets(widgets.filter((w) => w.id !== id));
   };
 
   const toggleMinimize = (id: string) => {
-    setWidgets(widgets.map(w => 
-      w.id === id ? { ...w, minimized: !w.minimized } : w
-    ));
+    setWidgets(
+      widgets.map((w) => (w.id === id ? { ...w, minimized: !w.minimized } : w))
+    );
   };
 
   const handleMouseDown = (e: React.MouseEvent, widgetId: string) => {
-    const widget = widgets.find(w => w.id === widgetId);
+    const widget = widgets.find((w) => w.id === widgetId);
     if (!widget) return;
-    
+
     setDraggedWidget(widgetId);
     setDragOffset({
       x: e.clientX - widget.position.x,
-      y: e.clientY - widget.position.y
+      y: e.clientY - widget.position.y,
     });
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!draggedWidget) return;
-    
-    setWidgets(widgets.map(w => 
-      w.id === draggedWidget
-        ? { ...w, position: { x: e.clientX - dragOffset.x, y: e.clientY - dragOffset.y } }
-        : w
-    ));
+
+    setWidgets(
+      widgets.map((w) =>
+        w.id === draggedWidget
+          ? {
+              ...w,
+              position: {
+                x: e.clientX - dragOffset.x,
+                y: e.clientY - dragOffset.y,
+              },
+            }
+          : w
+      )
+    );
   };
 
   const handleMouseUp = () => {
@@ -96,18 +134,18 @@ export default function CustomDashboard() {
   const saveCurrentLayout = () => {
     const layoutName = prompt('Enter layout name:');
     if (!layoutName) return;
-    
+
     const newLayout: Layout = {
       id: Date.now().toString(),
       name: layoutName,
-      widgets: [...widgets]
+      widgets: [...widgets],
     };
-    
+
     setSavedLayouts([...savedLayouts, newLayout]);
   };
 
   const loadLayout = (layoutId: string) => {
-    const layout = savedLayouts.find(l => l.id === layoutId);
+    const layout = savedLayouts.find((l) => l.id === layoutId);
     if (layout) {
       setWidgets([...layout.widgets]);
       setSelectedLayout(layoutId);
@@ -127,10 +165,17 @@ export default function CustomDashboard() {
               const high = Math.max(open, close) + Math.random() * 20;
               const low = Math.min(open, close) - Math.random() * 20;
               const isGreen = close > open;
-              
+
               return (
                 <g key={i}>
-                  <line x1={x + 6} y1={high} x2={x + 6} y2={low} stroke={isGreen ? '#10b981' : '#ef4444'} strokeWidth="1" />
+                  <line
+                    x1={x + 6}
+                    y1={high}
+                    x2={x + 6}
+                    y2={low}
+                    stroke={isGreen ? '#10b981' : '#ef4444'}
+                    strokeWidth="1"
+                  />
                   <rect
                     x={x + 2}
                     y={Math.min(open, close)}
@@ -143,7 +188,7 @@ export default function CustomDashboard() {
             })}
           </svg>
         );
-      
+
       case 'stats':
         return (
           <div className="p-4 space-y-3 text-sm">
@@ -165,7 +210,7 @@ export default function CustomDashboard() {
             </div>
           </div>
         );
-      
+
       case 'heatmap':
         return (
           <div className="p-4">
@@ -175,14 +220,14 @@ export default function CustomDashboard() {
                   key={i}
                   className="aspect-square rounded"
                   style={{
-                    backgroundColor: `rgba(99, 102, 241, ${Math.random()})`
+                    backgroundColor: `rgba(99, 102, 241, ${Math.random()})`,
                   }}
                 />
               ))}
             </div>
           </div>
         );
-      
+
       case 'depth':
         return (
           <svg width="100%" height="100%" viewBox="0 0 400 250">
@@ -196,11 +241,17 @@ export default function CustomDashboard() {
                 <stop offset="100%" stopColor="#ef4444" stopOpacity="0.1" />
               </linearGradient>
             </defs>
-            <path d="M 50,250 L 50,150 L 100,130 L 150,100 L 200,80 L 200,250 Z" fill="url(#bidGrad)" />
-            <path d="M 200,250 L 200,90 L 250,110 L 300,140 L 350,160 L 350,250 Z" fill="url(#askGrad)" />
+            <path
+              d="M 50,250 L 50,150 L 100,130 L 150,100 L 200,80 L 200,250 Z"
+              fill="url(#bidGrad)"
+            />
+            <path
+              d="M 200,250 L 200,90 L 250,110 L 300,140 L 350,160 L 350,250 Z"
+              fill="url(#askGrad)"
+            />
           </svg>
         );
-      
+
       case 'volume':
         return (
           <svg width="100%" height="100%" viewBox="0 0 400 250">
@@ -220,17 +271,18 @@ export default function CustomDashboard() {
             })}
           </svg>
         );
-      
+
       case 'correlation':
         return (
           <div className="p-4">
             <div className="grid grid-cols-5 gap-2">
               {Array.from({ length: 25 }).map((_, i) => {
                 const val = Math.random() * 2 - 1;
-                const color = val > 0 
-                  ? `rgba(16, 185, 129, ${Math.abs(val)})` 
-                  : `rgba(239, 68, 68, ${Math.abs(val)})`;
-                
+                const color =
+                  val > 0
+                    ? `rgba(16, 185, 129, ${Math.abs(val)})`
+                    : `rgba(239, 68, 68, ${Math.abs(val)})`;
+
                 return (
                   <div
                     key={i}
@@ -244,7 +296,7 @@ export default function CustomDashboard() {
             </div>
           </div>
         );
-      
+
       default:
         return <div className="p-4 text-slate-400">Widget content</div>;
     }
@@ -261,7 +313,9 @@ export default function CustomDashboard() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Custom Dashboard</h1>
-              <p className="text-sm text-slate-400">Drag and drop widgets to customize your view</p>
+              <p className="text-sm text-slate-400">
+                Drag and drop widgets to customize your view
+              </p>
             </div>
           </div>
 
@@ -287,7 +341,7 @@ export default function CustomDashboard() {
         <div className="flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm rounded-xl p-3 border border-slate-700">
           <Upload className="w-4 h-4 text-slate-400" />
           <span className="text-sm text-slate-400 mr-2">Layouts:</span>
-          {savedLayouts.map(layout => (
+          {savedLayouts.map((layout) => (
             <button
               key={layout.id}
               onClick={() => loadLayout(layout.id)}
@@ -316,7 +370,7 @@ export default function CustomDashboard() {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-4">
               {widgetLibrary.map((widget, idx) => (
                 <button
@@ -340,7 +394,7 @@ export default function CustomDashboard() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
-        {widgets.map(widget => (
+        {widgets.map((widget) => (
           <div
             key={widget.id}
             className="absolute bg-slate-800/90 backdrop-blur-sm rounded-xl border border-slate-700 shadow-2xl overflow-hidden"
@@ -349,7 +403,7 @@ export default function CustomDashboard() {
               top: widget.position.y,
               width: widget.minimized ? 300 : widget.size.width,
               height: widget.minimized ? 50 : widget.size.height,
-              cursor: draggedWidget === widget.id ? 'grabbing' : 'grab'
+              cursor: draggedWidget === widget.id ? 'grabbing' : 'grab',
             }}
           >
             {/* Widget Header */}
@@ -361,14 +415,18 @@ export default function CustomDashboard() {
                 <Settings className="w-4 h-4 text-slate-400" />
                 <span className="font-medium text-sm">{widget.title}</span>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => toggleMinimize(widget.id)}
                   className="p-1 hover:bg-slate-600 rounded transition-colors"
                   onMouseDown={(e) => e.stopPropagation()}
                 >
-                  {widget.minimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+                  {widget.minimized ? (
+                    <Maximize2 className="w-4 h-4" />
+                  ) : (
+                    <Minimize2 className="w-4 h-4" />
+                  )}
                 </button>
                 <button
                   onClick={() => removeWidget(widget.id)}
@@ -382,7 +440,10 @@ export default function CustomDashboard() {
 
             {/* Widget Content */}
             {!widget.minimized && (
-              <div className="overflow-auto" style={{ height: widget.size.height - 50 }}>
+              <div
+                className="overflow-auto"
+                style={{ height: widget.size.height - 50 }}
+              >
                 {renderWidgetContent(widget)}
               </div>
             )}
@@ -394,7 +455,9 @@ export default function CustomDashboard() {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
               <LayoutGrid className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-slate-400 mb-2">Empty Dashboard</h3>
+              <h3 className="text-xl font-bold text-slate-400 mb-2">
+                Empty Dashboard
+              </h3>
               <p className="text-slate-500 mb-4">Add widgets to get started</p>
               <button
                 onClick={() => setShowWidgetLibrary(true)}
@@ -409,7 +472,9 @@ export default function CustomDashboard() {
 
       {/* Info */}
       <div className="mt-4 bg-slate-800/50 backdrop-blur-sm rounded-xl p-3 border border-slate-700 text-sm text-slate-300">
-        <strong>Tips:</strong> Drag widgets to reposition • Click minimize/maximize to adjust size • Save layouts for quick access • Add multiple widgets of the same type
+        <strong>Tips:</strong> Drag widgets to reposition • Click
+        minimize/maximize to adjust size • Save layouts for quick access • Add
+        multiple widgets of the same type
       </div>
     </div>
   );

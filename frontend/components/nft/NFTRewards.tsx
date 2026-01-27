@@ -1,6 +1,16 @@
 'use client';
 
-import { Calendar, Gift, RefreshCw, Send, Star, TrendingUp, Trophy, Users, Zap } from 'lucide-react';
+import {
+  Calendar,
+  Gift,
+  RefreshCw,
+  Send,
+  Star,
+  TrendingUp,
+  Trophy,
+  Users,
+  Zap,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface RewardNFT {
@@ -60,9 +70,13 @@ interface Referral {
 }
 
 export default function NFTRewards() {
-  const [activeTab, setActiveTab] = useState<'earned' | 'daily' | 'weekly' | 'loyalty' | 'referral'>('earned');
+  const [activeTab, setActiveTab] = useState<
+    'earned' | 'daily' | 'weekly' | 'loyalty' | 'referral'
+  >('earned');
   const [showClaimModal, setShowClaimModal] = useState(false);
-  const [selectedReward, setSelectedReward] = useState<RewardNFT | DailyDrop | null>(null);
+  const [selectedReward, setSelectedReward] = useState<
+    RewardNFT | DailyDrop | null
+  >(null);
 
   const [earnedNFTs, setEarnedNFTs] = useState<RewardNFT[]>([
     {
@@ -74,7 +88,7 @@ export default function NFTRewards() {
       earnedDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
       claimed: true,
       tradingVolume: 78500,
-      icon: '🏆'
+      icon: '🏆',
     },
     {
       id: '2',
@@ -84,7 +98,7 @@ export default function NFTRewards() {
       category: 'loyalty',
       earnedDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
       claimed: true,
-      icon: '🔥'
+      icon: '🔥',
     },
     {
       id: '3',
@@ -94,8 +108,8 @@ export default function NFTRewards() {
       category: 'referral',
       earnedDate: new Date(Date.now() - 1000 * 60 * 60 * 12),
       claimed: false,
-      icon: '🎁'
-    }
+      icon: '🎁',
+    },
   ]);
 
   const [dailyDrops, setDailyDrops] = useState<DailyDrop[]>([
@@ -106,7 +120,7 @@ export default function NFTRewards() {
       rarity: 'common',
       probability: 70,
       claimed: false,
-      icon: '🎴'
+      icon: '🎴',
     },
     {
       id: 'd2',
@@ -115,7 +129,7 @@ export default function NFTRewards() {
       rarity: 'uncommon',
       probability: 20,
       claimed: false,
-      icon: '✨'
+      icon: '✨',
     },
     {
       id: 'd3',
@@ -124,7 +138,7 @@ export default function NFTRewards() {
       rarity: 'rare',
       probability: 8,
       claimed: false,
-      icon: '🌟'
+      icon: '🌟',
     },
     {
       id: 'd4',
@@ -133,7 +147,7 @@ export default function NFTRewards() {
       rarity: 'epic',
       probability: 1.8,
       claimed: false,
-      icon: '💎'
+      icon: '💎',
     },
     {
       id: 'd5',
@@ -142,8 +156,8 @@ export default function NFTRewards() {
       rarity: 'legendary',
       probability: 0.2,
       claimed: false,
-      icon: '👑'
-    }
+      icon: '👑',
+    },
   ]);
 
   const [weeklyChallenges] = useState<WeeklyChallenge[]>([
@@ -158,7 +172,7 @@ export default function NFTRewards() {
       rewardRarity: 'epic',
       expiresIn: 48,
       completed: false,
-      icon: '📈'
+      icon: '📈',
     },
     {
       id: 'w2',
@@ -171,7 +185,7 @@ export default function NFTRewards() {
       rewardRarity: 'rare',
       expiresIn: 48,
       completed: false,
-      icon: '🎯'
+      icon: '🎯',
     },
     {
       id: 'w3',
@@ -184,7 +198,7 @@ export default function NFTRewards() {
       rewardRarity: 'epic',
       expiresIn: 48,
       completed: true,
-      icon: '📱'
+      icon: '📱',
     },
     {
       id: 'w4',
@@ -197,8 +211,8 @@ export default function NFTRewards() {
       rewardRarity: 'rare',
       expiresIn: 48,
       completed: false,
-      icon: '🔨'
-    }
+      icon: '🔨',
+    },
   ]);
 
   const [loyaltyTiers] = useState<LoyaltyTier[]>([
@@ -209,7 +223,7 @@ export default function NFTRewards() {
       nftReward: 'Bronze Badge NFT',
       bonusMultiplier: 1.1,
       unlocked: true,
-      icon: '🥉'
+      icon: '🥉',
     },
     {
       id: 'tier2',
@@ -218,7 +232,7 @@ export default function NFTRewards() {
       nftReward: 'Silver Badge NFT',
       bonusMultiplier: 1.25,
       unlocked: true,
-      icon: '🥈'
+      icon: '🥈',
     },
     {
       id: 'tier3',
@@ -227,7 +241,7 @@ export default function NFTRewards() {
       nftReward: 'Gold Badge NFT',
       bonusMultiplier: 1.5,
       unlocked: false,
-      icon: '🥇'
+      icon: '🥇',
     },
     {
       id: 'tier4',
@@ -236,7 +250,7 @@ export default function NFTRewards() {
       nftReward: 'Platinum Badge NFT',
       bonusMultiplier: 2.0,
       unlocked: false,
-      icon: '💠'
+      icon: '💠',
     },
     {
       id: 'tier5',
@@ -245,8 +259,8 @@ export default function NFTRewards() {
       nftReward: 'Diamond Badge NFT',
       bonusMultiplier: 3.0,
       unlocked: false,
-      icon: '💎'
-    }
+      icon: '💎',
+    },
   ]);
 
   const [referrals] = useState<Referral[]>([
@@ -257,7 +271,7 @@ export default function NFTRewards() {
       tradingVolume: 12500,
       rewardEarned: 250,
       nftRewarded: true,
-      icon: '👤'
+      icon: '👤',
     },
     {
       id: 'r2',
@@ -266,7 +280,7 @@ export default function NFTRewards() {
       tradingVolume: 8900,
       rewardEarned: 178,
       nftRewarded: false,
-      icon: '👤'
+      icon: '👤',
     },
     {
       id: 'r3',
@@ -275,8 +289,8 @@ export default function NFTRewards() {
       tradingVolume: 5600,
       rewardEarned: 112,
       nftRewarded: false,
-      icon: '👤'
-    }
+      icon: '👤',
+    },
   ]);
 
   const getRarityColor = (rarity: string) => {
@@ -322,7 +336,11 @@ export default function NFTRewards() {
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   };
 
   const handleClaimReward = () => {
@@ -343,7 +361,7 @@ export default function NFTRewards() {
       if (rand <= cumulativeProbability) {
         const updatedDrops = dailyDrops.map((d) => ({
           ...d,
-          claimed: d.id === drop.id ? true : d.claimed
+          claimed: d.id === drop.id ? true : d.claimed,
         }));
         setDailyDrops(updatedDrops);
         alert(`You won: ${drop.name}!`);
@@ -355,9 +373,14 @@ export default function NFTRewards() {
   const totalEarned = earnedNFTs.length;
   const totalClaimed = earnedNFTs.filter((nft) => nft.claimed).length;
   const unclaimedRewards = earnedNFTs.filter((nft) => !nft.claimed).length;
-  const completedChallenges = weeklyChallenges.filter((c) => c.completed).length;
+  const completedChallenges = weeklyChallenges.filter(
+    (c) => c.completed
+  ).length;
   const totalReferrals = referrals.length;
-  const totalReferralEarnings = referrals.reduce((sum, r) => sum + r.rewardEarned, 0);
+  const totalReferralEarnings = referrals.reduce(
+    (sum, r) => sum + r.rewardEarned,
+    0
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-900 to-slate-900 text-white p-4 md:p-8">
@@ -370,7 +393,9 @@ export default function NFTRewards() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">NFT Rewards</h1>
-              <p className="text-slate-400">Earn exclusive NFTs through trading, challenges, and referrals</p>
+              <p className="text-slate-400">
+                Earn exclusive NFTs through trading, challenges, and referrals
+              </p>
             </div>
           </div>
         </div>
@@ -382,8 +407,12 @@ export default function NFTRewards() {
               <span className="text-slate-400 text-sm">Total Earned</span>
               <Trophy className="w-4 h-4 text-yellow-400" />
             </div>
-            <div className="text-2xl font-bold text-yellow-400">{totalEarned} NFTs</div>
-            <div className="text-xs text-slate-400 mt-1">{totalClaimed} claimed</div>
+            <div className="text-2xl font-bold text-yellow-400">
+              {totalEarned} NFTs
+            </div>
+            <div className="text-xs text-slate-400 mt-1">
+              {totalClaimed} claimed
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -391,7 +420,9 @@ export default function NFTRewards() {
               <span className="text-slate-400 text-sm">Unclaimed</span>
               <Gift className="w-4 h-4 text-orange-400" />
             </div>
-            <div className="text-2xl font-bold text-orange-400">{unclaimedRewards}</div>
+            <div className="text-2xl font-bold text-orange-400">
+              {unclaimedRewards}
+            </div>
             <div className="text-xs text-slate-400 mt-1">Ready to claim</div>
           </div>
 
@@ -403,7 +434,9 @@ export default function NFTRewards() {
             <div className="text-2xl font-bold text-blue-400">
               {completedChallenges}/{weeklyChallenges.length}
             </div>
-            <div className="text-xs text-slate-400 mt-1">Challenges complete</div>
+            <div className="text-xs text-slate-400 mt-1">
+              Challenges complete
+            </div>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
@@ -411,8 +444,12 @@ export default function NFTRewards() {
               <span className="text-slate-400 text-sm">Referrals</span>
               <Users className="w-4 h-4 text-green-400" />
             </div>
-            <div className="text-2xl font-bold text-green-400">{totalReferrals}</div>
-            <div className="text-xs text-slate-400 mt-1">{formatCurrency(totalReferralEarnings)} earned</div>
+            <div className="text-2xl font-bold text-green-400">
+              {totalReferrals}
+            </div>
+            <div className="text-xs text-slate-400 mt-1">
+              {formatCurrency(totalReferralEarnings)} earned
+            </div>
           </div>
         </div>
 
@@ -488,15 +525,23 @@ export default function NFTRewards() {
                     {getCategoryIcon(nft.category)}
                   </div>
 
-                  <p className="text-sm text-slate-400 mb-4">{nft.description}</p>
+                  <p className="text-sm text-slate-400 mb-4">
+                    {nft.description}
+                  </p>
 
-                  <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border mb-4 ${getRarityColor(nft.rarity)}`}>
+                  <div
+                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border mb-4 ${getRarityColor(
+                      nft.rarity
+                    )}`}
+                  >
                     {nft.rarity.toUpperCase()}
                   </div>
 
                   <div className="bg-slate-700/30 rounded-lg p-3 mb-4">
                     <div className="text-xs text-slate-400 mb-1">Earned</div>
-                    <div className="font-semibold">{formatDate(nft.earnedDate)}</div>
+                    <div className="font-semibold">
+                      {formatDate(nft.earnedDate)}
+                    </div>
                   </div>
 
                   {!nft.claimed ? (
@@ -530,7 +575,8 @@ export default function NFTRewards() {
                 <div>
                   <h2 className="text-xl font-bold mb-2">Daily NFT Drop</h2>
                   <p className="text-slate-300">
-                    Claim your daily NFT drop! The rarity is random based on probability. Come back every day for more chances!
+                    Claim your daily NFT drop! The rarity is random based on
+                    probability. Come back every day for more chances!
                   </p>
                 </div>
               </div>
@@ -552,14 +598,22 @@ export default function NFTRewards() {
                 >
                   <div className="text-6xl mb-4 text-center">{drop.icon}</div>
                   <h3 className="font-bold text-center mb-2">{drop.name}</h3>
-                  <p className="text-sm text-slate-400 text-center mb-4">{drop.description}</p>
+                  <p className="text-sm text-slate-400 text-center mb-4">
+                    {drop.description}
+                  </p>
 
-                  <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border mb-3 w-full justify-center ${getRarityColor(drop.rarity)}`}>
+                  <div
+                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border mb-3 w-full justify-center ${getRarityColor(
+                      drop.rarity
+                    )}`}
+                  >
                     {drop.rarity.toUpperCase()}
                   </div>
 
                   <div className="bg-slate-700/30 rounded-lg p-3 text-center">
-                    <div className="text-2xl font-bold text-orange-400">{drop.probability}%</div>
+                    <div className="text-2xl font-bold text-orange-400">
+                      {drop.probability}%
+                    </div>
                     <div className="text-xs text-slate-400">Drop Chance</div>
                   </div>
                 </div>
@@ -580,19 +634,31 @@ export default function NFTRewards() {
                   <div className="flex items-start gap-4 flex-1">
                     <div className="text-5xl">{challenge.icon}</div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-lg mb-2">{challenge.name}</h3>
-                      <p className="text-sm text-slate-400 mb-3">{challenge.description}</p>
+                      <h3 className="font-bold text-lg mb-2">
+                        {challenge.name}
+                      </h3>
+                      <p className="text-sm text-slate-400 mb-3">
+                        {challenge.description}
+                      </p>
 
                       <div className="flex items-center gap-4 mb-4">
-                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(challenge.rewardRarity)}`}>
+                        <div
+                          className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(
+                            challenge.rewardRarity
+                          )}`}
+                        >
                           {challenge.reward}
                         </div>
-                        <div className="text-sm text-slate-400">Expires in {challenge.expiresIn}h</div>
+                        <div className="text-sm text-slate-400">
+                          Expires in {challenge.expiresIn}h
+                        </div>
                       </div>
 
                       <div className="mb-2">
                         <div className="flex items-center justify-between text-sm mb-2">
-                          <span className="text-slate-400">{challenge.requirement}</span>
+                          <span className="text-slate-400">
+                            {challenge.requirement}
+                          </span>
                           <span className="font-semibold">
                             {challenge.progress} / {challenge.target}
                           </span>
@@ -600,7 +666,11 @@ export default function NFTRewards() {
                         <div className="w-full bg-slate-700 rounded-full h-2">
                           <div
                             className="bg-gradient-to-r from-orange-600 to-yellow-600 h-2 rounded-full transition-all"
-                            style={{ width: `${(challenge.progress / challenge.target) * 100}%` }}
+                            style={{
+                              width: `${
+                                (challenge.progress / challenge.target) * 100
+                              }%`,
+                            }}
                           />
                         </div>
                       </div>
@@ -627,7 +697,8 @@ export default function NFTRewards() {
                 <div>
                   <h2 className="text-xl font-bold mb-2">Loyalty Program</h2>
                   <p className="text-slate-300">
-                    Earn exclusive NFTs by being a loyal member. Each tier unlocks unique NFTs and bonus multipliers for all rewards!
+                    Earn exclusive NFTs by being a loyal member. Each tier
+                    unlocks unique NFTs and bonus multipliers for all rewards!
                   </p>
                 </div>
               </div>
@@ -645,14 +716,22 @@ export default function NFTRewards() {
                     <div className="text-6xl">{tier.icon}</div>
                     <div>
                       <h3 className="font-bold text-xl mb-1">{tier.name}</h3>
-                      <p className="text-sm text-slate-400 mb-2">{tier.minDays} days of membership required</p>
+                      <p className="text-sm text-slate-400 mb-2">
+                        {tier.minDays} days of membership required
+                      </p>
                       <div className="text-sm">
                         <span className="text-slate-400">NFT Reward:</span>
-                        <span className="font-semibold ml-2">{tier.nftReward}</span>
+                        <span className="font-semibold ml-2">
+                          {tier.nftReward}
+                        </span>
                       </div>
                       <div className="text-sm">
-                        <span className="text-slate-400">Bonus Multiplier:</span>
-                        <span className="font-semibold text-orange-400 ml-2">{tier.bonusMultiplier}x</span>
+                        <span className="text-slate-400">
+                          Bonus Multiplier:
+                        </span>
+                        <span className="font-semibold text-orange-400 ml-2">
+                          {tier.bonusMultiplier}x
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -681,7 +760,8 @@ export default function NFTRewards() {
                 <div className="flex-1">
                   <h2 className="text-xl font-bold mb-2">Referral Program</h2>
                   <p className="text-slate-300 mb-4">
-                    Earn NFTs and rewards by referring friends! Get bonus NFTs for every 5 referrals and share in their trading volume.
+                    Earn NFTs and rewards by referring friends! Get bonus NFTs
+                    for every 5 referrals and share in their trading volume.
                   </p>
 
                   <div className="flex items-center gap-2">
@@ -710,16 +790,26 @@ export default function NFTRewards() {
                     <div className="flex items-center gap-4">
                       <div className="text-5xl">{referral.icon}</div>
                       <div>
-                        <h3 className="font-bold text-lg mb-1">{referral.username}</h3>
-                        <p className="text-sm text-slate-400 mb-2">Joined {formatDate(referral.joinedDate)}</p>
+                        <h3 className="font-bold text-lg mb-1">
+                          {referral.username}
+                        </h3>
+                        <p className="text-sm text-slate-400 mb-2">
+                          Joined {formatDate(referral.joinedDate)}
+                        </p>
                         <div className="flex items-center gap-4 text-sm">
                           <div>
-                            <span className="text-slate-400">Trading Volume:</span>
-                            <span className="font-semibold ml-2">{formatCurrency(referral.tradingVolume)}</span>
+                            <span className="text-slate-400">
+                              Trading Volume:
+                            </span>
+                            <span className="font-semibold ml-2">
+                              {formatCurrency(referral.tradingVolume)}
+                            </span>
                           </div>
                           <div>
                             <span className="text-slate-400">Your Reward:</span>
-                            <span className="font-semibold text-green-400 ml-2">{formatCurrency(referral.rewardEarned)}</span>
+                            <span className="font-semibold text-green-400 ml-2">
+                              {formatCurrency(referral.rewardEarned)}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -740,7 +830,9 @@ export default function NFTRewards() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-300">5 Referrals</span>
-                  <span className="text-green-400">✓ Rare Referral NFT Earned</span>
+                  <span className="text-green-400">
+                    ✓ Rare Referral NFT Earned
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-slate-400">
                   <span>10 Referrals</span>
@@ -763,18 +855,27 @@ export default function NFTRewards() {
 
               <div className="text-center mb-6">
                 <div className="text-7xl mb-3">{selectedReward.icon}</div>
-                <h4 className="font-bold text-lg mb-2">{selectedReward.name}</h4>
+                <h4 className="font-bold text-lg mb-2">
+                  {selectedReward.name}
+                </h4>
                 {'description' in selectedReward && (
-                  <p className="text-sm text-slate-400 mb-3">{selectedReward.description}</p>
+                  <p className="text-sm text-slate-400 mb-3">
+                    {selectedReward.description}
+                  </p>
                 )}
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(selectedReward.rarity)}`}>
+                <div
+                  className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${getRarityColor(
+                    selectedReward.rarity
+                  )}`}
+                >
                   {selectedReward.rarity.toUpperCase()} NFT
                 </div>
               </div>
 
               <div className="bg-orange-600/10 border border-orange-600/30 rounded-lg p-4 mb-6">
                 <p className="text-sm text-center">
-                  This NFT will be minted to your wallet and stored on IPFS with ERC-721 compliance.
+                  This NFT will be minted to your wallet and stored on IPFS with
+                  ERC-721 compliance.
                 </p>
               </div>
 

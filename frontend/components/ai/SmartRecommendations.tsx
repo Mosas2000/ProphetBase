@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Sparkles, TrendingUp, Shield, Brain, ChevronRight, Info, Star, AlertCircle } from 'lucide-react';
+import { AlertCircle, Brain, ChevronRight, Info, Sparkles, Star } from 'lucide-react';
+import { useState } from 'react';
 
 interface Recommendation {
   id: string;

@@ -1,7 +1,7 @@
 'use client';
 
+import { BookOpen, Type, ZoomIn, ZoomOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Type, ZoomIn, ZoomOut, BookOpen } from 'lucide-react';
 
 // Text scaling configuration
 export interface TextScaleConfig {
@@ -57,11 +57,17 @@ export class TextScalingManager {
   private apply(): void {
     const root = document.documentElement;
     const scaledSize = this.config.baseFontSize * this.config.scaleRatio;
-    
-    root.style.setProperty('--text-scale-ratio', this.config.scaleRatio.toString());
+
+    root.style.setProperty(
+      '--text-scale-ratio',
+      this.config.scaleRatio.toString()
+    );
     root.style.setProperty('--base-font-size', `${scaledSize}px`);
-    root.style.setProperty('--line-height', this.config.lineHeightRatio.toString());
-    
+    root.style.setProperty(
+      '--line-height',
+      this.config.lineHeightRatio.toString()
+    );
+
     // Apply to body
     document.body.style.fontSize = `${scaledSize}px`;
     document.body.style.lineHeight = this.config.lineHeightRatio.toString();
@@ -117,7 +123,7 @@ export class ReadingModeManager {
 
   private apply(): void {
     const root = document.documentElement;
-    
+
     if (this.active) {
       root.classList.add('reading-mode');
       root.style.setProperty('--reading-max-width', '65ch');
@@ -224,12 +230,17 @@ export function useZoomSupport() {
 
 // Text scaling dashboard
 export function TextScalingDashboard() {
-  const { config, increaseScale, decreaseScale, resetScale, setBaseFontSize } = useTextScaling();
+  const { config, increaseScale, decreaseScale, resetScale, setBaseFontSize } =
+    useTextScaling();
   const { active: readingMode, toggle: toggleReading } = useReadingMode();
   const { zoomLevel } = useZoomSupport();
 
   return (
-    <div className="p-6 bg-slate-800 rounded-xl" role="region" aria-label="Text Scaling Settings">
+    <div
+      className="p-6 bg-slate-800 rounded-xl"
+      role="region"
+      aria-label="Text Scaling Settings"
+    >
       <div className="flex items-center gap-3 mb-6">
         <Type className="w-6 h-6 text-green-400" />
         <h2 className="text-2xl font-bold">Text Scaling</h2>
@@ -239,7 +250,7 @@ export function TextScalingDashboard() {
         <div className="space-y-4">
           <div className="p-4 bg-slate-700 rounded-lg">
             <h3 className="font-bold mb-4">Font Size Controls</h3>
-            
+
             <div className="flex items-center gap-4 mb-4">
               <button
                 onClick={decreaseScale}
@@ -248,7 +259,7 @@ export function TextScalingDashboard() {
               >
                 <ZoomOut className="w-5 h-5" />
               </button>
-              
+
               <div className="flex-1 text-center">
                 <div className="text-3xl font-bold">
                   {Math.round(config.scaleRatio * 100)}%
@@ -257,7 +268,7 @@ export function TextScalingDashboard() {
                   {Math.round(config.baseFontSize * config.scaleRatio)}px
                 </div>
               </div>
-              
+
               <button
                 onClick={increaseScale}
                 className="p-3 bg-slate-600 hover:bg-slate-500 rounded-lg"
@@ -333,12 +344,17 @@ export function TextScalingDashboard() {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>Browser Zoom:</span>
-                <span className="font-mono">{Math.round(zoomLevel * 100)}%</span>
+                <span className="font-mono">
+                  {Math.round(zoomLevel * 100)}%
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Computed Size:</span>
                 <span className="font-mono">
-                  {Math.round(config.baseFontSize * config.scaleRatio * zoomLevel)}px
+                  {Math.round(
+                    config.baseFontSize * config.scaleRatio * zoomLevel
+                  )}
+                  px
                 </span>
               </div>
               <div className="flex justify-between">

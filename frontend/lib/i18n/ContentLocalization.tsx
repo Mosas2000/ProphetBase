@@ -1,7 +1,7 @@
 'use client';
 
+import { Globe2, Heart, MapPin, Scale } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Globe2, MapPin, Scale, Heart } from 'lucide-react';
 
 // Regional content configuration
 export interface RegionalContent {
@@ -16,7 +16,7 @@ export interface RegionalContent {
 
 // Region definitions
 export const REGIONS: Record<string, RegionalContent> = {
-  'us': {
+  us: {
     region: 'North America',
     country: 'United States',
     language: 'en-US',
@@ -36,7 +36,7 @@ export const REGIONS: Record<string, RegionalContent> = {
       'Success and competition valued',
     ],
   },
-  'uk': {
+  uk: {
     region: 'Europe',
     country: 'United Kingdom',
     language: 'en-GB',
@@ -56,7 +56,7 @@ export const REGIONS: Record<string, RegionalContent> = {
       'Queuing and fairness important',
     ],
   },
-  'de': {
+  de: {
     region: 'Europe',
     country: 'Germany',
     language: 'de-DE',
@@ -77,7 +77,7 @@ export const REGIONS: Record<string, RegionalContent> = {
       'Privacy concerns important',
     ],
   },
-  'jp': {
+  jp: {
     region: 'Asia Pacific',
     country: 'Japan',
     language: 'ja-JP',
@@ -99,7 +99,7 @@ export const REGIONS: Record<string, RegionalContent> = {
       'Gift-giving customs',
     ],
   },
-  'ae': {
+  ae: {
     region: 'Middle East',
     country: 'United Arab Emirates',
     language: 'ar-AE',
@@ -138,7 +138,7 @@ export class ContentLocalizationManager {
 
     // Try to detect from browser language
     const browserLang = navigator.language.toLowerCase();
-    
+
     if (browserLang.startsWith('en-gb') || browserLang.includes('uk')) {
       this.currentRegion = 'uk';
     } else if (browserLang.startsWith('de')) {
@@ -197,11 +197,11 @@ export class ContentLocalizationManager {
   // Apply regional settings
   private applyRegionalSettings(): void {
     const region = this.getCurrentRegion();
-    
+
     // Update document language
     if (typeof document !== 'undefined') {
       document.documentElement.lang = region.language;
-      
+
       // Set direction based on language
       if (region.language.startsWith('ar')) {
         document.documentElement.dir = 'rtl';
@@ -214,19 +214,21 @@ export class ContentLocalizationManager {
   // Market restrictions
   isMarketAllowed(marketType: string): boolean {
     const region = this.getCurrentRegion();
-    
+
     // Example restrictions
     if (region.country === 'United Arab Emirates') {
       // No gambling-related markets
-      return !['sports', 'casino', 'lottery'].includes(marketType.toLowerCase());
+      return !['sports', 'casino', 'lottery'].includes(
+        marketType.toLowerCase()
+      );
     }
-    
+
     return true;
   }
 
   getAgeRestriction(): number {
     const region = this.getCurrentRegion();
-    
+
     // Age restrictions by region
     switch (region.country) {
       case 'United Arab Emirates':
@@ -273,7 +275,8 @@ export function useContentLocalization() {
     getLocalizedContent: (key: string) => manager.getLocalizedContent(key),
     getRegulations: () => manager.getRegulations(),
     getCulturalNotes: () => manager.getCulturalNotes(),
-    isMarketAllowed: (marketType: string) => manager.isMarketAllowed(marketType),
+    isMarketAllowed: (marketType: string) =>
+      manager.isMarketAllowed(marketType),
     getAgeRestriction: () => manager.getAgeRestriction(),
   };
 }
@@ -293,7 +296,11 @@ export function ContentLocalizationDashboard() {
   const regions = getAllRegions();
 
   return (
-    <div className="p-6 bg-slate-800 rounded-xl" role="region" aria-label="Content Localization">
+    <div
+      className="p-6 bg-slate-800 rounded-xl"
+      role="region"
+      aria-label="Content Localization"
+    >
       <div className="flex items-center gap-3 mb-6">
         <Globe2 className="w-6 h-6 text-cyan-400" />
         <h2 className="text-2xl font-bold">Content Localization</h2>
@@ -316,9 +323,13 @@ export function ContentLocalizationDashboard() {
                 >
                   <div>
                     <div className="font-medium">{config.country}</div>
-                    <div className="text-sm text-slate-300">{config.region}</div>
+                    <div className="text-sm text-slate-300">
+                      {config.region}
+                    </div>
                   </div>
-                  <div className="text-sm text-slate-400">{config.currency}</div>
+                  <div className="text-sm text-slate-400">
+                    {config.currency}
+                  </div>
                 </button>
               ))}
             </div>
@@ -356,15 +367,21 @@ export function ContentLocalizationDashboard() {
             <div className="space-y-3">
               <div>
                 <div className="text-sm text-slate-400">Title:</div>
-                <div className="font-medium">{getLocalizedContent('marketTitle')}</div>
+                <div className="font-medium">
+                  {getLocalizedContent('marketTitle')}
+                </div>
               </div>
               <div>
                 <div className="text-sm text-slate-400">Welcome:</div>
-                <div className="font-medium">{getLocalizedContent('welcomeMessage')}</div>
+                <div className="font-medium">
+                  {getLocalizedContent('welcomeMessage')}
+                </div>
               </div>
               <div>
                 <div className="text-sm text-slate-400">Legal:</div>
-                <div className="font-medium">{getLocalizedContent('legalNotice')}</div>
+                <div className="font-medium">
+                  {getLocalizedContent('legalNotice')}
+                </div>
               </div>
             </div>
           </div>
@@ -403,8 +420,9 @@ export function ContentLocalizationDashboard() {
       <div className="mt-6 p-4 bg-amber-900/20 border border-amber-600/30 rounded-lg">
         <h3 className="font-bold mb-2 text-amber-400">Important Notice</h3>
         <p className="text-sm text-slate-300">
-          Regional settings affect content display, legal compliance, and available features.
-          Always ensure compliance with local regulations and cultural norms.
+          Regional settings affect content display, legal compliance, and
+          available features. Always ensure compliance with local regulations
+          and cultural norms.
         </p>
       </div>
     </div>

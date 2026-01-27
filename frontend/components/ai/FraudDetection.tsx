@@ -1,7 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Shield, AlertTriangle, Bot, Eye, Clock, TrendingDown, Ban, Users } from 'lucide-react';
+import {
+  AlertTriangle,
+  Ban,
+  Bot,
+  Clock,
+  Eye,
+  Shield,
+  TrendingDown,
+  Users,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface FraudAlert {
   id: string;
@@ -30,15 +39,20 @@ interface BehaviorPattern {
 }
 
 export default function FraudDetection() {
-  const [activeTab, setActiveTab] = useState<'alerts' | 'patterns' | 'stats'>('alerts');
-  const [filterSeverity, setFilterSeverity] = useState<'all' | 'critical' | 'high' | 'medium' | 'low'>('all');
+  const [activeTab, setActiveTab] = useState<'alerts' | 'patterns' | 'stats'>(
+    'alerts'
+  );
+  const [filterSeverity, setFilterSeverity] = useState<
+    'all' | 'critical' | 'high' | 'medium' | 'low'
+  >('all');
 
   const [fraudAlerts] = useState<FraudAlert[]>([
     {
       id: 'f1',
       severity: 'critical',
       type: 'Multiple Account Access',
-      description: 'User accessed from 5 different IP addresses in different countries within 2 hours',
+      description:
+        'User accessed from 5 different IP addresses in different countries within 2 hours',
       timestamp: new Date(Date.now() - 1000 * 60 * 15),
       userId: 'user_8x9k2',
       actionTaken: 'Account temporarily locked, 2FA required',
@@ -48,7 +62,8 @@ export default function FraudDetection() {
       id: 'f2',
       severity: 'high',
       type: 'Unusual Trading Pattern',
-      description: 'Trading volume 15x above user average, pattern matches known bot behavior',
+      description:
+        'Trading volume 15x above user average, pattern matches known bot behavior',
       timestamp: new Date(Date.now() - 1000 * 60 * 45),
       userId: 'user_3m7n1',
       actionTaken: 'Rate limiting applied, behavior monitoring increased',
@@ -58,7 +73,8 @@ export default function FraudDetection() {
       id: 'f3',
       severity: 'high',
       type: 'Wash Trading Detected',
-      description: 'User creating artificial volume through self-trading across multiple accounts',
+      description:
+        'User creating artificial volume through self-trading across multiple accounts',
       timestamp: new Date(Date.now() - 1000 * 60 * 60),
       userId: 'user_5k2p9',
       actionTaken: 'Accounts flagged, transactions under review',
@@ -68,7 +84,8 @@ export default function FraudDetection() {
       id: 'f4',
       severity: 'medium',
       type: 'Rapid Withdrawal Attempt',
-      description: 'Attempted to withdraw $5000 immediately after depositing from new payment method',
+      description:
+        'Attempted to withdraw $5000 immediately after depositing from new payment method',
       timestamp: new Date(Date.now() - 1000 * 60 * 90),
       userId: 'user_7q4r2',
       actionTaken: 'Withdrawal delayed for 24h cooling period',
@@ -78,7 +95,8 @@ export default function FraudDetection() {
       id: 'f5',
       severity: 'medium',
       type: 'Suspicious Login',
-      description: 'Login from previously unseen device and location, failed 2FA twice',
+      description:
+        'Login from previously unseen device and location, failed 2FA twice',
       timestamp: new Date(Date.now() - 1000 * 60 * 120),
       userId: 'user_2w8t5',
       actionTaken: 'Email verification sent to registered address',
@@ -142,21 +160,24 @@ export default function FraudDetection() {
       frequency: 8,
       riskLevel: 'high',
       detected: new Date(Date.now() - 1000 * 60 * 60 * 4),
-      details: 'Large orders placed and cancelled rapidly to influence market price',
+      details:
+        'Large orders placed and cancelled rapidly to influence market price',
     },
     {
       pattern: 'Account Farming',
       frequency: 15,
       riskLevel: 'medium',
       detected: new Date(Date.now() - 1000 * 60 * 60 * 6),
-      details: 'Multiple new accounts created from same device/IP within short timeframe',
+      details:
+        'Multiple new accounts created from same device/IP within short timeframe',
     },
     {
       pattern: 'Credential Stuffing',
       frequency: 23,
       riskLevel: 'medium',
       detected: new Date(Date.now() - 1000 * 60 * 60 * 8),
-      details: 'Automated login attempts using lists of compromised credentials',
+      details:
+        'Automated login attempts using lists of compromised credentials',
     },
     {
       pattern: 'Session Hijacking',
@@ -167,9 +188,10 @@ export default function FraudDetection() {
     },
   ]);
 
-  const filteredAlerts = filterSeverity === 'all' 
-    ? fraudAlerts 
-    : fraudAlerts.filter(a => a.severity === filterSeverity);
+  const filteredAlerts =
+    filterSeverity === 'all'
+      ? fraudAlerts
+      : fraudAlerts.filter((a) => a.severity === filterSeverity);
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -246,8 +268,12 @@ export default function FraudDetection() {
               <Shield className="w-8 h-8 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">Fraud Detection</h1>
-              <p className="text-slate-400">AI-powered suspicious activity monitoring</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                Fraud Detection
+              </h1>
+              <p className="text-slate-400">
+                AI-powered suspicious activity monitoring
+              </p>
             </div>
           </div>
         </div>
@@ -256,29 +282,33 @@ export default function FraudDetection() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Total Alerts</div>
-            <div className="text-2xl font-bold text-blue-400">{fraudAlerts.length}</div>
+            <div className="text-2xl font-bold text-blue-400">
+              {fraudAlerts.length}
+            </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Critical</div>
             <div className="text-2xl font-bold text-red-400">
-              {fraudAlerts.filter(a => a.severity === 'critical').length}
+              {fraudAlerts.filter((a) => a.severity === 'critical').length}
             </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Investigating</div>
             <div className="text-2xl font-bold text-orange-400">
-              {fraudAlerts.filter(a => a.status === 'investigating').length}
+              {fraudAlerts.filter((a) => a.status === 'investigating').length}
             </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Resolved</div>
             <div className="text-2xl font-bold text-green-400">
-              {fraudAlerts.filter(a => a.status === 'resolved').length}
+              {fraudAlerts.filter((a) => a.status === 'resolved').length}
             </div>
           </div>
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 border border-slate-700">
             <div className="text-slate-400 text-sm mb-1">Patterns</div>
-            <div className="text-2xl font-bold text-purple-400">{behaviorPatterns.length}</div>
+            <div className="text-2xl font-bold text-purple-400">
+              {behaviorPatterns.length}
+            </div>
           </div>
         </div>
 
@@ -335,24 +365,41 @@ export default function FraudDetection() {
 
               <div className="space-y-4">
                 {filteredAlerts.map((alert) => (
-                  <div key={alert.id} className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+                  <div
+                    key={alert.id}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-start gap-3">
                         <div className="p-3 bg-slate-600 rounded-lg">
-                          <AlertTriangle className={`w-5 h-5 ${
-                            alert.severity === 'critical' ? 'text-red-400' :
-                            alert.severity === 'high' ? 'text-orange-400' :
-                            alert.severity === 'medium' ? 'text-yellow-400' : 'text-blue-400'
-                          }`} />
+                          <AlertTriangle
+                            className={`w-5 h-5 ${
+                              alert.severity === 'critical'
+                                ? 'text-red-400'
+                                : alert.severity === 'high'
+                                ? 'text-orange-400'
+                                : alert.severity === 'medium'
+                                ? 'text-yellow-400'
+                                : 'text-blue-400'
+                            }`}
+                          />
                         </div>
                         <div>
                           <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-semibold text-lg">{alert.type}</h3>
-                            <span className={`px-3 py-1 rounded-lg text-xs font-semibold border ${getSeverityColor(alert.severity)}`}>
+                            <h3 className="font-semibold text-lg">
+                              {alert.type}
+                            </h3>
+                            <span
+                              className={`px-3 py-1 rounded-lg text-xs font-semibold border ${getSeverityColor(
+                                alert.severity
+                              )}`}
+                            >
                               {alert.severity.toUpperCase()}
                             </span>
                           </div>
-                          <p className="text-slate-400 text-sm mb-2">{alert.description}</p>
+                          <p className="text-slate-400 text-sm mb-2">
+                            {alert.description}
+                          </p>
                           <div className="flex items-center gap-4 text-sm text-slate-400">
                             <span className="flex items-center gap-1">
                               <Users className="w-4 h-4" />
@@ -365,7 +412,11 @@ export default function FraudDetection() {
                           </div>
                         </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-lg text-xs font-semibold ${getStatusColor(alert.status)}`}>
+                      <span
+                        className={`px-3 py-1 rounded-lg text-xs font-semibold ${getStatusColor(
+                          alert.status
+                        )}`}
+                      >
                         {alert.status.replace('-', ' ').toUpperCase()}
                       </span>
                     </div>
@@ -373,9 +424,13 @@ export default function FraudDetection() {
                     <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-1">
                         <Eye className="w-4 h-4 text-blue-400" />
-                        <span className="text-sm font-semibold text-blue-400">Action Taken</span>
+                        <span className="text-sm font-semibold text-blue-400">
+                          Action Taken
+                        </span>
                       </div>
-                      <p className="text-sm text-slate-300">{alert.actionTaken}</p>
+                      <p className="text-sm text-slate-300">
+                        {alert.actionTaken}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -387,28 +442,49 @@ export default function FraudDetection() {
             <div className="p-6">
               <div className="space-y-4">
                 {behaviorPatterns.map((pattern, idx) => (
-                  <div key={idx} className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+                  <div
+                    key={idx}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-start gap-3">
                         <div className="p-3 bg-slate-600 rounded-lg">
-                          <Bot className={`w-5 h-5 ${getRiskLevelColor(pattern.riskLevel)}`} />
+                          <Bot
+                            className={`w-5 h-5 ${getRiskLevelColor(
+                              pattern.riskLevel
+                            )}`}
+                          />
                         </div>
                         <div>
                           <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-semibold text-lg">{pattern.pattern}</h3>
-                            <span className={`px-3 py-1 rounded-lg text-xs font-semibold ${getRiskLevelColor(pattern.riskLevel)}`}>
+                            <h3 className="font-semibold text-lg">
+                              {pattern.pattern}
+                            </h3>
+                            <span
+                              className={`px-3 py-1 rounded-lg text-xs font-semibold ${getRiskLevelColor(
+                                pattern.riskLevel
+                              )}`}
+                            >
                               {pattern.riskLevel.toUpperCase()} RISK
                             </span>
                           </div>
-                          <p className="text-slate-400 text-sm mb-3">{pattern.details}</p>
+                          <p className="text-slate-400 text-sm mb-3">
+                            {pattern.details}
+                          </p>
                           <div className="flex items-center gap-4 text-sm">
                             <div>
-                              <span className="text-slate-400">Frequency: </span>
-                              <span className="text-white font-semibold">{pattern.frequency} occurrences</span>
+                              <span className="text-slate-400">
+                                Frequency:{' '}
+                              </span>
+                              <span className="text-white font-semibold">
+                                {pattern.frequency} occurrences
+                              </span>
                             </div>
                             <div>
                               <span className="text-slate-400">Detected: </span>
-                              <span className="text-white font-semibold">{getTimeAgo(pattern.detected)}</span>
+                              <span className="text-white font-semibold">
+                                {getTimeAgo(pattern.detected)}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -424,14 +500,19 @@ export default function FraudDetection() {
             <div className="p-6">
               <div className="space-y-4">
                 {suspiciousActivities.map((activity, idx) => (
-                  <div key={idx} className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
+                  <div
+                    key={idx}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <div className="p-3 bg-slate-600 rounded-lg">
                           <Ban className="w-5 h-5 text-red-400" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-lg">{activity.category}</h3>
+                          <h3 className="font-semibold text-lg">
+                            {activity.category}
+                          </h3>
                           <div className="text-sm text-slate-400">
                             {activity.count} incidents detected
                           </div>
@@ -439,27 +520,41 @@ export default function FraudDetection() {
                       </div>
                       <div className="flex items-center gap-2">
                         {getTrendIcon(activity.trend)}
-                        <span className="text-sm text-slate-400 capitalize">{activity.trend}</span>
+                        <span className="text-sm text-slate-400 capitalize">
+                          {activity.trend}
+                        </span>
                       </div>
                     </div>
 
                     <div className="mb-3">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-slate-400">Risk Score</span>
-                        <span className={`text-lg font-bold ${
-                          activity.riskScore >= 70 ? 'text-red-400' :
-                          activity.riskScore >= 50 ? 'text-orange-400' :
-                          activity.riskScore >= 30 ? 'text-yellow-400' : 'text-green-400'
-                        }`}>
+                        <span className="text-sm text-slate-400">
+                          Risk Score
+                        </span>
+                        <span
+                          className={`text-lg font-bold ${
+                            activity.riskScore >= 70
+                              ? 'text-red-400'
+                              : activity.riskScore >= 50
+                              ? 'text-orange-400'
+                              : activity.riskScore >= 30
+                              ? 'text-yellow-400'
+                              : 'text-green-400'
+                          }`}
+                        >
                           {activity.riskScore}/100
                         </span>
                       </div>
                       <div className="w-full bg-slate-600 rounded-full h-2">
                         <div
                           className={`h-full rounded-full ${
-                            activity.riskScore >= 70 ? 'bg-red-500' :
-                            activity.riskScore >= 50 ? 'bg-orange-500' :
-                            activity.riskScore >= 30 ? 'bg-yellow-500' : 'bg-green-500'
+                            activity.riskScore >= 70
+                              ? 'bg-red-500'
+                              : activity.riskScore >= 50
+                              ? 'bg-orange-500'
+                              : activity.riskScore >= 30
+                              ? 'bg-yellow-500'
+                              : 'bg-green-500'
                           }`}
                           style={{ width: `${activity.riskScore}%` }}
                         />
@@ -477,10 +572,14 @@ export default function FraudDetection() {
           <div className="flex items-start gap-3">
             <Shield className="w-5 h-5 text-blue-400 mt-0.5" />
             <div>
-              <div className="font-semibold text-blue-400 mb-1">Advanced Fraud Detection</div>
+              <div className="font-semibold text-blue-400 mb-1">
+                Advanced Fraud Detection
+              </div>
               <div className="text-sm text-slate-300">
-                Our AI system continuously monitors for suspicious behavior patterns, bot activity, and potential fraud. 
-                Automated actions are taken to protect user accounts and platform integrity while minimizing false positives.
+                Our AI system continuously monitors for suspicious behavior
+                patterns, bot activity, and potential fraud. Automated actions
+                are taken to protect user accounts and platform integrity while
+                minimizing false positives.
               </div>
             </div>
           </div>

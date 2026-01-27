@@ -1,6 +1,6 @@
 'use client';
 
-import { GitBranch, Filter, TrendingUp, Download } from 'lucide-react';
+import { Download, Filter, GitBranch, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 interface FlowNode {
@@ -26,20 +26,80 @@ export default function FlowDiagram() {
   const [flowData] = useState<{ nodes: FlowNode[]; links: FlowLink[] }>(() => {
     const nodes: FlowNode[] = [
       // Sources (Level 0)
-      { id: 'btc-pool', label: 'BTC Pool', value: 5000000, level: 0, type: 'source' },
-      { id: 'eth-pool', label: 'ETH Pool', value: 3000000, level: 0, type: 'source' },
-      { id: 'stable-pool', label: 'Stablecoin', value: 2000000, level: 0, type: 'source' },
-      
+      {
+        id: 'btc-pool',
+        label: 'BTC Pool',
+        value: 5000000,
+        level: 0,
+        type: 'source',
+      },
+      {
+        id: 'eth-pool',
+        label: 'ETH Pool',
+        value: 3000000,
+        level: 0,
+        type: 'source',
+      },
+      {
+        id: 'stable-pool',
+        label: 'Stablecoin',
+        value: 2000000,
+        level: 0,
+        type: 'source',
+      },
+
       // Intermediates (Level 1)
-      { id: 'dex-1', label: 'DEX Alpha', value: 4000000, level: 1, type: 'intermediate' },
-      { id: 'dex-2', label: 'DEX Beta', value: 3500000, level: 1, type: 'intermediate' },
-      { id: 'cex-1', label: 'CEX Gamma', value: 2500000, level: 1, type: 'intermediate' },
-      
+      {
+        id: 'dex-1',
+        label: 'DEX Alpha',
+        value: 4000000,
+        level: 1,
+        type: 'intermediate',
+      },
+      {
+        id: 'dex-2',
+        label: 'DEX Beta',
+        value: 3500000,
+        level: 1,
+        type: 'intermediate',
+      },
+      {
+        id: 'cex-1',
+        label: 'CEX Gamma',
+        value: 2500000,
+        level: 1,
+        type: 'intermediate',
+      },
+
       // Destinations (Level 2)
-      { id: 'market-1', label: 'Market A', value: 3000000, level: 2, type: 'destination' },
-      { id: 'market-2', label: 'Market B', value: 2500000, level: 2, type: 'destination' },
-      { id: 'market-3', label: 'Market C', value: 2000000, level: 2, type: 'destination' },
-      { id: 'liquidity', label: 'Liquidity', value: 2500000, level: 2, type: 'destination' }
+      {
+        id: 'market-1',
+        label: 'Market A',
+        value: 3000000,
+        level: 2,
+        type: 'destination',
+      },
+      {
+        id: 'market-2',
+        label: 'Market B',
+        value: 2500000,
+        level: 2,
+        type: 'destination',
+      },
+      {
+        id: 'market-3',
+        label: 'Market C',
+        value: 2000000,
+        level: 2,
+        type: 'destination',
+      },
+      {
+        id: 'liquidity',
+        label: 'Liquidity',
+        value: 2500000,
+        level: 2,
+        type: 'destination',
+      },
     ];
 
     const links: FlowLink[] = [
@@ -52,7 +112,7 @@ export default function FlowDiagram() {
       { source: 'eth-pool', target: 'cex-1', value: 500000 },
       { source: 'stable-pool', target: 'dex-2', value: 1000000 },
       { source: 'stable-pool', target: 'cex-1', value: 1000000 },
-      
+
       // Intermediate to destination
       { source: 'dex-1', target: 'market-1', value: 1500000 },
       { source: 'dex-1', target: 'market-2', value: 1500000 },
@@ -62,17 +122,17 @@ export default function FlowDiagram() {
       { source: 'dex-2', target: 'liquidity', value: 1000000 },
       { source: 'cex-1', target: 'market-1', value: 1500000 },
       { source: 'cex-1', target: 'market-3', value: 500000 },
-      { source: 'cex-1', target: 'liquidity', value: 500000 }
+      { source: 'cex-1', target: 'liquidity', value: 500000 },
     ];
 
     return { nodes, links };
   });
 
-  const filteredLinks = flowData.links.filter(link => link.value >= minFlow);
+  const filteredLinks = flowData.links.filter((link) => link.value >= minFlow);
 
   // Calculate node positions
   const getNodePosition = (node: FlowNode) => {
-    const nodesAtLevel = flowData.nodes.filter(n => n.level === node.level);
+    const nodesAtLevel = flowData.nodes.filter((n) => n.level === node.level);
     const index = nodesAtLevel.indexOf(node);
     const levelX = 100 + node.level * 300;
     const levelY = 50 + (index + 1) * (500 / (nodesAtLevel.length + 1));
@@ -81,34 +141,42 @@ export default function FlowDiagram() {
 
   // Calculate link path
   const getLinkPath = (link: FlowLink) => {
-    const sourceNode = flowData.nodes.find(n => n.id === link.source);
-    const targetNode = flowData.nodes.find(n => n.id === link.target);
+    const sourceNode = flowData.nodes.find((n) => n.id === link.source);
+    const targetNode = flowData.nodes.find((n) => n.id === link.target);
     if (!sourceNode || !targetNode) return '';
 
     const source = getNodePosition(sourceNode);
     const target = getNodePosition(targetNode);
-    
+
     const sourceY = source.y;
     const targetY = target.y;
     const width = Math.max(2, (link.value / 5000000) * 40);
-    
+
     const midX = (source.x + target.x) / 2;
-    
+
     return `
       M ${source.x + 100},${sourceY - width / 2}
-      C ${midX},${sourceY - width / 2} ${midX},${targetY - width / 2} ${target.x},${targetY - width / 2}
+      C ${midX},${sourceY - width / 2} ${midX},${targetY - width / 2} ${
+      target.x
+    },${targetY - width / 2}
       L ${target.x},${targetY + width / 2}
-      C ${midX},${targetY + width / 2} ${midX},${sourceY + width / 2} ${source.x + 100},${sourceY + width / 2}
+      C ${midX},${targetY + width / 2} ${midX},${sourceY + width / 2} ${
+      source.x + 100
+    },${sourceY + width / 2}
       Z
     `;
   };
 
   const getNodeColor = (type: string) => {
     switch (type) {
-      case 'source': return '#10b981';
-      case 'intermediate': return '#6366f1';
-      case 'destination': return '#f59e0b';
-      default: return '#94a3b8';
+      case 'source':
+        return '#10b981';
+      case 'intermediate':
+        return '#6366f1';
+      case 'destination':
+        return '#f59e0b';
+      default:
+        return '#94a3b8';
     }
   };
 
@@ -131,7 +199,9 @@ export default function FlowDiagram() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Flow Diagram</h1>
-              <p className="text-slate-400">Visualize money flow and trade patterns with Sankey diagrams</p>
+              <p className="text-slate-400">
+                Visualize money flow and trade patterns with Sankey diagrams
+              </p>
             </div>
           </div>
 
@@ -151,7 +221,9 @@ export default function FlowDiagram() {
                     onChange={(e) => setMinFlow(Number(e.target.value))}
                     className="w-32"
                   />
-                  <span className="text-sm font-medium">{formatCurrency(minFlow)}</span>
+                  <span className="text-sm font-medium">
+                    {formatCurrency(minFlow)}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -183,7 +255,9 @@ export default function FlowDiagram() {
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-6">
           <div className="mb-4">
             <h2 className="text-xl font-bold">Money Flow Analysis</h2>
-            <p className="text-sm text-slate-400">Total Flow: {formatCurrency(totalFlow)}</p>
+            <p className="text-sm text-slate-400">
+              Total Flow: {formatCurrency(totalFlow)}
+            </p>
           </div>
 
           <div className="relative overflow-x-auto">
@@ -243,9 +317,33 @@ export default function FlowDiagram() {
               })}
 
               {/* Level labels */}
-              <text x="100" y="30" fill="#94a3b8" fontSize="14" fontWeight="600">Sources</text>
-              <text x="400" y="30" fill="#94a3b8" fontSize="14" fontWeight="600">Exchanges</text>
-              <text x="700" y="30" fill="#94a3b8" fontSize="14" fontWeight="600">Destinations</text>
+              <text
+                x="100"
+                y="30"
+                fill="#94a3b8"
+                fontSize="14"
+                fontWeight="600"
+              >
+                Sources
+              </text>
+              <text
+                x="400"
+                y="30"
+                fill="#94a3b8"
+                fontSize="14"
+                fontWeight="600"
+              >
+                Exchanges
+              </text>
+              <text
+                x="700"
+                y="30"
+                fill="#94a3b8"
+                fontSize="14"
+                fontWeight="600"
+              >
+                Destinations
+              </text>
             </svg>
           </div>
 
@@ -256,13 +354,19 @@ export default function FlowDiagram() {
                 <div>
                   <div className="text-xs text-slate-400 mb-1">From</div>
                   <div className="font-bold">
-                    {flowData.nodes.find(n => n.id === selectedFlow.source)?.label}
+                    {
+                      flowData.nodes.find((n) => n.id === selectedFlow.source)
+                        ?.label
+                    }
                   </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">To</div>
                   <div className="font-bold">
-                    {flowData.nodes.find(n => n.id === selectedFlow.target)?.label}
+                    {
+                      flowData.nodes.find((n) => n.id === selectedFlow.target)
+                        ?.label
+                    }
                   </div>
                 </div>
                 <div>
@@ -285,12 +389,17 @@ export default function FlowDiagram() {
             </div>
             <div className="space-y-3">
               {flowData.nodes
-                .filter(n => n.type === 'source')
+                .filter((n) => n.type === 'source')
                 .sort((a, b) => b.value - a.value)
                 .map((node) => (
-                  <div key={node.id} className="flex items-center justify-between">
+                  <div
+                    key={node.id}
+                    className="flex items-center justify-between"
+                  >
                     <span className="text-sm">{node.label}</span>
-                    <span className="font-bold text-green-400">{formatCurrency(node.value)}</span>
+                    <span className="font-bold text-green-400">
+                      {formatCurrency(node.value)}
+                    </span>
                   </div>
                 ))}
             </div>
@@ -303,12 +412,17 @@ export default function FlowDiagram() {
             </div>
             <div className="space-y-3">
               {flowData.nodes
-                .filter(n => n.type === 'intermediate')
+                .filter((n) => n.type === 'intermediate')
                 .sort((a, b) => b.value - a.value)
                 .map((node) => (
-                  <div key={node.id} className="flex items-center justify-between">
+                  <div
+                    key={node.id}
+                    className="flex items-center justify-between"
+                  >
                     <span className="text-sm">{node.label}</span>
-                    <span className="font-bold text-indigo-400">{formatCurrency(node.value)}</span>
+                    <span className="font-bold text-indigo-400">
+                      {formatCurrency(node.value)}
+                    </span>
                   </div>
                 ))}
             </div>
@@ -322,7 +436,9 @@ export default function FlowDiagram() {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-slate-400">Total Volume</span>
-                <span className="font-semibold">{formatCurrency(totalFlow)}</span>
+                <span className="font-semibold">
+                  {formatCurrency(totalFlow)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Active Flows</span>
@@ -337,7 +453,9 @@ export default function FlowDiagram() {
               <div className="flex justify-between">
                 <span className="text-slate-400">Largest Flow</span>
                 <span className="font-semibold text-indigo-400">
-                  {formatCurrency(Math.max(...filteredLinks.map(l => l.value)))}
+                  {formatCurrency(
+                    Math.max(...filteredLinks.map((l) => l.value))
+                  )}
                 </span>
               </div>
             </div>

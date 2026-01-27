@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Globe, ChevronDown, Check } from 'lucide-react';
 import i18n from 'i18next';
-import { initReactI18next, useTranslation } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { Check, ChevronDown, Globe } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { initReactI18next, useTranslation } from 'react-i18next';
 
 // Supported languages
 export interface Language {
@@ -16,18 +16,90 @@ export interface Language {
 }
 
 export const SUPPORTED_LANGUAGES: Language[] = [
-  { code: 'en', name: 'English', nativeName: 'English', direction: 'ltr', flag: '🇺🇸' },
-  { code: 'es', name: 'Spanish', nativeName: 'Español', direction: 'ltr', flag: '🇪🇸' },
-  { code: 'fr', name: 'French', nativeName: 'Français', direction: 'ltr', flag: '🇫🇷' },
-  { code: 'de', name: 'German', nativeName: 'Deutsch', direction: 'ltr', flag: '🇩🇪' },
-  { code: 'it', name: 'Italian', nativeName: 'Italiano', direction: 'ltr', flag: '🇮🇹' },
-  { code: 'pt', name: 'Portuguese', nativeName: 'Português', direction: 'ltr', flag: '🇵🇹' },
-  { code: 'ja', name: 'Japanese', nativeName: '日本語', direction: 'ltr', flag: '🇯🇵' },
-  { code: 'zh', name: 'Chinese', nativeName: '中文', direction: 'ltr', flag: '🇨🇳' },
-  { code: 'ar', name: 'Arabic', nativeName: 'العربية', direction: 'rtl', flag: '🇸🇦' },
-  { code: 'he', name: 'Hebrew', nativeName: 'עברית', direction: 'rtl', flag: '🇮🇱' },
-  { code: 'ru', name: 'Russian', nativeName: 'Русский', direction: 'ltr', flag: '🇷🇺' },
-  { code: 'ko', name: 'Korean', nativeName: '한국어', direction: 'ltr', flag: '🇰🇷' },
+  {
+    code: 'en',
+    name: 'English',
+    nativeName: 'English',
+    direction: 'ltr',
+    flag: '🇺🇸',
+  },
+  {
+    code: 'es',
+    name: 'Spanish',
+    nativeName: 'Español',
+    direction: 'ltr',
+    flag: '🇪🇸',
+  },
+  {
+    code: 'fr',
+    name: 'French',
+    nativeName: 'Français',
+    direction: 'ltr',
+    flag: '🇫🇷',
+  },
+  {
+    code: 'de',
+    name: 'German',
+    nativeName: 'Deutsch',
+    direction: 'ltr',
+    flag: '🇩🇪',
+  },
+  {
+    code: 'it',
+    name: 'Italian',
+    nativeName: 'Italiano',
+    direction: 'ltr',
+    flag: '🇮🇹',
+  },
+  {
+    code: 'pt',
+    name: 'Portuguese',
+    nativeName: 'Português',
+    direction: 'ltr',
+    flag: '🇵🇹',
+  },
+  {
+    code: 'ja',
+    name: 'Japanese',
+    nativeName: '日本語',
+    direction: 'ltr',
+    flag: '🇯🇵',
+  },
+  {
+    code: 'zh',
+    name: 'Chinese',
+    nativeName: '中文',
+    direction: 'ltr',
+    flag: '🇨🇳',
+  },
+  {
+    code: 'ar',
+    name: 'Arabic',
+    nativeName: 'العربية',
+    direction: 'rtl',
+    flag: '🇸🇦',
+  },
+  {
+    code: 'he',
+    name: 'Hebrew',
+    nativeName: 'עברית',
+    direction: 'rtl',
+    flag: '🇮🇱',
+  },
+  {
+    code: 'ru',
+    name: 'Russian',
+    nativeName: 'Русский',
+    direction: 'ltr',
+    flag: '🇷🇺',
+  },
+  {
+    code: 'ko',
+    name: 'Korean',
+    nativeName: '한국어',
+    direction: 'ltr',
+    flag: '🇰🇷',
+  },
 ];
 
 // Translation resources
@@ -146,7 +218,9 @@ export class TranslationManager {
   }
 
   private updateDirection(languageCode: string): void {
-    const language = SUPPORTED_LANGUAGES.find((lang) => lang.code === languageCode);
+    const language = SUPPORTED_LANGUAGES.find(
+      (lang) => lang.code === languageCode
+    );
     if (language) {
       document.documentElement.dir = language.direction;
       document.documentElement.lang = languageCode;
@@ -154,7 +228,9 @@ export class TranslationManager {
   }
 
   getCurrentLanguage(): Language | undefined {
-    return SUPPORTED_LANGUAGES.find((lang) => lang.code === this.currentLanguage);
+    return SUPPORTED_LANGUAGES.find(
+      (lang) => lang.code === this.currentLanguage
+    );
   }
 
   getSupportedLanguages(): Language[] {
@@ -176,7 +252,9 @@ export class TranslationManager {
 // RTL detection hook
 export function useRTL() {
   const { i18n } = useTranslation();
-  const currentLang = SUPPORTED_LANGUAGES.find((lang) => lang.code === i18n.language);
+  const currentLang = SUPPORTED_LANGUAGES.find(
+    (lang) => lang.code === i18n.language
+  );
   return currentLang?.direction === 'rtl';
 }
 
@@ -185,14 +263,15 @@ export function LanguageSwitcher() {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState<Language>(
-    SUPPORTED_LANGUAGES.find((lang) => lang.code === i18n.language) || SUPPORTED_LANGUAGES[0]
+    SUPPORTED_LANGUAGES.find((lang) => lang.code === i18n.language) ||
+      SUPPORTED_LANGUAGES[0]
   );
 
   const handleLanguageChange = async (language: Language) => {
     await i18n.changeLanguage(language.code);
     setCurrentLang(language);
     setIsOpen(false);
-    
+
     // Update HTML direction
     document.documentElement.dir = language.direction;
     document.documentElement.lang = language.code;
@@ -209,7 +288,11 @@ export function LanguageSwitcher() {
         <Globe className="w-5 h-5" />
         <span className="text-2xl">{currentLang.flag}</span>
         <span>{currentLang.nativeName}</span>
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          className={`w-4 h-4 transition-transform ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
       </button>
 
       {isOpen && (
@@ -250,7 +333,9 @@ export function TranslationSystemDashboard() {
   });
 
   useEffect(() => {
-    const currentLang = SUPPORTED_LANGUAGES.find((lang) => lang.code === i18n.language);
+    const currentLang = SUPPORTED_LANGUAGES.find(
+      (lang) => lang.code === i18n.language
+    );
     setStats({
       currentLanguage: currentLang?.nativeName || 'Unknown',
       availableLanguages: SUPPORTED_LANGUAGES.length,
@@ -260,7 +345,11 @@ export function TranslationSystemDashboard() {
   }, [i18n.language]);
 
   return (
-    <div className="p-6 bg-slate-800 rounded-xl" role="region" aria-label="Translation System">
+    <div
+      className="p-6 bg-slate-800 rounded-xl"
+      role="region"
+      aria-label="Translation System"
+    >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Globe className="w-6 h-6 text-blue-400" />
@@ -299,15 +388,21 @@ export function TranslationSystemDashboard() {
           <div className="space-y-2 text-sm">
             <div>
               <span className="text-slate-400">Navigation: </span>
-              <span>{t('nav.home')} • {t('nav.markets')} • {t('nav.profile')}</span>
+              <span>
+                {t('nav.home')} • {t('nav.markets')} • {t('nav.profile')}
+              </span>
             </div>
             <div>
               <span className="text-slate-400">Common: </span>
-              <span>{t('common.save')} • {t('common.cancel')} • {t('common.delete')}</span>
+              <span>
+                {t('common.save')} • {t('common.cancel')} • {t('common.delete')}
+              </span>
             </div>
             <div>
               <span className="text-slate-400">Market: </span>
-              <span>{t('market.buy')} • {t('market.sell')}</span>
+              <span>
+                {t('market.buy')} • {t('market.sell')}
+              </span>
             </div>
           </div>
         </div>
@@ -326,7 +421,9 @@ export function TranslationSystemDashboard() {
               <span className="text-2xl">{lang.flag}</span>
               <div className="text-sm">
                 <div className="font-medium">{lang.nativeName}</div>
-                <div className="text-xs text-slate-400">{lang.direction.toUpperCase()}</div>
+                <div className="text-xs text-slate-400">
+                  {lang.direction.toUpperCase()}
+                </div>
               </div>
             </div>
           ))}
@@ -338,5 +435,4 @@ export function TranslationSystemDashboard() {
 
 // Export singleton and utilities
 export const translationManager = new TranslationManager();
-export { i18n };
-export { useTranslation };
+export { i18n, useTranslation };

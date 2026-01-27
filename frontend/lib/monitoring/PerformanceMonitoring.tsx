@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Activity, AlertCircle, TrendingUp, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // Core Web Vitals
 export interface WebVitals {
@@ -276,11 +276,15 @@ export class PerformanceBudgetMonitor {
     this.violations = [];
 
     if (metrics.LCP && metrics.LCP > this.budget.LCP) {
-      this.violations.push(`LCP exceeded: ${metrics.LCP}ms > ${this.budget.LCP}ms`);
+      this.violations.push(
+        `LCP exceeded: ${metrics.LCP}ms > ${this.budget.LCP}ms`
+      );
     }
 
     if (metrics.FID && metrics.FID > this.budget.FID) {
-      this.violations.push(`FID exceeded: ${metrics.FID}ms > ${this.budget.FID}ms`);
+      this.violations.push(
+        `FID exceeded: ${metrics.FID}ms > ${this.budget.FID}ms`
+      );
     }
 
     if (metrics.CLS && metrics.CLS > this.budget.CLS) {
@@ -417,7 +421,10 @@ function MetricCard({
       >
         {value ? `${value.toFixed(0)}${unit}` : '-'}
       </div>
-      <div className="text-xs text-slate-500">Target: {target}{unit}</div>
+      <div className="text-xs text-slate-500">
+        Target: {target}
+        {unit}
+      </div>
     </div>
   );
 }

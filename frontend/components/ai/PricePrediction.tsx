@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { LineChart, TrendingUp, Target, Brain, Activity, AlertCircle, ChevronDown } from 'lucide-react';
+import { Activity, AlertCircle, Brain, LineChart, Target, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
 
 interface PredictionModel {
   name: string;

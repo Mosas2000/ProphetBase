@@ -1,7 +1,7 @@
 'use client';
 
+import { Eye, Focus, Volume2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Volume2, Eye, Focus } from 'lucide-react';
 
 // ARIA live region types
 type LiveRegionPoliteness = 'polite' | 'assertive' | 'off';
@@ -40,7 +40,7 @@ export class LiveRegionAnnouncer {
     if (!this.liveRegion) return;
 
     this.liveRegion.setAttribute('aria-live', politeness);
-    
+
     // Clear and set with slight delay for screen reader to pick up
     this.liveRegion.textContent = '';
     setTimeout(() => {
@@ -97,9 +97,10 @@ export function useFocusManagement(enabled: boolean = true) {
   const trapFocus = (event: KeyboardEvent) => {
     if (!enabled || !containerRef.current) return;
 
-    const focusableElements = containerRef.current.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    );
+    const focusableElements =
+      containerRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
 
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
@@ -312,7 +313,11 @@ export function ScreenReaderDashboard() {
   };
 
   return (
-    <div className="p-6 bg-slate-800 rounded-xl" role="region" aria-label="Screen Reader Support">
+    <div
+      className="p-6 bg-slate-800 rounded-xl"
+      role="region"
+      aria-label="Screen Reader Support"
+    >
       <div className="flex items-center gap-3 mb-6">
         <Volume2 className="w-6 h-6 text-blue-400" />
         <h2 className="text-2xl font-bold">Screen Reader Support</h2>
@@ -325,7 +330,8 @@ export function ScreenReaderDashboard() {
             <h3 className="font-bold">ARIA Labels</h3>
           </div>
           <p className="text-sm text-slate-300">
-            All interactive elements include proper ARIA labels for screen readers
+            All interactive elements include proper ARIA labels for screen
+            readers
           </p>
         </div>
 
@@ -366,4 +372,5 @@ export function ScreenReaderDashboard() {
 }
 
 // Export singleton
-export const liveAnnouncer = typeof window !== 'undefined' ? new LiveRegionAnnouncer() : null;
+export const liveAnnouncer =
+  typeof window !== 'undefined' ? new LiveRegionAnnouncer() : null;

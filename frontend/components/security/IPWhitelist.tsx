@@ -1,7 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Shield, Globe, MapPin, AlertTriangle, Plus, Trash2, Check, X, Download, Upload } from 'lucide-react';
+import {
+  AlertTriangle,
+  Check,
+  Download,
+  Globe,
+  MapPin,
+  Plus,
+  Shield,
+  Trash2,
+  Upload,
+  X,
+} from 'lucide-react';
+import { useState } from 'react';
 
 interface WhitelistedIP {
   id: string;
@@ -123,7 +134,9 @@ export default function IPWhitelist() {
   const [newLabel, setNewLabel] = useState('');
   const [isAddingIP, setIsAddingIP] = useState(false);
 
-  const [whitelistMode, setWhitelistMode] = useState<'disabled' | 'enabled' | 'strict'>('enabled');
+  const [whitelistMode, setWhitelistMode] = useState<
+    'disabled' | 'enabled' | 'strict'
+  >('enabled');
   const [blockVPNs, setBlockVPNs] = useState(true);
   const [blockTor, setBlockTor] = useState(true);
   const [requireWhitelist, setRequireWhitelist] = useState(false);
@@ -141,20 +154,20 @@ export default function IPWhitelist() {
       active: true,
     };
 
-    setWhitelistedIPs(prev => [newEntry, ...prev]);
+    setWhitelistedIPs((prev) => [newEntry, ...prev]);
     setNewIP('');
     setNewLabel('');
     setIsAddingIP(false);
   };
 
   const handleRemoveIP = (id: string) => {
-    setWhitelistedIPs(prev => prev.filter(ip => ip.id !== id));
+    setWhitelistedIPs((prev) => prev.filter((ip) => ip.id !== id));
   };
 
   const toggleIPStatus = (id: string) => {
-    setWhitelistedIPs(prev => prev.map(ip =>
-      ip.id === id ? { ...ip, active: !ip.active } : ip
-    ));
+    setWhitelistedIPs((prev) =>
+      prev.map((ip) => (ip.id === id ? { ...ip, active: !ip.active } : ip))
+    );
   };
 
   const handleAddGeoBlock = (country: string, countryCode: string) => {
@@ -165,11 +178,11 @@ export default function IPWhitelist() {
       action: 'block',
       reason: 'User defined',
     };
-    setGeoBlockRules(prev => [newRule, ...prev]);
+    setGeoBlockRules((prev) => [newRule, ...prev]);
   };
 
   const handleRemoveGeoBlock = (id: string) => {
-    setGeoBlockRules(prev => prev.filter(rule => rule.id !== id));
+    setGeoBlockRules((prev) => prev.filter((rule) => rule.id !== id));
   };
 
   const formatDate = (date: Date | null) => {
@@ -189,8 +202,10 @@ export default function IPWhitelist() {
     return `${days}d ago`;
   };
 
-  const activeIPs = whitelistedIPs.filter(ip => ip.active).length;
-  const blockedAttempts = accessLogs.filter(log => log.action === 'blocked').length;
+  const activeIPs = whitelistedIPs.filter((ip) => ip.active).length;
+  const blockedAttempts = accessLogs.filter(
+    (log) => log.action === 'blocked'
+  ).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white p-4 md:p-8">
@@ -202,8 +217,12 @@ export default function IPWhitelist() {
               <Shield className="w-8 h-8 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">IP Whitelist & Access Control</h1>
-              <p className="text-slate-400">Manage IP restrictions and geo-blocking</p>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                IP Whitelist & Access Control
+              </h1>
+              <p className="text-slate-400">
+                Manage IP restrictions and geo-blocking
+              </p>
             </div>
           </div>
         </div>
@@ -235,7 +254,9 @@ export default function IPWhitelist() {
               <span className="text-slate-400 text-sm">Blocked Attempts</span>
               <AlertTriangle className="w-4 h-4 text-red-400" />
             </div>
-            <div className="text-2xl font-bold text-red-400">{blockedAttempts}</div>
+            <div className="text-2xl font-bold text-red-400">
+              {blockedAttempts}
+            </div>
             <div className="text-xs text-slate-400">Last 24 hours</div>
           </div>
 
@@ -252,10 +273,12 @@ export default function IPWhitelist() {
         {/* Security Settings */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-8">
           <h2 className="text-xl font-bold mb-6">Security Settings</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Whitelist Mode</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Whitelist Mode
+              </label>
               <select
                 value={whitelistMode}
                 onChange={(e) => setWhitelistMode(e.target.value as any)}
@@ -268,7 +291,9 @@ export default function IPWhitelist() {
             </div>
 
             <div>
-              <label className="block text-sm text-slate-400 mb-2">VPN/Proxy Detection</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                VPN/Proxy Detection
+              </label>
               <button
                 onClick={() => setBlockVPNs(!blockVPNs)}
                 className={`w-full px-4 py-3 rounded-lg font-medium transition-colors ${
@@ -282,7 +307,9 @@ export default function IPWhitelist() {
             </div>
 
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Tor Network</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Tor Network
+              </label>
               <button
                 onClick={() => setBlockTor(!blockTor)}
                 className={`w-full px-4 py-3 rounded-lg font-medium transition-colors ${
@@ -296,7 +323,9 @@ export default function IPWhitelist() {
             </div>
 
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Require Whitelist</label>
+              <label className="block text-sm text-slate-400 mb-2">
+                Require Whitelist
+              </label>
               <button
                 onClick={() => setRequireWhitelist(!requireWhitelist)}
                 className={`w-full px-4 py-3 rounded-lg font-medium transition-colors ${
@@ -338,7 +367,9 @@ export default function IPWhitelist() {
             <div className="bg-slate-700/50 rounded-lg p-4 mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm text-slate-400 mb-2">IP Address</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    IP Address
+                  </label>
                   <input
                     type="text"
                     value={newIP}
@@ -348,7 +379,9 @@ export default function IPWhitelist() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-slate-400 mb-2">Label</label>
+                  <label className="block text-sm text-slate-400 mb-2">
+                    Label
+                  </label>
                   <input
                     type="text"
                     value={newLabel}
@@ -382,7 +415,11 @@ export default function IPWhitelist() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className={`w-2 h-2 rounded-full ${ip.active ? 'bg-green-400' : 'bg-slate-500'}`} />
+                      <span
+                        className={`w-2 h-2 rounded-full ${
+                          ip.active ? 'bg-green-400' : 'bg-slate-500'
+                        }`}
+                      />
                       <span className="font-semibold">{ip.label}</span>
                       {ip.address === currentIP && (
                         <span className="px-2 py-0.5 bg-blue-600/20 text-blue-400 text-xs rounded-full">
@@ -394,7 +431,10 @@ export default function IPWhitelist() {
                       <span className="font-mono">{ip.address}</span>
                       <span>{ip.country}</span>
                       <span>Added: {formatDate(ip.addedDate)}</span>
-                      <span>Last used: {formatRelativeTime(ip.lastUsed || ip.addedDate)}</span>
+                      <span>
+                        Last used:{' '}
+                        {formatRelativeTime(ip.lastUsed || ip.addedDate)}
+                      </span>
                     </div>
                   </div>
 
@@ -434,9 +474,18 @@ export default function IPWhitelist() {
 
           <div className="space-y-3">
             {geoBlockRules.map((rule) => (
-              <div key={rule.id} className="bg-slate-700/50 rounded-lg p-4 flex items-center justify-between">
+              <div
+                key={rule.id}
+                className="bg-slate-700/50 rounded-lg p-4 flex items-center justify-between"
+              >
                 <div className="flex items-center gap-4">
-                  <div className="text-3xl">{rule.countryCode === 'KP' ? '🇰🇵' : rule.countryCode === 'IR' ? '🇮🇷' : '🇸🇾'}</div>
+                  <div className="text-3xl">
+                    {rule.countryCode === 'KP'
+                      ? '🇰🇵'
+                      : rule.countryCode === 'IR'
+                      ? '🇮🇷'
+                      : '🇸🇾'}
+                  </div>
                   <div>
                     <div className="font-semibold">{rule.country}</div>
                     <div className="text-sm text-slate-400">{rule.reason}</div>
@@ -461,7 +510,7 @@ export default function IPWhitelist() {
         {/* Access Logs */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
           <h2 className="text-xl font-bold mb-6">Recent Access Attempts</h2>
-          
+
           <div className="space-y-3">
             {accessLogs.map((log) => (
               <div key={log.id} className="bg-slate-700/50 rounded-lg p-4">
@@ -474,7 +523,9 @@ export default function IPWhitelist() {
                     )}
                     <div>
                       <div className="flex items-center gap-3">
-                        <span className="font-mono font-semibold">{log.ip}</span>
+                        <span className="font-mono font-semibold">
+                          {log.ip}
+                        </span>
                         <span className="text-slate-400">{log.country}</span>
                         {log.vpnDetected && (
                           <span className="px-2 py-0.5 bg-yellow-600/20 text-yellow-400 text-xs rounded-full">
@@ -487,11 +538,13 @@ export default function IPWhitelist() {
                       </div>
                     </div>
                   </div>
-                  <span className={`px-3 py-1 rounded-lg text-sm font-medium ${
-                    log.action === 'allowed'
-                      ? 'bg-green-600/20 text-green-400'
-                      : 'bg-red-600/20 text-red-400'
-                  }`}>
+                  <span
+                    className={`px-3 py-1 rounded-lg text-sm font-medium ${
+                      log.action === 'allowed'
+                        ? 'bg-green-600/20 text-green-400'
+                        : 'bg-red-600/20 text-red-400'
+                    }`}
+                  >
                     {log.action}
                   </span>
                 </div>

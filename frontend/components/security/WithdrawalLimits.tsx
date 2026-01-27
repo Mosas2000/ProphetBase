@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Lock, Plus, Trash2, Clock, Shield, AlertTriangle, CheckCircle, DollarSign } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Clock, DollarSign, Lock, Plus, Shield, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface WithdrawalLimit {
   type: 'daily' | 'weekly' | 'monthly';
