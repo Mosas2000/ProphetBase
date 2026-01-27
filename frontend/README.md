@@ -1,19 +1,42 @@
+## 🔗 Mobile Deep Linking & Universal Links
+
+The `DeepLinkHandler` utility parses and handles app-specific deep links and universal links for mobile navigation.
+
+**Features:**
+- Parse prophetbase:// and https://prophetbase.xyz/ links
+- Route to market, portfolio, onboarding, etc.
+- Integrate with Next.js router
+
+**Usage:**
+```ts
+import { DeepLinkHandler } from './lib/mobile';
+import { useRouter } from 'next/navigation';
+
+const router = useRouter();
+const url = 'prophetbase://market/123';
+DeepLinkHandler.handle(url, router);
+```
 ## 🔒 Mobile Biometric Authentication
 
 The `BiometricAuth` utility enables biometric authentication (FaceID, TouchID, WebAuthn) for quick and secure access on mobile devices.
 
 **Features:**
+
 - Prompt for biometric authentication
 - Fallback to PIN if unavailable
 - Returns success/failure
 
 **Usage:**
+
 ```ts
 import { BiometricAuth } from './lib/mobile';
 
 const available = await BiometricAuth.isAvailable();
-const success = await BiometricAuth.prompt('Authenticate to access your portfolio');
+const success = await BiometricAuth.prompt(
+  'Authenticate to access your portfolio'
+);
 ```
+
 ## 👋 Mobile Onboarding & Wallet Connect
 
 The `MobileOnboarding` component provides a step-by-step onboarding experience for mobile users, including wallet connection and feature highlights.
