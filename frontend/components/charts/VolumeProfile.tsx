@@ -1,7 +1,7 @@
 'use client';
 
-import { BarChart3, TrendingUp, Target, Activity } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Activity, BarChart3, Target, TrendingUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface VolumeNode {
   price: number;
@@ -22,64 +22,73 @@ export default function VolumeProfile() {
 
   // Generate volume profile data
   const [volumeProfile, setVolumeProfile] = useState<VolumeNode[]>([]);
-  const [valueArea, setValueArea] = useState<ValueArea>({ high: 50500, low: 49500, poc: 50000 });
+  const [valueArea, setValueArea] = useState<ValueArea>({
+    high: 50500,
+    low: 49500,
+    poc: 50000,
+  });
 
   useEffect(() => {
     const numBins = 50;
     const priceStep = (priceRange.max - priceRange.min) / numBins;
     let totalVolume = 0;
-    
+
     const nodes: VolumeNode[] = [];
-    
+
     for (let i = 0; i < numBins; i++) {
       const price = priceRange.min + i * priceStep;
-      const distanceFromCenter = Math.abs(price - (priceRange.min + priceRange.max) / 2);
-      const centerWeight = 1 - (distanceFromCenter / ((priceRange.max - priceRange.min) / 2));
+      const distanceFromCenter = Math.abs(
+        price - (priceRange.min + priceRange.max) / 2
+      );
+      const centerWeight =
+        1 - distanceFromCenter / ((priceRange.max - priceRange.min) / 2);
       const volume = (Math.random() * 50 + centerWeight * 100) * 1000;
       totalVolume += volume;
-      
+
       nodes.push({
         price,
         volume,
-        percentage: 0
+        percentage: 0,
       });
     }
-    
+
     // Calculate percentages
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       node.percentage = (node.volume / totalVolume) * 100;
     });
-    
+
     // Find POC (Point of Control - price with highest volume)
-    const poc = nodes.reduce((max, node) => node.volume > max.volume ? node : max);
-    
+    const poc = nodes.reduce((max, node) =>
+      node.volume > max.volume ? node : max
+    );
+
     // Calculate Value Area (70% of volume)
     const sortedByVolume = [...nodes].sort((a, b) => b.volume - a.volume);
     let valueAreaVolume = 0;
     const valueAreaPrices: number[] = [];
-    
+
     for (const node of sortedByVolume) {
       valueAreaPrices.push(node.price);
       valueAreaVolume += node.volume;
       if (valueAreaVolume >= totalVolume * 0.7) break;
     }
-    
+
     setValueArea({
       poc: poc.price,
       high: Math.max(...valueAreaPrices),
-      low: Math.min(...valueAreaPrices)
+      low: Math.min(...valueAreaPrices),
     });
-    
+
     setVolumeProfile(nodes);
   }, [timeframe, priceRange]);
 
-  const maxVolume = Math.max(...volumeProfile.map(n => n.volume));
+  const maxVolume = Math.max(...volumeProfile.map((n) => n.volume));
   const chartHeight = 600;
   const chartWidth = 800;
   const profileWidth = 300;
 
   // Volume nodes visualization
-  const volumeNodes = volumeProfile.filter(n => n.percentage > 2);
+  const volumeNodes = volumeProfile.filter((n) => n.percentage > 2);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-cyan-900 to-slate-900 text-white p-4 md:p-8">
@@ -92,7 +101,9 @@ export default function VolumeProfile() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">Volume Profile</h1>
-              <p className="text-slate-400">Price distribution analysis with point of control and value area</p>
+              <p className="text-slate-400">
+                Price distribution analysis with point of control and value area
+              </p>
             </div>
           </div>
 
@@ -138,19 +149,41 @@ export default function VolumeProfile() {
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 mb-6">
           <div className="mb-4">
             <h2 className="text-xl font-bold">Volume Profile Analysis</h2>
-            <p className="text-sm text-slate-400">Horizontal volume distribution across price levels</p>
+            <p className="text-sm text-slate-400">
+              Horizontal volume distribution across price levels
+            </p>
           </div>
 
-          <svg width="100%" height={chartHeight} viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+          <svg
+            width="100%"
+            height={chartHeight}
+            viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+          >
             {/* Price axis */}
-            <line x1="100" y1="50" x2="100" y2={chartHeight - 50} stroke="#475569" strokeWidth="2" />
-            
+            <line
+              x1="100"
+              y1="50"
+              x2="100"
+              y2={chartHeight - 50}
+              stroke="#475569"
+              strokeWidth="2"
+            />
+
             {/* Value Area background */}
             <rect
               x="100"
-              y={50 + ((priceRange.max - valueArea.high) / (priceRange.max - priceRange.min)) * (chartHeight - 100)}
+              y={
+                50 +
+                ((priceRange.max - valueArea.high) /
+                  (priceRange.max - priceRange.min)) *
+                  (chartHeight - 100)
+              }
               width={profileWidth}
-              height={((valueArea.high - valueArea.low) / (priceRange.max - priceRange.min)) * (chartHeight - 100)}
+              height={
+                ((valueArea.high - valueArea.low) /
+                  (priceRange.max - priceRange.min)) *
+                (chartHeight - 100)
+              }
               fill="rgba(168, 85, 247, 0.15)"
               stroke="rgba(168, 85, 247, 0.4)"
               strokeWidth="2"
@@ -159,10 +192,14 @@ export default function VolumeProfile() {
 
             {/* Volume bars */}
             {volumeProfile.map((node, idx) => {
-              const y = 50 + ((priceRange.max - node.price) / (priceRange.max - priceRange.min)) * (chartHeight - 100);
+              const y =
+                50 +
+                ((priceRange.max - node.price) /
+                  (priceRange.max - priceRange.min)) *
+                  (chartHeight - 100);
               const barWidth = (node.volume / maxVolume) * profileWidth;
               const isPOC = Math.abs(node.price - valueArea.poc) < 10;
-              
+
               return (
                 <g key={idx}>
                   <rect
@@ -194,9 +231,19 @@ export default function VolumeProfile() {
             {/* POC line */}
             <line
               x1="100"
-              y1={50 + ((priceRange.max - valueArea.poc) / (priceRange.max - priceRange.min)) * (chartHeight - 100)}
+              y1={
+                50 +
+                ((priceRange.max - valueArea.poc) /
+                  (priceRange.max - priceRange.min)) *
+                  (chartHeight - 100)
+              }
               x2={chartWidth - 50}
-              y2={50 + ((priceRange.max - valueArea.poc) / (priceRange.max - priceRange.min)) * (chartHeight - 100)}
+              y2={
+                50 +
+                ((priceRange.max - valueArea.poc) /
+                  (priceRange.max - priceRange.min)) *
+                  (chartHeight - 100)
+              }
               stroke="#f59e0b"
               strokeWidth="3"
               strokeDasharray="8 4"
@@ -204,13 +251,27 @@ export default function VolumeProfile() {
 
             {/* Price labels */}
             {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
-              const price = priceRange.min + (priceRange.max - priceRange.min) * ratio;
+              const price =
+                priceRange.min + (priceRange.max - priceRange.min) * ratio;
               const y = 50 + (1 - ratio) * (chartHeight - 100);
-              
+
               return (
                 <g key={ratio}>
-                  <line x1="95" y1={y} x2="105" y2={y} stroke="#94a3b8" strokeWidth="2" />
-                  <text x="85" y={y + 5} textAnchor="end" fill="#94a3b8" fontSize="12">
+                  <line
+                    x1="95"
+                    y1={y}
+                    x2="105"
+                    y2={y}
+                    stroke="#94a3b8"
+                    strokeWidth="2"
+                  />
+                  <text
+                    x="85"
+                    y={y + 5}
+                    textAnchor="end"
+                    fill="#94a3b8"
+                    fontSize="12"
+                  >
                     ${price.toFixed(0)}
                   </text>
                 </g>
@@ -218,7 +279,14 @@ export default function VolumeProfile() {
             })}
 
             {/* Volume scale */}
-            <text x={100 + profileWidth / 2} y="35" textAnchor="middle" fill="#94a3b8" fontSize="12" fontWeight="600">
+            <text
+              x={100 + profileWidth / 2}
+              y="35"
+              textAnchor="middle"
+              fill="#94a3b8"
+              fontSize="12"
+              fontWeight="600"
+            >
               Volume Distribution
             </text>
 
@@ -226,21 +294,45 @@ export default function VolumeProfile() {
             <g transform={`translate(${100 + profileWidth + 50}, 0)`}>
               {Array.from({ length: 20 }).map((_, i) => {
                 const x = i * 15;
-                const open = priceRange.min + Math.random() * (priceRange.max - priceRange.min);
+                const open =
+                  priceRange.min +
+                  Math.random() * (priceRange.max - priceRange.min);
                 const close = open + (Math.random() - 0.5) * 200;
                 const high = Math.max(open, close) + Math.random() * 100;
                 const low = Math.min(open, close) - Math.random() * 100;
-                
-                const openY = 50 + ((priceRange.max - open) / (priceRange.max - priceRange.min)) * (chartHeight - 100);
-                const closeY = 50 + ((priceRange.max - close) / (priceRange.max - priceRange.min)) * (chartHeight - 100);
-                const highY = 50 + ((priceRange.max - high) / (priceRange.max - priceRange.min)) * (chartHeight - 100);
-                const lowY = 50 + ((priceRange.max - low) / (priceRange.max - priceRange.min)) * (chartHeight - 100);
-                
+
+                const openY =
+                  50 +
+                  ((priceRange.max - open) /
+                    (priceRange.max - priceRange.min)) *
+                    (chartHeight - 100);
+                const closeY =
+                  50 +
+                  ((priceRange.max - close) /
+                    (priceRange.max - priceRange.min)) *
+                    (chartHeight - 100);
+                const highY =
+                  50 +
+                  ((priceRange.max - high) /
+                    (priceRange.max - priceRange.min)) *
+                    (chartHeight - 100);
+                const lowY =
+                  50 +
+                  ((priceRange.max - low) / (priceRange.max - priceRange.min)) *
+                    (chartHeight - 100);
+
                 const isGreen = close > open;
-                
+
                 return (
                   <g key={i}>
-                    <line x1={x + 6} y1={highY} x2={x + 6} y2={lowY} stroke={isGreen ? '#10b981' : '#ef4444'} strokeWidth="1" />
+                    <line
+                      x1={x + 6}
+                      y1={highY}
+                      x2={x + 6}
+                      y2={lowY}
+                      stroke={isGreen ? '#10b981' : '#ef4444'}
+                      strokeWidth="1"
+                    />
                     <rect
                       x={x + 2}
                       y={Math.min(openY, closeY)}
@@ -254,7 +346,14 @@ export default function VolumeProfile() {
             </g>
 
             {/* Labels */}
-            <text x={100 + profileWidth + 180} y="35" textAnchor="middle" fill="#94a3b8" fontSize="12" fontWeight="600">
+            <text
+              x={100 + profileWidth + 180}
+              y="35"
+              textAnchor="middle"
+              fill="#94a3b8"
+              fontSize="12"
+              fontWeight="600"
+            >
               Price Action
             </text>
           </svg>
@@ -265,15 +364,21 @@ export default function VolumeProfile() {
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Price Level</div>
-                  <div className="font-bold text-lg">${hoveredNode.price.toFixed(2)}</div>
+                  <div className="font-bold text-lg">
+                    ${hoveredNode.price.toFixed(2)}
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Volume</div>
-                  <div className="font-bold text-cyan-400">{(hoveredNode.volume / 1000).toFixed(1)}K</div>
+                  <div className="font-bold text-cyan-400">
+                    {(hoveredNode.volume / 1000).toFixed(1)}K
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs text-slate-400 mb-1">% of Total</div>
-                  <div className="font-bold">{hoveredNode.percentage.toFixed(2)}%</div>
+                  <div className="font-bold">
+                    {hoveredNode.percentage.toFixed(2)}%
+                  </div>
                 </div>
               </div>
             </div>
@@ -330,16 +435,21 @@ export default function VolumeProfile() {
           <h3 className="font-bold mb-3">Understanding Volume Profile</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-300">
             <div>
-              <strong className="text-amber-400">Point of Control (POC):</strong> The price level with the highest traded volume. 
-              Acts as a strong support/resistance level.
+              <strong className="text-amber-400">
+                Point of Control (POC):
+              </strong>{' '}
+              The price level with the highest traded volume. Acts as a strong
+              support/resistance level.
             </div>
             <div>
-              <strong className="text-purple-400">Value Area:</strong> The price range where 70% of the volume was traded. 
-              Represents fair value according to market participants.
+              <strong className="text-purple-400">Value Area:</strong> The price
+              range where 70% of the volume was traded. Represents fair value
+              according to market participants.
             </div>
             <div>
-              <strong className="text-cyan-400">Volume Nodes:</strong> Price levels with significantly high volume. 
-              These act as magnetic zones for price action.
+              <strong className="text-cyan-400">Volume Nodes:</strong> Price
+              levels with significantly high volume. These act as magnetic zones
+              for price action.
             </div>
           </div>
         </div>
