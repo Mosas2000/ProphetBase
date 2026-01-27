@@ -1,6 +1,33 @@
+## 📲 Mobile Push Notification Opt-In
+
+The `PushNotificationManager` utility enables mobile users to opt-in to push notifications, manage their subscription, and set notification preferences.
+
+**Features:**
+- Request notification permission
+- Subscribe/unsubscribe to push notifications
+- Manage notification preferences (localStorage)
+
+**Usage:**
+```ts
+import { PushNotificationManager } from './lib/mobile';
+
+// Request permission
+const status = await PushNotificationManager.requestPermission();
+
+// Subscribe user
+const subscription = await PushNotificationManager.subscribeUser();
+
+// Unsubscribe user
+await PushNotificationManager.unsubscribeUser();
+
+// Set/get preferences
+PushNotificationManager.setPreference('marketAlerts', true);
+const prefs = PushNotificationManager.getPreferences();
+```
 ## 📱 Mobile Trading Interface
 
 The `QuickTrade` component provides a mobile-optimized trading interface with:
+
 - Buy/Sell toggle
 - Amount input
 - Haptic feedback on trade
@@ -8,11 +35,19 @@ The `QuickTrade` component provides a mobile-optimized trading interface with:
 - Fixed bottom bar for easy thumb access
 
 **Usage:**
+
 ```tsx
 import { QuickTrade } from './components/mobile';
 
-<QuickTrade symbol="ETH-USD" price={3200} onTrade={(side, amount) => {/* handle trade */}} />
+<QuickTrade
+  symbol="ETH-USD"
+  price={3200}
+  onTrade={(side, amount) => {
+    /* handle trade */
+  }}
+/>;
 ```
+
 # ProphetBase Frontend
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMosas2000%2FProphetBase&project-name=prophetbase&repository-name=prophetbase&root-directory=frontend&env=NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID&envDescription=WalletConnect%20Project%20ID%20required%20for%20wallet%20connectivity&envLink=https%3A%2F%2Fcloud.walletconnect.com%2F)
@@ -51,17 +86,20 @@ A Next.js 14 frontend for the ProphetBase decentralized prediction market platfo
 ### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/Mosas2000/ProphetBase.git
    cd ProphetBase/frontend
    ```
 
 2. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**:
+
    ```bash
    cp env.example .env.local
    ```
@@ -97,11 +135,13 @@ The easiest way to deploy ProphetBase is using Vercel:
 1. **Click the Deploy button** above, or visit [Vercel](https://vercel.com/new)
 
 2. **Import your repository**:
+
    - Connect your GitHub account
    - Select the ProphetBase repository
    - Set root directory to `frontend`
 
 3. **Configure environment variables**:
+
    - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`: Your WalletConnect Project ID
 
 4. **Deploy**:
@@ -121,11 +161,13 @@ The easiest way to deploy ProphetBase is using Vercel:
 If deploying to another platform:
 
 1. **Build the application**:
+
    ```bash
    npm run build
    ```
 
 2. **Set environment variables** on your hosting platform:
+
    - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`
 
 3. **Start the production server**:
@@ -165,19 +207,23 @@ View on [Basescan](https://basescan.org/address/0x27177c0edc143CA33119fafD907e86
 ## Key Features
 
 ### 🎯 Market Trading
+
 - Browse all active prediction markets
 - View market details, probabilities, and end times
 - Buy YES or NO shares with USDC
 - Two-step transaction flow (approve + buy)
 
 ### 💼 Portfolio Management
+
 - Track all your positions across markets
 - View YES/NO share balances
 - See estimated values
 - Claim winnings from resolved markets
 
 ### 🔐 Wallet Connection
+
 The app uses RainbowKit for wallet connection, supporting:
+
 - MetaMask
 - Coinbase Wallet
 - WalletConnect
@@ -185,22 +231,25 @@ The app uses RainbowKit for wallet connection, supporting:
 - And more...
 
 ### 📊 Smart Contract Integration
+
 Pre-configured ABIs and contract addresses for:
+
 - PredictionMarket contract (create markets, buy shares, claim winnings)
 - USDC token (approve, balance checks)
 - ERC20 outcome tokens (YES/NO shares)
 
 ## Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | WalletConnect Project ID from [cloud.walletconnect.com](https://cloud.walletconnect.com/) | Yes |
+| Variable                               | Description                                                                               | Required |
+| -------------------------------------- | ----------------------------------------------------------------------------------------- | -------- |
+| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | WalletConnect Project ID from [cloud.walletconnect.com](https://cloud.walletconnect.com/) | Yes      |
 
 ## Troubleshooting
 
 ### Wallet Connection Issues
 
 **Problem**: Wallet won't connect
+
 - **Solution**: Make sure you have a valid WalletConnect Project ID set in your environment variables
 - **Solution**: Try clearing your browser cache and reconnecting
 - **Solution**: Ensure you're on Base mainnet (chainId: 8453)
@@ -208,6 +257,7 @@ Pre-configured ABIs and contract addresses for:
 ### Transaction Failures
 
 **Problem**: Transactions fail or revert
+
 - **Solution**: Ensure you have enough USDC balance on Base
 - **Solution**: Check that you've approved the PredictionMarket contract to spend your USDC
 - **Solution**: Verify you're connected to Base mainnet, not a testnet
@@ -215,6 +265,7 @@ Pre-configured ABIs and contract addresses for:
 ### Build Errors
 
 **Problem**: Build fails on Vercel
+
 - **Solution**: Ensure all environment variables are set correctly
 - **Solution**: Check that your Node.js version is 18 or higher
 - **Solution**: Clear Vercel cache and redeploy
@@ -222,6 +273,7 @@ Pre-configured ABIs and contract addresses for:
 ### Markets Not Loading
 
 **Problem**: Markets don't appear
+
 - **Solution**: Connect your wallet first
 - **Solution**: Check your internet connection
 - **Solution**: Verify the contract address is correct
