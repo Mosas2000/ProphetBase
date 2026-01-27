@@ -1,6 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { QuickTrade } from '@/components/mobile'
+  // Example trade handler (replace with real logic)
+  function handleQuickTrade(side: 'buy' | 'sell', amount: number) {
+    alert(`Trade: ${side} ${amount} ETH-USD`)
+    // TODO: Integrate with buy/sell logic
+  }
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useReadContract } from 'wagmi'
 import { PREDICTION_MARKET_ADDRESS, PREDICTION_MARKET_ABI } from '@/lib/contracts'
@@ -232,6 +238,8 @@ export default function Home() {
                   </section>
                 )}
               </div>
+              {/* Mobile Trading Interface */}
+              <QuickTrade symbol="ETH-USD" price={3200} onTrade={handleQuickTrade} />
             </div>
 
             {/* FAQ Section */}

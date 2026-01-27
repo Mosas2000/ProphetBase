@@ -1,0 +1,1 @@
+export { QuickTrade } from './QuickTrade';

@@ -1,3 +1,18 @@
+## 📱 Mobile Trading Interface
+
+The `QuickTrade` component provides a mobile-optimized trading interface with:
+- Buy/Sell toggle
+- Amount input
+- Haptic feedback on trade
+- Voice command support (buy/sell, amount)
+- Fixed bottom bar for easy thumb access
+
+**Usage:**
+```tsx
+import { QuickTrade } from './components/mobile';
+
+<QuickTrade symbol="ETH-USD" price={3200} onTrade={(side, amount) => {/* handle trade */}} />
+```
 # ProphetBase Frontend
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMosas2000%2FProphetBase&project-name=prophetbase&repository-name=prophetbase&root-directory=frontend&env=NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID&envDescription=WalletConnect%20Project%20ID%20required%20for%20wallet%20connectivity&envLink=https%3A%2F%2Fcloud.walletconnect.com%2F)
