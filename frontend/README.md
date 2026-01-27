@@ -1,13 +1,36 @@
+## 📴 Mobile Offline Mode & Local Cache
+
+The `OfflineCache` utility provides offline access to market and portfolio data by caching them locally on the device.
+
+**Features:**
+- Cache market and portfolio data in localStorage
+- Retrieve cached data when offline
+- Sync cache on reconnect
+
+**Usage:**
+```ts
+import { OfflineCache } from './lib/mobile';
+
+// Cache data
+OfflineCache.cacheMarkets(markets);
+OfflineCache.cachePortfolio(portfolio);
+
+// Retrieve cached data
+const cachedMarkets = OfflineCache.getCachedMarkets();
+const cachedPortfolio = OfflineCache.getCachedPortfolio();
+```
 ## 🔗 Mobile Deep Linking & Universal Links
 
 The `DeepLinkHandler` utility parses and handles app-specific deep links and universal links for mobile navigation.
 
 **Features:**
+
 - Parse prophetbase:// and https://prophetbase.xyz/ links
 - Route to market, portfolio, onboarding, etc.
 - Integrate with Next.js router
 
 **Usage:**
+
 ```ts
 import { DeepLinkHandler } from './lib/mobile';
 import { useRouter } from 'next/navigation';
@@ -16,6 +39,7 @@ const router = useRouter();
 const url = 'prophetbase://market/123';
 DeepLinkHandler.handle(url, router);
 ```
+
 ## 🔒 Mobile Biometric Authentication
 
 The `BiometricAuth` utility enables biometric authentication (FaceID, TouchID, WebAuthn) for quick and secure access on mobile devices.
