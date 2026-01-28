@@ -281,6 +281,38 @@ Response:
 ]
 ```
 
+  ## 🌐 Integration & API: App Config & Feature Flags Endpoint
+
+  The `/api/config` REST API endpoint serves app configuration and feature flag data for frontend and external integrations.
+
+  **Features:**
+
+  - Next.js API route for app config and feature flags
+  - Returns app name, version, environment, and feature flags
+
+  **Usage:**
+
+  ```http
+  GET /api/config
+  ```
+
+  Response:
+
+  ```json
+  {
+    "appName": "ProphetBase",
+    "version": "1.0.0",
+    "environment": "development",
+    "featureFlags": {
+      "gamification": true,
+      "referrals": true,
+      "notifications": true,
+      "pwa": true,
+      "beta": false
+    }
+  }
+  ```
+
 ## 🎉 Gamification: Mobile Celebration Animations & Feedback
 
 The `Celebration` utility triggers confetti, badge pop, and haptic feedback for achievements and milestones on mobile.
