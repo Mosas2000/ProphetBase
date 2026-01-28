@@ -1,3 +1,4 @@
+export * from './Celebration';
 export * from './GamificationNotification';
 export * from './SocialShare';
 export * from './AchievementService';

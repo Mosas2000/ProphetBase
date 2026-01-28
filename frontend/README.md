@@ -1,3 +1,25 @@
+## 🎉 Gamification: Mobile Celebration Animations & Feedback
+
+The `Celebration` utility triggers confetti, badge pop, and haptic feedback for achievements and milestones on mobile.
+
+**Features:**
+- Confetti animation (canvas-confetti)
+- Badge pop animation (CSS bounce)
+- Haptic feedback on achievement
+
+**Usage:**
+```ts
+import { Celebration } from './lib/gamification';
+
+// Celebrate achievement
+Celebration.celebrateAchievement('badgeElementId');
+
+// Just confetti
+Celebration.confetti();
+
+// Just haptic feedback
+Celebration.haptic();
+```
 ## 🚀 Gamification: Mobile Gamified Onboarding & Tutorial
 
 The `GamifiedOnboarding` component guides new users through interactive onboarding steps, rewarding them for completing key actions.
