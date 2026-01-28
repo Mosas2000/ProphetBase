@@ -1,3 +1,18 @@
+## 🚀 Gamification: Mobile Gamified Onboarding & Tutorial
+
+The `GamifiedOnboarding` component guides new users through interactive onboarding steps, rewarding them for completing key actions.
+
+**Features:**
+- Step-by-step onboarding with rewards
+- Interactive tutorial for wallet connect, first trade, progress tracking
+- Earn coins for each completed step
+
+**Usage:**
+```tsx
+import { GamifiedOnboarding } from './components/gamification';
+
+<GamifiedOnboarding />
+```
 ## 🔔 Gamification: Mobile Notifications
 
 The `GamificationNotification` utility sends local and push notifications for achievements, streaks, and rewards on mobile devices.
