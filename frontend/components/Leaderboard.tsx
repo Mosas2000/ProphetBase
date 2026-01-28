@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Jazzicon from 'react-jazzicon'
 
 type TimePeriod = '24H' | '7D' | 'ALL'
@@ -52,6 +52,13 @@ export default function Leaderboard({ currentUserAddress, className = '' }: Lead
         return 'text-red-600'
     }
 
+    // Memoize filtered/sorted leaderboard for performance
+    const leaderboardData = useMemo(() => {
+        // In a real app, filter/sort by timePeriod and other criteria here
+        // For mock data, just return as-is
+        return mockLeaderboard
+    }, [timePeriod])
+
     return (
         <div className={`rounded-xl border border-gray-200 bg-white p-6 ${className}`}>
             {/* Header */}
@@ -91,7 +98,7 @@ export default function Leaderboard({ currentUserAddress, className = '' }: Lead
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                        {mockLeaderboard.map((entry) => {
+                        {leaderboardData.map((entry) => {
                             const isCurrentUser = currentUserAddress?.toLowerCase() === entry.address.toLowerCase()
 
                             return (
