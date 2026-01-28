@@ -1,3 +1,24 @@
+## 🔔 Gamification: Mobile Notifications
+
+The `GamificationNotification` utility sends local and push notifications for achievements, streaks, and rewards on mobile devices.
+
+**Features:**
+- Send local notifications for achievements, streaks, rewards
+- Integrate with PushNotificationManager for push notifications
+
+**Usage:**
+```ts
+import { GamificationNotification } from './lib/gamification';
+
+// Notify achievement
+await GamificationNotification.notifyAchievement('First Trade');
+
+// Notify streak
+await GamificationNotification.notifyStreak(7);
+
+// Notify reward
+await GamificationNotification.notifyReward(100);
+```
 ## 📢 Gamification: Social Sharing & Bragging
 
 The `SocialShare` utility enables users to share achievements and badges via native share APIs or copy links/images for bragging rights.
