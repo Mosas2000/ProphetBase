@@ -38,6 +38,49 @@ Response:
 ]
 ```
 
+## 🌐 Integration & API: Notifications & Alerts Endpoint
+
+The `/api/notifications` REST API endpoint serves notification and alert data for frontend and external integrations.
+
+**Features:**
+
+- Next.js API route for notifications and alerts
+- Returns array of notification objects (id, type, message, read, timestamp)
+
+**Usage:**
+
+```http
+GET /api/notifications
+```
+
+Response:
+
+```json
+[
+  {
+    "id": "notif1",
+    "type": "achievement",
+    "message": "You earned the \"First Trade\" badge!",
+    "read": false,
+    "timestamp": "2026-01-28T10:00:00Z"
+  },
+  {
+    "id": "notif2",
+    "type": "market",
+    "message": "Market ETH > $3500 by March is closing soon!",
+    "read": false,
+    "timestamp": "2026-01-28T09:00:00Z"
+  },
+  {
+    "id": "notif3",
+    "type": "reward",
+    "message": "Referral bonus awarded: +100 XP",
+    "read": true,
+    "timestamp": "2026-01-27T18:00:00Z"
+  }
+]
+```
+
 ## 🌐 Integration & API: Achievements & Badges Endpoint
 
 The `/api/achievements` REST API endpoint serves user achievements and badges for frontend and external integrations.
