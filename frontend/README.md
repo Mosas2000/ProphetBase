@@ -3,111 +3,223 @@
 The `/api/challenges` REST API endpoint serves challenge and quest data for frontend and external integrations.
 
 **Features:**
+
 - Next.js API route for challenges and quests
 - Returns array of challenge objects (id, title, description, goal, progress, completed, rewardXP)
 
 **Usage:**
+
 ```http
 GET /api/challenges
 ```
+
 Response:
+
 ```json
 [
-   { "id": "trade_5", "title": "Trade 5 Times", "description": "Complete 5 trades in any market.", "goal": 5, "progress": 2, "completed": false, "rewardXP": 50 },
-   { "id": "win_3", "title": "Win 3 Markets", "description": "Win 3 prediction markets.", "goal": 3, "progress": 1, "completed": false, "rewardXP": 100 }
+  {
+    "id": "trade_5",
+    "title": "Trade 5 Times",
+    "description": "Complete 5 trades in any market.",
+    "goal": 5,
+    "progress": 2,
+    "completed": false,
+    "rewardXP": 50
+  },
+  {
+    "id": "win_3",
+    "title": "Win 3 Markets",
+    "description": "Win 3 prediction markets.",
+    "goal": 3,
+    "progress": 1,
+    "completed": false,
+    "rewardXP": 100
+  }
 ]
 ```
+
 ## 🌐 Integration & API: Achievements & Badges Endpoint
 
 The `/api/achievements` REST API endpoint serves user achievements and badges for frontend and external integrations.
 
 **Features:**
+
 - Next.js API route for achievements and badges
 - Returns array of achievement objects (id, name, description, icon, xp)
 
 **Usage:**
+
 ```http
 GET /api/achievements
 ```
+
 Response:
+
 ```json
 [
-   { "id": "first_trade", "name": "First Trade", "description": "Completed your first trade", "icon": "🎉", "xp": 100 },
-   { "id": "volume_1k", "name": "Volume 1K", "description": "Traded over $1,000", "icon": "💰", "xp": 200 },
-   { "id": "markets_10", "name": "Market Explorer", "description": "Participated in 10 markets", "icon": "🧭", "xp": 300 }
+  {
+    "id": "first_trade",
+    "name": "First Trade",
+    "description": "Completed your first trade",
+    "icon": "🎉",
+    "xp": 100
+  },
+  {
+    "id": "volume_1k",
+    "name": "Volume 1K",
+    "description": "Traded over $1,000",
+    "icon": "💰",
+    "xp": 200
+  },
+  {
+    "id": "markets_10",
+    "name": "Market Explorer",
+    "description": "Participated in 10 markets",
+    "icon": "🧭",
+    "xp": 300
+  }
 ]
 ```
+
 ## 🌐 Integration & API: Leaderboard Endpoint
 
 The `/api/leaderboard` REST API endpoint serves leaderboard and ranking data for frontend and external integrations.
 
 **Features:**
+
 - Next.js API route for leaderboard
 - Returns array of user objects (userId, username, xp, streak, level, badges)
 
 **Usage:**
+
 ```http
 GET /api/leaderboard
 ```
+
 Response:
+
 ```json
 [
-   { "userId": "1", "username": "Alice", "xp": 1200, "streak": 5, "level": 3, "badges": ["first_trade"] },
-   { "userId": "2", "username": "Bob", "xp": 900, "streak": 7, "level": 2, "badges": ["volume_1k"] }
+  {
+    "userId": "1",
+    "username": "Alice",
+    "xp": 1200,
+    "streak": 5,
+    "level": 3,
+    "badges": ["first_trade"]
+  },
+  {
+    "userId": "2",
+    "username": "Bob",
+    "xp": 900,
+    "streak": 7,
+    "level": 2,
+    "badges": ["volume_1k"]
+  }
 ]
 ```
+
 ## 🌐 Integration & API: User Portfolio Endpoint
 
 The `/api/portfolio` REST API endpoint serves user portfolio data for frontend and external integrations.
 
 **Features:**
+
 - Next.js API route for user portfolio
 - Returns userId, positions (marketId, side, shares, value), totalValue
 
 **Usage:**
+
 ```http
 GET /api/portfolio
 ```
+
 Response:
+
 ```json
 {
-   "userId": "user123",
-   "positions": [
-      { "marketId": "1", "side": "YES", "shares": 50, "value": 1750 },
-      { "marketId": "2", "side": "NO", "shares": 20, "value": 600 }
-   ],
-   "totalValue": 2350
+  "userId": "user123",
+  "positions": [
+    { "marketId": "1", "side": "YES", "shares": 50, "value": 1750 },
+    { "marketId": "2", "side": "NO", "shares": 20, "value": 600 }
+  ],
+  "totalValue": 2350
 }
 ```
+
 ## 🌐 Integration & API: Market Data Endpoint
 
 The `/api/markets` REST API endpoint serves market data for frontend and external integrations.
 
+## 🌐 Integration & API: Referrals & Rewards Endpoint
+
+The `/api/referrals` REST API endpoint serves referral and reward data for frontend and external integrations.
+
 **Features:**
+
+- Next.js API route for referrals and rewards
+- Returns referral code, referred users, and bonus status
+
+**Usage:**
+
+```http
+GET /api/referrals
+```
+
+Response:
+
+```json
+{
+  "code": "user123-abc123",
+  "referredUsers": ["user456", "user789"],
+  "bonusAwarded": true
+}
+```
+
+**Features:**
+
 - Next.js API route for market data
 - Returns array of market objects (id, name, status, volume, endTime)
 
 **Usage:**
+
 ```http
 GET /api/markets
 ```
+
 Response:
+
 ```json
 [
-   { "id": "1", "name": "ETH > $3500 by March", "status": "active", "volume": 12000, "endTime": "2026-03-01T00:00:00Z" },
-   { "id": "2", "name": "BTC < $40k by April", "status": "active", "volume": 8000, "endTime": "2026-04-01T00:00:00Z" }
+  {
+    "id": "1",
+    "name": "ETH > $3500 by March",
+    "status": "active",
+    "volume": 12000,
+    "endTime": "2026-03-01T00:00:00Z"
+  },
+  {
+    "id": "2",
+    "name": "BTC < $40k by April",
+    "status": "active",
+    "volume": 8000,
+    "endTime": "2026-04-01T00:00:00Z"
+  }
 ]
 ```
+
 ## 🎉 Gamification: Mobile Celebration Animations & Feedback
 
 The `Celebration` utility triggers confetti, badge pop, and haptic feedback for achievements and milestones on mobile.
 
 **Features:**
+
 - Confetti animation (canvas-confetti)
 - Badge pop animation (CSS bounce)
 - Haptic feedback on achievement
 
 **Usage:**
+
 ```ts
 import { Celebration } from './lib/gamification';
 
@@ -120,30 +232,36 @@ Celebration.confetti();
 // Just haptic feedback
 Celebration.haptic();
 ```
+
 ## 🚀 Gamification: Mobile Gamified Onboarding & Tutorial
 
 The `GamifiedOnboarding` component guides new users through interactive onboarding steps, rewarding them for completing key actions.
 
 **Features:**
+
 - Step-by-step onboarding with rewards
 - Interactive tutorial for wallet connect, first trade, progress tracking
 - Earn coins for each completed step
 
 **Usage:**
+
 ```tsx
 import { GamifiedOnboarding } from './components/gamification';
 
-<GamifiedOnboarding />
+<GamifiedOnboarding />;
 ```
+
 ## 🔔 Gamification: Mobile Notifications
 
 The `GamificationNotification` utility sends local and push notifications for achievements, streaks, and rewards on mobile devices.
 
 **Features:**
+
 - Send local notifications for achievements, streaks, rewards
 - Integrate with PushNotificationManager for push notifications
 
 **Usage:**
+
 ```ts
 import { GamificationNotification } from './lib/gamification';
 
@@ -156,33 +274,37 @@ await GamificationNotification.notifyStreak(7);
 // Notify reward
 await GamificationNotification.notifyReward(100);
 ```
+
 ## 📢 Gamification: Social Sharing & Bragging
 
 The `SocialShare` utility enables users to share achievements and badges via native share APIs or copy links/images for bragging rights.
 
 **Features:**
+
 - Generate shareable achievement images and links
 - Integrate with native share APIs (Web Share API)
 - Fallback to clipboard copy
 
 **Usage:**
+
 ```ts
 import { SocialShare } from './lib/gamification';
 
 // Share achievement
 await SocialShare.shareAchievement({
-   title: 'Level Up!',
-   description: 'I just reached Level 5 on ProphetBase!',
-   url: 'https://prophetbase.xyz/user/123',
+  title: 'Level Up!',
+  description: 'I just reached Level 5 on ProphetBase!',
+  url: 'https://prophetbase.xyz/user/123',
 });
 
 // Generate share image
 const img = SocialShare.generateShareImage({
-   name: 'First Trade',
-   description: 'Completed your first trade',
-   icon: '🎉',
+  name: 'First Trade',
+  description: 'Completed your first trade',
+  icon: '🎉',
 });
 ```
+
 ## 🪙 Gamification: In-App Rewards & Virtual Currency
 
 The `RewardService` manages virtual currency balances, earn/spend logic, and distributes rewards for achievements, streaks, referrals, and quests.
