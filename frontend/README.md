@@ -1,3 +1,23 @@
+## 🌐 Integration & API: Achievements & Badges Endpoint
+
+The `/api/achievements` REST API endpoint serves user achievements and badges for frontend and external integrations.
+
+**Features:**
+- Next.js API route for achievements and badges
+- Returns array of achievement objects (id, name, description, icon, xp)
+
+**Usage:**
+```http
+GET /api/achievements
+```
+Response:
+```json
+[
+   { "id": "first_trade", "name": "First Trade", "description": "Completed your first trade", "icon": "🎉", "xp": 100 },
+   { "id": "volume_1k", "name": "Volume 1K", "description": "Traded over $1,000", "icon": "💰", "xp": 200 },
+   { "id": "markets_10", "name": "Market Explorer", "description": "Participated in 10 markets", "icon": "🧭", "xp": 300 }
+]
+```
 ## 🌐 Integration & API: Leaderboard Endpoint
 
 The `/api/leaderboard` REST API endpoint serves leaderboard and ranking data for frontend and external integrations.
