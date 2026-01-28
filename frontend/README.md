@@ -1,14 +1,42 @@
+## 🪙 Gamification: In-App Rewards & Virtual Currency
+
+The `RewardService` manages virtual currency balances, earn/spend logic, and distributes rewards for achievements, streaks, referrals, and quests.
+
+**Features:**
+- Manage virtual currency balances
+- Earn/spend logic
+- Distribute rewards for achievements, streaks, referrals, quests
+- Reset balance
+
+**Usage:**
+```ts
+import { RewardService } from './lib/gamification';
+
+// Get current balance
+const balance = RewardService.getBalance();
+
+// Earn coins
+RewardService.earn(50);
+
+// Spend coins
+const success = RewardService.spend(20);
+
+// Reset balance
+RewardService.reset();
+```
 ## 🎯 Gamification: Challenge System & Quests
 
 The `ChallengeService` defines challenges/quests, tracks user progress, and awards quest rewards for completion.
 
 **Features:**
+
 - Define challenges/quests (trade X times, win Y markets)
 - Track user progress
 - Award quest rewards
 - Reset challenges
 
 **Usage:**
+
 ```ts
 import { ChallengeService } from './lib/gamification';
 
@@ -21,6 +49,7 @@ ChallengeService.updateProgress('trade_5');
 // Reset all challenges
 ChallengeService.resetChallenges();
 ```
+
 ## 🤝 Gamification: Referral Tracking & Rewards
 
 The `ReferralService` manages referral codes, tracks referred users, and awards referral bonuses for successful invites.
