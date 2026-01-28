@@ -1,14 +1,43 @@
+## 📢 Gamification: Social Sharing & Bragging
+
+The `SocialShare` utility enables users to share achievements and badges via native share APIs or copy links/images for bragging rights.
+
+**Features:**
+- Generate shareable achievement images and links
+- Integrate with native share APIs (Web Share API)
+- Fallback to clipboard copy
+
+**Usage:**
+```ts
+import { SocialShare } from './lib/gamification';
+
+// Share achievement
+await SocialShare.shareAchievement({
+   title: 'Level Up!',
+   description: 'I just reached Level 5 on ProphetBase!',
+   url: 'https://prophetbase.xyz/user/123',
+});
+
+// Generate share image
+const img = SocialShare.generateShareImage({
+   name: 'First Trade',
+   description: 'Completed your first trade',
+   icon: '🎉',
+});
+```
 ## 🪙 Gamification: In-App Rewards & Virtual Currency
 
 The `RewardService` manages virtual currency balances, earn/spend logic, and distributes rewards for achievements, streaks, referrals, and quests.
 
 **Features:**
+
 - Manage virtual currency balances
 - Earn/spend logic
 - Distribute rewards for achievements, streaks, referrals, quests
 - Reset balance
 
 **Usage:**
+
 ```ts
 import { RewardService } from './lib/gamification';
 
@@ -24,6 +53,7 @@ const success = RewardService.spend(20);
 // Reset balance
 RewardService.reset();
 ```
+
 ## 🎯 Gamification: Challenge System & Quests
 
 The `ChallengeService` defines challenges/quests, tracks user progress, and awards quest rewards for completion.
