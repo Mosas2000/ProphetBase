@@ -38,6 +38,36 @@ Response:
 ]
 ```
 
+## 🌐 Integration & API: System Status & Health Endpoint
+
+The `/api/status` REST API endpoint serves system status and health check data for frontend and external integrations.
+
+**Features:**
+
+- Next.js API route for system status and health
+- Returns status, uptime, timestamp, and service health
+
+**Usage:**
+
+```http
+GET /api/status
+```
+
+Response:
+
+```json
+{
+  "status": "ok",
+  "uptime": 12345.67,
+  "timestamp": "2026-01-28T12:34:56.789Z",
+  "services": {
+    "database": "ok",
+    "blockchain": "ok",
+    "cache": "ok"
+  }
+}
+```
+
 ## 🌐 Integration & API: Notifications & Alerts Endpoint
 
 The `/api/notifications` REST API endpoint serves notification and alert data for frontend and external integrations.
