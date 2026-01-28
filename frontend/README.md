@@ -1,3 +1,22 @@
+## 🌐 Integration & API: Market Data Endpoint
+
+The `/api/markets` REST API endpoint serves market data for frontend and external integrations.
+
+**Features:**
+- Next.js API route for market data
+- Returns array of market objects (id, name, status, volume, endTime)
+
+**Usage:**
+```http
+GET /api/markets
+```
+Response:
+```json
+[
+   { "id": "1", "name": "ETH > $3500 by March", "status": "active", "volume": 12000, "endTime": "2026-03-01T00:00:00Z" },
+   { "id": "2", "name": "BTC < $40k by April", "status": "active", "volume": 8000, "endTime": "2026-04-01T00:00:00Z" }
+]
+```
 ## 🎉 Gamification: Mobile Celebration Animations & Feedback
 
 The `Celebration` utility triggers confetti, badge pop, and haptic feedback for achievements and milestones on mobile.
