@@ -1,3 +1,25 @@
+## 🤝 Gamification: Referral Tracking & Rewards
+
+The `ReferralService` manages referral codes, tracks referred users, and awards referral bonuses for successful invites.
+
+**Features:**
+- Generate and manage referral codes
+- Track referred users
+- Award referral bonuses
+
+**Usage:**
+```ts
+import { ReferralService } from './lib/gamification';
+
+// Generate referral code
+const code = ReferralService.generateCode('user123');
+
+// Add referred user
+ReferralService.addReferredUser('user456');
+
+// Award referral bonus (returns true if awarded)
+const bonus = ReferralService.awardBonus();
+```
 ## 🏆 Gamification: Leaderboard & Ranking System
 
 The `LeaderboardService` calculates user rankings and provides a sorted leaderboard based on XP, streaks, and achievements.
