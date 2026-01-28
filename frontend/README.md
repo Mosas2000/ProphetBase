@@ -1,3 +1,20 @@
+## 🏅 Gamification: Achievement Badges & User Levels
+
+The `AchievementService` tracks user achievements, assigns badges, and calculates user levels based on XP.
+
+**Features:**
+- Track user actions and milestones
+- Assign badges (first trade, volume, market explorer, etc.)
+- Calculate user level from XP
+
+**Usage:**
+```ts
+import { AchievementService } from './lib/gamification';
+
+const userStats = { trades: 12, volume: 1500, markets: 15 };
+const achievements = AchievementService.getUserAchievements(userStats);
+// achievements.badges, achievements.level, achievements.xp
+```
 ## ⚙️ Mobile Settings & Preferences Management
 
 The `MobileSettings` utility manages user settings (theme, notifications, privacy) with local persistence and reset capability.
