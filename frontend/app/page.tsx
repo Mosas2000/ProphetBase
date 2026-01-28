@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { QuickTrade } from '@/components/mobile'
@@ -230,12 +230,14 @@ export default function Home() {
 
           {/* Stats Dashboard */}
           <div className="mb-12 sm:mb-16">
-            <StatsDashboard
-              totalMarkets={3}
-              activeMarkets={3}
-              totalVolume="0"
-              totalUsers={0}
-            />
+            <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400">Loading stats...</div>}>
+              <StatsDashboard
+                totalMarkets={3}
+                activeMarkets={3}
+                totalVolume="0"
+                totalUsers={0}
+              />
+            </Suspense>
           </div>
 
           {/* Main Content - Markets and Positions */}
@@ -272,7 +274,9 @@ export default function Home() {
 
             {/* FAQ Section */}
             <section id="faq" className="scroll-mt-20 pb-8">
-              <FAQ />
+              <Suspense fallback={<div className="py-8 text-center text-gray-400">Loading FAQ...</div>}>
+                <FAQ />
+              </Suspense>
             </section>
           </div>
 
@@ -349,7 +353,9 @@ export default function Home() {
 
         {/* Footer - with bottom padding for mobile nav */}
         <div className="pb-20 md:pb-0">
-          <Footer />
+          <Suspense fallback={<div className="py-8 text-center text-gray-400">Loading footer...</div>}>
+            <Footer />
+          </Suspense>
         </div>
       </div>
     </ErrorBoundary>
