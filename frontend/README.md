@@ -1,3 +1,22 @@
+## 🌐 Integration & API: Leaderboard Endpoint
+
+The `/api/leaderboard` REST API endpoint serves leaderboard and ranking data for frontend and external integrations.
+
+**Features:**
+- Next.js API route for leaderboard
+- Returns array of user objects (userId, username, xp, streak, level, badges)
+
+**Usage:**
+```http
+GET /api/leaderboard
+```
+Response:
+```json
+[
+   { "userId": "1", "username": "Alice", "xp": 1200, "streak": 5, "level": 3, "badges": ["first_trade"] },
+   { "userId": "2", "username": "Bob", "xp": 900, "streak": 7, "level": 2, "badges": ["volume_1k"] }
+]
+```
 ## 🌐 Integration & API: User Portfolio Endpoint
 
 The `/api/portfolio` REST API endpoint serves user portfolio data for frontend and external integrations.
