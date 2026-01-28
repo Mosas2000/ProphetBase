@@ -1,3 +1,22 @@
+## 🌐 Integration & API: Challenges & Quests Endpoint
+
+The `/api/challenges` REST API endpoint serves challenge and quest data for frontend and external integrations.
+
+**Features:**
+- Next.js API route for challenges and quests
+- Returns array of challenge objects (id, title, description, goal, progress, completed, rewardXP)
+
+**Usage:**
+```http
+GET /api/challenges
+```
+Response:
+```json
+[
+   { "id": "trade_5", "title": "Trade 5 Times", "description": "Complete 5 trades in any market.", "goal": 5, "progress": 2, "completed": false, "rewardXP": 50 },
+   { "id": "win_3", "title": "Win 3 Markets", "description": "Win 3 prediction markets.", "goal": 3, "progress": 1, "completed": false, "rewardXP": 100 }
+]
+```
 ## 🌐 Integration & API: Achievements & Badges Endpoint
 
 The `/api/achievements` REST API endpoint serves user achievements and badges for frontend and external integrations.
