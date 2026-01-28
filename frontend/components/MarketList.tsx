@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, memo } from 'react'
+import { useState, useMemo, memo, useDeferredValue } from 'react'
 import { useReadContract } from 'wagmi'
 import { PREDICTION_MARKET_ADDRESS } from '@/lib/contracts'
 import { PREDICTION_MARKET_ABI } from '@/lib/abi'
@@ -36,6 +36,7 @@ export interface Market {
  */
 function MarketList() {
     const [searchQuery, setSearchQuery] = useState('')
+    const deferredSearchQuery = useDeferredValue(searchQuery)
     const [statusFilter, setStatusFilter] = useState<'all' | MarketStatus>('all')
 
     // Read market count from contract
@@ -94,10 +95,10 @@ function MarketList() {
     // Filter markets based on search query and status
     const filteredMarkets = useMemo(() => {
         return allMarkets.filter((market) => {
-            // Filter by search query
+            // Filter by search query (deferred)
             const matchesSearch = market.question
                 .toLowerCase()
-                .includes(searchQuery.toLowerCase())
+                .includes(deferredSearchQuery.toLowerCase())
 
             // Filter by status
             const matchesStatus =
@@ -105,7 +106,7 @@ function MarketList() {
 
             return matchesSearch && matchesStatus
         })
-    }, [allMarkets, searchQuery, statusFilter])
+    }, [allMarkets, deferredSearchQuery, statusFilter])
 
     // Debug: Log market data
     console.log('📊 Market Data Debug:', {
