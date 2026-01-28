@@ -1,3 +1,26 @@
+## 🧭 Mobile Adaptive Navigation & Gesture Support
+
+The `AdaptiveNavigation` component provides swipe gesture navigation and adaptive bottom navigation for mobile users.
+
+**Features:**
+- Swipe left/right to switch between tabs (markets, portfolio, FAQ)
+- Adaptive bottom navigation bar
+- Easy integration with tab state
+
+**Usage:**
+```tsx
+import { AdaptiveNavigation } from './lib/mobile';
+
+<AdaptiveNavigation
+   activeTab={activeTab}
+   onTabChange={setActiveTab}
+   tabs={[
+      { key: 'markets', label: 'Markets', icon: <svg>...</svg> },
+      { key: 'portfolio', label: 'Portfolio', icon: <svg>...</svg> },
+      { key: 'faq', label: 'FAQ', icon: <svg>...</svg> },
+   ]}
+/>
+```
 ## 📴 Mobile Offline Mode & Local Cache
 
 The `OfflineCache` utility provides offline access to market and portfolio data by caching them locally on the device.
