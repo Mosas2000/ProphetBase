@@ -1,13 +1,38 @@
+## 🎯 Gamification: Challenge System & Quests
+
+The `ChallengeService` defines challenges/quests, tracks user progress, and awards quest rewards for completion.
+
+**Features:**
+- Define challenges/quests (trade X times, win Y markets)
+- Track user progress
+- Award quest rewards
+- Reset challenges
+
+**Usage:**
+```ts
+import { ChallengeService } from './lib/gamification';
+
+// Get current challenges
+const challenges = ChallengeService.getChallenges();
+
+// Update progress for a challenge
+ChallengeService.updateProgress('trade_5');
+
+// Reset all challenges
+ChallengeService.resetChallenges();
+```
 ## 🤝 Gamification: Referral Tracking & Rewards
 
 The `ReferralService` manages referral codes, tracks referred users, and awards referral bonuses for successful invites.
 
 **Features:**
+
 - Generate and manage referral codes
 - Track referred users
 - Award referral bonuses
 
 **Usage:**
+
 ```ts
 import { ReferralService } from './lib/gamification';
 
@@ -20,36 +45,56 @@ ReferralService.addReferredUser('user456');
 // Award referral bonus (returns true if awarded)
 const bonus = ReferralService.awardBonus();
 ```
+
 ## 🏆 Gamification: Leaderboard & Ranking System
 
 The `LeaderboardService` calculates user rankings and provides a sorted leaderboard based on XP, streaks, and achievements.
 
 **Features:**
+
 - Calculate user rankings
 - Sort leaderboard by XP, streak, level
 - Get user rank by ID
 
 **Usage:**
+
 ```ts
 import { LeaderboardService } from './lib/gamification';
 
 const users = [
-   { userId: '1', username: 'Alice', xp: 1200, streak: 5, level: 3, badges: ['first_trade'] },
-   { userId: '2', username: 'Bob', xp: 900, streak: 7, level: 2, badges: ['volume_1k'] },
+  {
+    userId: '1',
+    username: 'Alice',
+    xp: 1200,
+    streak: 5,
+    level: 3,
+    badges: ['first_trade'],
+  },
+  {
+    userId: '2',
+    username: 'Bob',
+    xp: 900,
+    streak: 7,
+    level: 2,
+    badges: ['volume_1k'],
+  },
 ];
 const leaderboard = LeaderboardService.getLeaderboard(users);
 const rank = LeaderboardService.getUserRank(users, '1');
 ```
+
 ## 🔥 Gamification: Streak Tracking & Daily Rewards
 
 The `StreakService` tracks user activity streaks and awards daily login/trading rewards for consecutive activity.
 
 **Features:**
+
 - Track user streaks (login, trading)
 - Award daily rewards for consecutive activity
 - Reset streak on inactivity
 
 **Usage:**
+
 ```ts
 import { StreakService } from './lib/gamification';
 
@@ -59,16 +104,19 @@ const streak = StreakService.updateStreak();
 // Award daily reward (returns true if rewarded)
 const rewarded = StreakService.awardDailyReward();
 ```
+
 ## 🏅 Gamification: Achievement Badges & User Levels
 
 The `AchievementService` tracks user achievements, assigns badges, and calculates user levels based on XP.
 
 **Features:**
+
 - Track user actions and milestones
 - Assign badges (first trade, volume, market explorer, etc.)
 - Calculate user level from XP
 
 **Usage:**
+
 ```ts
 import { AchievementService } from './lib/gamification';
 
@@ -76,16 +124,19 @@ const userStats = { trades: 12, volume: 1500, markets: 15 };
 const achievements = AchievementService.getUserAchievements(userStats);
 // achievements.badges, achievements.level, achievements.xp
 ```
+
 ## ⚙️ Mobile Settings & Preferences Management
 
 The `MobileSettings` utility manages user settings (theme, notifications, privacy) with local persistence and reset capability.
 
 **Features:**
+
 - Get/set user settings (theme, notifications, privacy)
 - Persist settings in localStorage
 - Reset settings to default
 
 **Usage:**
+
 ```ts
 import { MobileSettings } from './lib/mobile';
 
@@ -98,39 +149,45 @@ MobileSettings.set({ theme: 'dark', notifications: false });
 // Reset to default
 MobileSettings.reset();
 ```
+
 ## 🧭 Mobile Adaptive Navigation & Gesture Support
 
 The `AdaptiveNavigation` component provides swipe gesture navigation and adaptive bottom navigation for mobile users.
 
 **Features:**
+
 - Swipe left/right to switch between tabs (markets, portfolio, FAQ)
 - Adaptive bottom navigation bar
 - Easy integration with tab state
 
 **Usage:**
+
 ```tsx
 import { AdaptiveNavigation } from './lib/mobile';
 
 <AdaptiveNavigation
-   activeTab={activeTab}
-   onTabChange={setActiveTab}
-   tabs={[
-      { key: 'markets', label: 'Markets', icon: <svg>...</svg> },
-      { key: 'portfolio', label: 'Portfolio', icon: <svg>...</svg> },
-      { key: 'faq', label: 'FAQ', icon: <svg>...</svg> },
-   ]}
-/>
+  activeTab={activeTab}
+  onTabChange={setActiveTab}
+  tabs={[
+    { key: 'markets', label: 'Markets', icon: <svg>...</svg> },
+    { key: 'portfolio', label: 'Portfolio', icon: <svg>...</svg> },
+    { key: 'faq', label: 'FAQ', icon: <svg>...</svg> },
+  ]}
+/>;
 ```
+
 ## 📴 Mobile Offline Mode & Local Cache
 
 The `OfflineCache` utility provides offline access to market and portfolio data by caching them locally on the device.
 
 **Features:**
+
 - Cache market and portfolio data in localStorage
 - Retrieve cached data when offline
 - Sync cache on reconnect
 
 **Usage:**
+
 ```ts
 import { OfflineCache } from './lib/mobile';
 
@@ -142,6 +199,7 @@ OfflineCache.cachePortfolio(portfolio);
 const cachedMarkets = OfflineCache.getCachedMarkets();
 const cachedPortfolio = OfflineCache.getCachedPortfolio();
 ```
+
 ## 🔗 Mobile Deep Linking & Universal Links
 
 The `DeepLinkHandler` utility parses and handles app-specific deep links and universal links for mobile navigation.
