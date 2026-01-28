@@ -68,6 +68,43 @@ Response:
 }
 ```
 
+## 🌐 Integration & API: App Version & Changelog Endpoint
+
+The `/api/version` REST API endpoint serves app version and changelog data for frontend and external integrations.
+
+**Features:**
+
+- Next.js API route for app version and changelog
+- Returns version, build, last update, and changelog entries
+
+**Usage:**
+
+```http
+GET /api/version
+```
+
+Response:
+
+```json
+{
+  "version": "1.0.0",
+  "build": "20260128",
+  "lastUpdate": "2026-01-28T12:00:00Z",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-01-28",
+      "changes": [
+        "Initial release",
+        "Mobile PWA support",
+        "Gamification and achievements",
+        "REST API endpoints for integration"
+      ]
+    }
+  ]
+}
+```
+
 ## 🌐 Integration & API: Notifications & Alerts Endpoint
 
 The `/api/notifications` REST API endpoint serves notification and alert data for frontend and external integrations.
