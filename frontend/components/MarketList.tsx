@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, memo } from 'react'
 import { useReadContract } from 'wagmi'
 import { PREDICTION_MARKET_ADDRESS } from '@/lib/contracts'
 import { PREDICTION_MARKET_ABI } from '@/lib/abi'
@@ -34,7 +34,7 @@ export interface Market {
 /**
  * MarketList component - displays prediction markets with search and filters
  */
-export default function MarketList() {
+function MarketList() {
     const [searchQuery, setSearchQuery] = useState('')
     const [statusFilter, setStatusFilter] = useState<'all' | MarketStatus>('all')
 
@@ -320,4 +320,7 @@ export default function MarketList() {
             )}
         </div>
     )
+
 }
+
+export default memo(MarketList)
