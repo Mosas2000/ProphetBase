@@ -1,3 +1,24 @@
+# 🚦 Performance Audits: Lighthouse
+
+Automated performance, accessibility, and best practices audits are available using Lighthouse.
+
+**Usage:**
+
+1. Start your frontend locally: `pnpm dev`
+2. In a new terminal, run:
+  ```sh
+  pnpm lighthouse
+  ```
+  Optionally, pass a URL: `pnpm lighthouse http://localhost:3000/markets`
+
+**Output:**
+
+- Generates `lighthouse-report.html` in the frontend directory with a full audit report.
+
+**Requirements:**
+
+- Lighthouse must be installed (will be auto-installed by npx if not present).
+
 ## 🌐 Integration & API: Challenges & Quests Endpoint
 
 The `/api/challenges` REST API endpoint serves challenge and quest data for frontend and external integrations.
