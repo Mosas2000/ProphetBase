@@ -1,3 +1,22 @@
+## 🔥 Gamification: Streak Tracking & Daily Rewards
+
+The `StreakService` tracks user activity streaks and awards daily login/trading rewards for consecutive activity.
+
+**Features:**
+- Track user streaks (login, trading)
+- Award daily rewards for consecutive activity
+- Reset streak on inactivity
+
+**Usage:**
+```ts
+import { StreakService } from './lib/gamification';
+
+// Update streak on user activity
+const streak = StreakService.updateStreak();
+
+// Award daily reward (returns true if rewarded)
+const rewarded = StreakService.awardDailyReward();
+```
 ## 🏅 Gamification: Achievement Badges & User Levels
 
 The `AchievementService` tracks user achievements, assigns badges, and calculates user levels based on XP.
