@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { QuickTrade } from '@/components/mobile'
   // Example trade handler (replace with real logic)
   function handleQuickTrade(side: 'buy' | 'sell', amount: number) {
@@ -199,6 +200,17 @@ export default function Home() {
                 Prediction Markets
               </span>
             </h2>
+
+            <div className="flex flex-col items-center justify-center mb-8">
+              <Image
+                src="/globe.svg"
+                alt="Prediction Market Globe"
+                width={160}
+                height={160}
+                priority
+                className="rounded-full shadow-lg border border-gray-200 bg-white"
+              />
+            </div>
 
             <p className="mx-auto mb-10 max-w-2xl text-base sm:text-lg text-gray-600 px-4">
               Trade predictions on crypto events with ProphetBase. Buy YES or NO shares with USDC, and claim winnings when your predictions come true.
