@@ -1,3 +1,4 @@
+export * from './MobileSettings';
 export * from './AdaptiveNavigation';
 export * from './OfflineCache';
 export * from './BiometricAuth';

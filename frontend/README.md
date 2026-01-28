@@ -1,3 +1,25 @@
+## ⚙️ Mobile Settings & Preferences Management
+
+The `MobileSettings` utility manages user settings (theme, notifications, privacy) with local persistence and reset capability.
+
+**Features:**
+- Get/set user settings (theme, notifications, privacy)
+- Persist settings in localStorage
+- Reset settings to default
+
+**Usage:**
+```ts
+import { MobileSettings } from './lib/mobile';
+
+// Get current settings
+const settings = MobileSettings.get();
+
+// Update settings
+MobileSettings.set({ theme: 'dark', notifications: false });
+
+// Reset to default
+MobileSettings.reset();
+```
 ## 🧭 Mobile Adaptive Navigation & Gesture Support
 
 The `AdaptiveNavigation` component provides swipe gesture navigation and adaptive bottom navigation for mobile users.
