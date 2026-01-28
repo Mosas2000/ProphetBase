@@ -1,3 +1,26 @@
+## 🌐 Integration & API: User Portfolio Endpoint
+
+The `/api/portfolio` REST API endpoint serves user portfolio data for frontend and external integrations.
+
+**Features:**
+- Next.js API route for user portfolio
+- Returns userId, positions (marketId, side, shares, value), totalValue
+
+**Usage:**
+```http
+GET /api/portfolio
+```
+Response:
+```json
+{
+   "userId": "user123",
+   "positions": [
+      { "marketId": "1", "side": "YES", "shares": 50, "value": 1750 },
+      { "marketId": "2", "side": "NO", "shares": 20, "value": 600 }
+   ],
+   "totalValue": 2350
+}
+```
 ## 🌐 Integration & API: Market Data Endpoint
 
 The `/api/markets` REST API endpoint serves market data for frontend and external integrations.
