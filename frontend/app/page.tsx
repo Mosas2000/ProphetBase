@@ -19,8 +19,14 @@ const StatsDashboard = dynamic(() => import('@/components/StatsDashboard'), {
   loading: () => <div className="h-32 flex items-center justify-center text-gray-400">Loading stats...</div>,
   ssr: false,
 })
-import FAQ from '@/components/FAQ'
-import Footer from '@/components/Footer'
+const FAQ = dynamic(() => import('@/components/FAQ'), {
+  loading: () => <div className="py-8 text-center text-gray-400">Loading FAQ...</div>,
+  ssr: false,
+})
+const Footer = dynamic(() => import('@/components/Footer'), {
+  loading: () => <div className="py-8 text-center text-gray-400">Loading footer...</div>,
+  ssr: false,
+})
 import ErrorBoundary from '@/components/ErrorBoundary'
 import Toaster from '@/components/Toaster'
 
