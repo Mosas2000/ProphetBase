@@ -1,3 +1,23 @@
+## 🏆 Gamification: Leaderboard & Ranking System
+
+The `LeaderboardService` calculates user rankings and provides a sorted leaderboard based on XP, streaks, and achievements.
+
+**Features:**
+- Calculate user rankings
+- Sort leaderboard by XP, streak, level
+- Get user rank by ID
+
+**Usage:**
+```ts
+import { LeaderboardService } from './lib/gamification';
+
+const users = [
+   { userId: '1', username: 'Alice', xp: 1200, streak: 5, level: 3, badges: ['first_trade'] },
+   { userId: '2', username: 'Bob', xp: 900, streak: 7, level: 2, badges: ['volume_1k'] },
+];
+const leaderboard = LeaderboardService.getLeaderboard(users);
+const rank = LeaderboardService.getUserRank(users, '1');
+```
 ## 🔥 Gamification: Streak Tracking & Daily Rewards
 
 The `StreakService` tracks user activity streaks and awards daily login/trading rewards for consecutive activity.
