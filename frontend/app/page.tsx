@@ -12,7 +12,12 @@ import { useReadContract } from 'wagmi'
 import { PREDICTION_MARKET_ADDRESS, PREDICTION_MARKET_ABI } from '@/lib/contracts'
 import MarketList from '@/components/MarketList'
 import UserPositions from '@/components/UserPositions'
-import StatsDashboard from '@/components/StatsDashboard'
+import dynamic from 'next/dynamic'
+
+const StatsDashboard = dynamic(() => import('@/components/StatsDashboard'), {
+  loading: () => <div className="h-32 flex items-center justify-center text-gray-400">Loading stats...</div>,
+  ssr: false,
+})
 import FAQ from '@/components/FAQ'
 import Footer from '@/components/Footer'
 import ErrorBoundary from '@/components/ErrorBoundary'
