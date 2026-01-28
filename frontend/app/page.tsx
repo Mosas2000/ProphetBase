@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { QuickTrade } from '@/components/mobile'
   // Example trade handler (replace with real logic)
@@ -35,9 +36,13 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<'markets' | 'positions'>('markets')
 
+  const router = useRouter()
   useEffect(() => {
     setMounted(true)
-  }, [])
+    // Prefetch MarketList and UserPositions routes/components for faster navigation
+    router.prefetch?.('/markets')
+    router.prefetch?.('/positions')
+  }, [router])
 
   // Prevent hydration mismatch - only render dynamic content after mount
   if (!mounted) {
