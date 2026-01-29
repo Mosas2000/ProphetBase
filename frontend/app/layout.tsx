@@ -1,10 +1,10 @@
 'use client'
 
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
 import { Web3Provider } from "@/components/Web3Provider";
-import { useState, useEffect } from "react";
+import SplashScreen from "@/components/ui/SplashScreen";
+import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
+import "./globals.css";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -69,14 +69,33 @@ export default function RootLayout({
                 <meta property="twitter:description" content="Trade predictions on crypto, DeFi, politics, and sports with real USDC on Base L2." />
                 <meta property="twitter:image" content="https://prophetbase.vercel.app/og-image.png" />
 
+                {/* PWA & Splash Screens */}
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+                <meta name="apple-mobile-web-app-title" content="ProphetBase" />
+                
+                {/* Apple Startup Images (Splash Screens) */}
+                <link rel="apple-touch-startup-image" href="/splash/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
+                <link rel="apple-touch-startup-image" href="/splash/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
+                <link rel="apple-touch-startup-image" href="/splash/iphoneplus_splash.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" />
+                <link rel="apple-touch-startup-image" href="/splash/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+                <link rel="apple-touch-startup-image" href="/splash/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" />
+                <link rel="apple-touch-startup-image" href="/splash/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" />
+                <link rel="apple-touch-startup-image" href="/splash/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" />
+                <link rel="apple-touch-startup-image" href="/splash/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" />
+                <link rel="apple-touch-startup-image" href="/splash/ipadpro2_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" />
+                <link rel="apple-touch-startup-image" href="/splash/ipadpro3_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" />
+
                 {/* Favicon */}
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="apple-touch-icon" sizes="180x180" content="/apple-touch-icon.png" />
+                <link rel="manifest" href="/manifest.json" />
 
                 {/* Canonical URL */}
                 <link rel="canonical" href="https://prophetbase.vercel.app/" />
             </head>
-            <body className={`${inter.variable} font-sans antialiased`}>
+            <body className={`${inter.variable} font-sans antialiased bg-white dark:bg-gray-950`}>
+                <SplashScreen />
                 <Web3Provider>
                     {children}
                 </Web3Provider>
