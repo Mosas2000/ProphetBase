@@ -1,7 +1,8 @@
+import type { ApiResponse, LeaderboardEntry } from '@/types/api';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 // Example leaderboard data
-const leaderboard = [
+const leaderboard: LeaderboardEntry[] = [
   {
     userId: '1',
     username: 'Alice',
@@ -20,6 +21,19 @@ const leaderboard = [
   },
 ];
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json(leaderboard);
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ApiResponse<LeaderboardEntry[]>>
+) {
+  try {
+    res.status(200).json({
+      data: leaderboard,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to fetch leaderboard',
+      success: false,
+    });
+  }
 }

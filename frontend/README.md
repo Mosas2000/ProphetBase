@@ -6,10 +6,12 @@ Automated performance, accessibility, and best practices audits are available us
 
 1. Start your frontend locally: `pnpm dev`
 2. In a new terminal, run:
-  ```sh
-  pnpm lighthouse
-  ```
-  Optionally, pass a URL: `pnpm lighthouse http://localhost:3000/markets`
+
+```sh
+pnpm lighthouse
+```
+
+Optionally, pass a URL: `pnpm lighthouse http://localhost:3000/markets`
 
 **Output:**
 
@@ -339,37 +341,37 @@ Response:
 ]
 ```
 
-  ## 🌐 Integration & API: App Config & Feature Flags Endpoint
+## 🌐 Integration & API: App Config & Feature Flags Endpoint
 
-  The `/api/config` REST API endpoint serves app configuration and feature flag data for frontend and external integrations.
+The `/api/config` REST API endpoint serves app configuration and feature flag data for frontend and external integrations.
 
-  **Features:**
+**Features:**
 
-  - Next.js API route for app config and feature flags
-  - Returns app name, version, environment, and feature flags
+- Next.js API route for app config and feature flags
+- Returns app name, version, environment, and feature flags
 
-  **Usage:**
+**Usage:**
 
-  ```http
-  GET /api/config
-  ```
+```http
+GET /api/config
+```
 
-  Response:
+Response:
 
-  ```json
-  {
-    "appName": "ProphetBase",
-    "version": "1.0.0",
-    "environment": "development",
-    "featureFlags": {
-      "gamification": true,
-      "referrals": true,
-      "notifications": true,
-      "pwa": true,
-      "beta": false
-    }
+```json
+{
+  "appName": "ProphetBase",
+  "version": "1.0.0",
+  "environment": "development",
+  "featureFlags": {
+    "gamification": true,
+    "referrals": true,
+    "notifications": true,
+    "pwa": true,
+    "beta": false
   }
-  ```
+}
+```
 
 ## 🎉 Gamification: Mobile Celebration Animations & Feedback
 

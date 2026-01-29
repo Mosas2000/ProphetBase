@@ -33,7 +33,11 @@ export class ReferralService {
   }
 
   static addReferredUser(userId: string) {
-    const info = ReferralService.getReferralInfo() || { code: '', referredUsers: [], bonusAwarded: false };
+    const info = ReferralService.getReferralInfo() || {
+      code: '',
+      referredUsers: [],
+      bonusAwarded: false,
+    };
     if (!info.referredUsers.includes(userId)) {
       info.referredUsers.push(userId);
       ReferralService.saveReferralInfo(info);

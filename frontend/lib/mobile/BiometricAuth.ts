@@ -12,7 +12,7 @@ export class BiometricAuth {
   }
 
   static async prompt(reason = 'Authenticate to continue'): Promise<boolean> {
-    if (!await BiometricAuth.isAvailable()) return false;
+    if (!(await BiometricAuth.isAvailable())) return false;
     try {
       // WebAuthn get() for assertion (biometric prompt)
       const cred = await navigator.credentials.get({

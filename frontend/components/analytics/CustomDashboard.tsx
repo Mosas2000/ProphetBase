@@ -1,8 +1,9 @@
 'use client';
 
-import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
+import Button from '@/components/ui/Button';
+import SecondaryButton from '@/components/ui/SecondaryButton';
+import Card from '@/components/ui/Card';
 import { useState } from 'react';
 
 export function CustomDashboard() {
@@ -32,7 +33,7 @@ export function CustomDashboard() {
               <p className="text-gray-400">Build your personalized analytics dashboard</p>
             </div>
             <div className="flex gap-2">
-              <Button variant="secondary">Save Layout</Button>
+              <SecondaryButton>Save Layout</SecondaryButton>
               <Button>Share Dashboard</Button>
             </div>
           </div>
@@ -80,7 +81,7 @@ export function CustomDashboard() {
 
             <div className="mt-6 text-center">
               <p className="text-gray-400 text-sm mb-2">Drag and drop widgets to customize</p>
-              <Button size="sm" variant="secondary">+ Add Widget</Button>
+              <SecondaryButton>+ Add Widget</SecondaryButton>
             </div>
           </div>
         </div>
@@ -123,8 +124,8 @@ export function CustomDashboard() {
                   <p className="text-sm text-gray-400">{layout.widgets} widgets</p>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="secondary">Load</Button>
-                  <Button size="sm" variant="secondary">Delete</Button>
+                  <SecondaryButton>Load</SecondaryButton>
+                  <SecondaryButton>Delete</SecondaryButton>
                 </div>
               </div>
             ))}

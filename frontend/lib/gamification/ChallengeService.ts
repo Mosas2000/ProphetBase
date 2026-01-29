@@ -46,12 +46,12 @@ export class ChallengeService {
       const saved = JSON.parse(localStorage.getItem(CHALLENGE_KEY) || 'null');
       if (saved) return saved;
     } catch {}
-    return CHALLENGES.map(c => ({ ...c }));
+    return CHALLENGES.map((c) => ({ ...c }));
   }
 
   static updateProgress(id: string, amount: number = 1) {
     const challenges = ChallengeService.getChallenges();
-    const idx = challenges.findIndex(c => c.id === id);
+    const idx = challenges.findIndex((c) => c.id === id);
     if (idx !== -1 && !challenges[idx].completed) {
       challenges[idx].progress += amount;
       if (challenges[idx].progress >= challenges[idx].goal) {
@@ -64,6 +64,9 @@ export class ChallengeService {
   }
 
   static resetChallenges() {
-    localStorage.setItem(CHALLENGE_KEY, JSON.stringify(CHALLENGES.map(c => ({ ...c }))));
+    localStorage.setItem(
+      CHALLENGE_KEY,
+      JSON.stringify(CHALLENGES.map((c) => ({ ...c })))
+    );
   }
 }

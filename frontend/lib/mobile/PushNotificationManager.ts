@@ -16,42 +16,71 @@ export class PushNotificationManager {
   }
 
   static async subscribeUser(): Promise<PushSubscription | null> {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return null;
-    const reg = await navigator.serviceWorker.ready;
-    const sub = await reg.pushManager.getSubscription();
-    if (sub) return sub;
-    // Replace with your VAPID public key
-    const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-    if (!vapidKey) throw new Error('VAPID public key not set');
-    return reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(vapidKey),
-    });
+    try {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        console.warn('Push notifications not supported in this browser');
+        return null;
+      }
+      
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.getSubscription();
+      if (sub) return sub;
+      
+      // Replace with your VAPID public key
+      const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+      if (!vapidKey) {
+        console.error('VAPID public key not set in environment variables');
+        throw new Error('VAPID public key not set');
+      }
+      
+      return reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(vapidKey),
+      });
+    } catch (error) {
+      console.error('Failed to subscribe to push notifications:', error);
+      return null;
+    }
   }
 
   static async unsubscribeUser(): Promise<boolean> {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return false;
-    const reg = await navigator.serviceWorker.ready;
-    const sub = await reg.pushManager.getSubscription();
-    if (sub) {
-      await sub.unsubscribe();
-      return true;
+    try {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        console.warn('Push notifications not supported in this browser');
+        return false;
+      }
+      
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.getSubscription();
+      if (sub) {
+        await sub.unsubscribe();
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Failed to unsubscribe from push notifications:', error);
+      return false;
     }
-    return false;
   }
 
   static getPreferences(): Record<string, boolean> {
     try {
-      return JSON.parse(localStorage.getItem('push_prefs') || '{}');
-    } catch {
+      const stored = localStorage.getItem('push_prefs');
+      return stored ? JSON.parse(stored) : {};
+    } catch (error) {
+      console.error('Failed to parse push preferences:', error);
       return {};
     }
   }
 
   static setPreference(key: string, value: boolean) {
-    const prefs = PushNotificationManager.getPreferences();
-    prefs[key] = value;
-    localStorage.setItem('push_prefs', JSON.stringify(prefs));
+    try {
+      const prefs = PushNotificationManager.getPreferences();
+      prefs[key] = value;
+      localStorage.setItem('push_prefs', JSON.stringify(prefs));
+    } catch (error) {
+      console.error('Failed to save push preference:', error);
+    }
   }
 }
 

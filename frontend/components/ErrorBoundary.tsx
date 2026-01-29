@@ -1,71 +1,83 @@
-'use client'
+'use client';
 
-import { Component, ErrorInfo, ReactNode } from "react";
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
 
 interface Props {
-    children?: ReactNode;
+  children: ReactNode;
+  fallback?: ReactNode;
 }
 
 interface State {
-    hasError: boolean;
-    error?: Error;
+  hasError: boolean;
+  error?: Error;
 }
 
-export default class ErrorBoundary extends Component<Props, State> {
-    public state: State = {
-        hasError: false
-    };
+export class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-    public static getDerivedStateFromError(error: Error): State {
-        return { hasError: true, error };
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+    
+    // Log error to monitoring service in production
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+      // Example: Send to error tracking service
+      // trackError(error, errorInfo);
+    }
+  }
+
+  handleReset = () => {
+    this.setState({ hasError: false, error: undefined });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      return (
+        <Card className="max-w-md mx-auto mt-8 p-6">
+          <div className="text-center">
+            <div className="text-6xl mb-4">⚠️</div>
+            <h2 className="text-xl font-semibold mb-2">Something went wrong</h2>
+            <p className="text-gray-400 mb-6">
+              {this.state.error?.message || 'An unexpected error occurred'}
+            </p>
+            <div className="space-y-3">
+              <Button onClick={this.handleReset}>
+                Try Again
+              </Button>
+              <Button 
+                onClick={() => window.location.reload()}
+                className="ml-3"
+              >
+                Reload Page
+              </Button>
+            </div>
+            {process.env.NODE_ENV === 'development' && this.state.error && (
+              <details className="mt-6 text-left">
+                <summary className="cursor-pointer text-sm text-gray-400">
+                  Error Details
+                </summary>
+                <pre className="mt-2 p-3 bg-gray-800 rounded text-xs overflow-auto">
+                  {this.state.error.stack}
+                </pre>
+              </details>
+            )}
+          </div>
+        </Card>
+      );
     }
 
-    public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        console.error("Uncaught error:", error, errorInfo);
-    }
-
-    public render() {
-        if (this.state.hasError) {
-            return (
-                <div className="min-h-[50vh] flex flex-col items-center justify-center p-6 text-center animate-fade-in">
-                    <div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 text-red-500 rounded-full flex items-center justify-center mb-6">
-                        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                    </div>
-
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Something went wrong</h2>
-                    <p className="text-gray-600 dark:text-gray-400 max-w-md mb-8">
-                        We encountered an unexpected error. Our team has been notified.
-                    </p>
-
-                    {/* Developer Error Details */}
-                    {process.env.NODE_ENV === 'development' && this.state.error && (
-                        <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 mb-8 max-w-2xl w-full text-left overflow-x-auto">
-                            <code className="text-xs font-mono text-red-600 dark:text-red-400">
-                                {this.state.error.toString()}
-                            </code>
-                        </div>
-                    )}
-
-                    <div className="flex gap-4">
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-                        >
-                            Reload Page
-                        </button>
-                        <button
-                            onClick={() => this.setState({ hasError: false })}
-                            className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium py-2 px-6 rounded-lg transition-colors"
-                        >
-                            Try Again
-                        </button>
-                    </div>
-                </div>
-            );
-        }
-
-        return this.props.children;
-    }
+    return this.props.children;
+  }
 }
