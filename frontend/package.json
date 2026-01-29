@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lighthouse": "node scripts/lighthouse-audit.js"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2.2.10",

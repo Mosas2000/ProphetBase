@@ -5,7 +5,7 @@ import { formatUnits } from 'viem'
 import { PREDICTION_MARKET_ADDRESS } from '@/lib/contracts'
 import { PREDICTION_MARKET_ABI, ERC20_ABI } from '@/lib/abi'
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 /**
  * Market status enum
@@ -56,7 +56,7 @@ function PositionCard({ position }: { position: UserPosition }) {
     const totalShares = position.yesShares + position.noShares
     const estimatedValue = formatUnits(totalShares, 6) // 1:1 ratio with USDC (6 decimals)
 
-    const handleClaim = () => {
+    const handleClaim = useCallback(() => {
         setIsClaiming(true)
         claimWrite({
             address: PREDICTION_MARKET_ADDRESS,
@@ -64,7 +64,7 @@ function PositionCard({ position }: { position: UserPosition }) {
             functionName: 'claimWinnings',
             args: [BigInt(position.marketId)],
         })
-    }
+    }, [claimWrite, position.marketId])
 
     const isResolved = position.market.status === MarketStatus.Resolved
     const canClaim = isResolved && position.isWinning && !isClaimSuccess

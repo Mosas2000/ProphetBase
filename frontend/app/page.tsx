@@ -1,14 +1,33 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { QuickTrade } from '@/components/mobile'
+  // Example trade handler (replace with real logic)
+  function handleQuickTrade(side: 'buy' | 'sell', amount: number) {
+    alert(`Trade: ${side} ${amount} ETH-USD`)
+    // TODO: Integrate with buy/sell logic
+  }
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useReadContract } from 'wagmi'
 import { PREDICTION_MARKET_ADDRESS, PREDICTION_MARKET_ABI } from '@/lib/contracts'
 import MarketList from '@/components/MarketList'
 import UserPositions from '@/components/UserPositions'
-import StatsDashboard from '@/components/StatsDashboard'
-import FAQ from '@/components/FAQ'
-import Footer from '@/components/Footer'
+import dynamic from 'next/dynamic'
+
+const StatsDashboard = dynamic(() => import('@/components/StatsDashboard'), {
+  loading: () => <div className="h-32 flex items-center justify-center text-gray-400">Loading stats...</div>,
+  ssr: false,
+})
+const FAQ = dynamic(() => import('@/components/FAQ'), {
+  loading: () => <div className="py-8 text-center text-gray-400">Loading FAQ...</div>,
+  ssr: false,
+})
+const Footer = dynamic(() => import('@/components/Footer'), {
+  loading: () => <div className="py-8 text-center text-gray-400">Loading footer...</div>,
+  ssr: false,
+})
 import ErrorBoundary from '@/components/ErrorBoundary'
 import Toaster from '@/components/Toaster'
 
@@ -17,9 +36,13 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<'markets' | 'positions'>('markets')
 
+  const router = useRouter()
   useEffect(() => {
     setMounted(true)
-  }, [])
+    // Prefetch MarketList and UserPositions routes/components for faster navigation
+    router.prefetch?.('/markets')
+    router.prefetch?.('/positions')
+  }, [router])
 
   // Prevent hydration mismatch - only render dynamic content after mount
   if (!mounted) {
@@ -189,6 +212,17 @@ export default function Home() {
               </span>
             </h2>
 
+            <div className="flex flex-col items-center justify-center mb-8">
+              <Image
+                src="/globe.svg"
+                alt="Prediction Market Globe"
+                width={160}
+                height={160}
+                priority
+                className="rounded-full shadow-lg border border-gray-200 bg-white"
+              />
+            </div>
+
             <p className="mx-auto mb-10 max-w-2xl text-base sm:text-lg text-gray-600 px-4">
               Trade predictions on crypto events with ProphetBase. Buy YES or NO shares with USDC, and claim winnings when your predictions come true.
             </p>
@@ -196,12 +230,14 @@ export default function Home() {
 
           {/* Stats Dashboard */}
           <div className="mb-12 sm:mb-16">
-            <StatsDashboard
-              totalMarkets={3}
-              activeMarkets={3}
-              totalVolume="0"
-              totalUsers={0}
-            />
+            <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400">Loading stats...</div>}>
+              <StatsDashboard
+                totalMarkets={3}
+                activeMarkets={3}
+                totalVolume="0"
+                totalUsers={0}
+              />
+            </Suspense>
           </div>
 
           {/* Main Content - Markets and Positions */}
@@ -232,11 +268,15 @@ export default function Home() {
                   </section>
                 )}
               </div>
+              {/* Mobile Trading Interface */}
+              <QuickTrade symbol="ETH-USD" price={3200} onTrade={handleQuickTrade} />
             </div>
 
             {/* FAQ Section */}
             <section id="faq" className="scroll-mt-20 pb-8">
-              <FAQ />
+              <Suspense fallback={<div className="py-8 text-center text-gray-400">Loading FAQ...</div>}>
+                <FAQ />
+              </Suspense>
             </section>
           </div>
 
@@ -313,7 +353,9 @@ export default function Home() {
 
         {/* Footer - with bottom padding for mobile nav */}
         <div className="pb-20 md:pb-0">
-          <Footer />
+          <Suspense fallback={<div className="py-8 text-center text-gray-400">Loading footer...</div>}>
+            <Footer />
+          </Suspense>
         </div>
       </div>
     </ErrorBoundary>
