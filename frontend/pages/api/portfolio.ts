@@ -1,7 +1,8 @@
+import type { ApiResponse, Portfolio } from '@/types/api';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 // Example portfolio data
-const portfolio = {
+const portfolio: Portfolio = {
   userId: 'user123',
   positions: [
     {
@@ -20,6 +21,19 @@ const portfolio = {
   totalValue: 2350,
 };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json(portfolio);
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ApiResponse<Portfolio>>
+) {
+  try {
+    res.status(200).json({
+      data: portfolio,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to fetch portfolio',
+      success: false,
+    });
+  }
 }

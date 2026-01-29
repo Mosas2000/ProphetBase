@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { Achievement, ApiResponse } from '@/types/api';
 
 // Example achievements data
-const achievements = [
+const achievements: Achievement[] = [
   {
     id: 'first_trade',
     name: 'First Trade',
@@ -25,6 +26,16 @@ const achievements = [
   },
 ];
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json(achievements);
+export default function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse<Achievement[]>>) {
+  try {
+    res.status(200).json({
+      data: achievements,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to fetch achievements',
+      success: false,
+    });
+  }
 }

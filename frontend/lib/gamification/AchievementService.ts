@@ -62,17 +62,20 @@ export class AchievementService {
   }): UserAchievements {
     const badges: Achievement[] = [];
     let xp = 0;
-    if (userStats.trades >= 1) {
-      badges.push(BADGES.find(b => b.id === 'first_trade')!);
-      xp += BADGES.find(b => b.id === 'first_trade')!.xp;
+    const firstTradeBadge = BADGES.find((b) => b.id === 'first_trade');
+    if (userStats.trades >= 1 && firstTradeBadge) {
+      badges.push(firstTradeBadge);
+      xp += firstTradeBadge.xp;
     }
-    if (userStats.volume >= 1000) {
-      badges.push(BADGES.find(b => b.id === 'volume_1k')!);
-      xp += BADGES.find(b => b.id === 'volume_1k')!.xp;
+    const volumeBadge = BADGES.find((b) => b.id === 'volume_1k');
+    if (userStats.volume >= 1000 && volumeBadge) {
+      badges.push(volumeBadge);
+      xp += volumeBadge.xp;
     }
-    if (userStats.markets >= 10) {
-      badges.push(BADGES.find(b => b.id === 'markets_10')!);
-      xp += BADGES.find(b => b.id === 'markets_10')!.xp;
+    const marketsBadge = BADGES.find((b) => b.id === 'markets_10');
+    if (userStats.markets >= 10 && marketsBadge) {
+      badges.push(marketsBadge);
+      xp += marketsBadge.xp;
     }
     // Add more achievement checks as needed
     return {

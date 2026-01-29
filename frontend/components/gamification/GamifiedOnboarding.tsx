@@ -1,5 +1,5 @@
+import { RewardService } from '@/lib/gamification/RewardService';
 import React, { useState } from 'react';
-import { RewardService } from '@/lib/gamification';
 
 const steps = [
   {
@@ -44,9 +44,15 @@ export const GamifiedOnboarding: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white px-6 py-10 md:hidden">
       <div className="mb-8 text-5xl">{steps[step].icon}</div>
-      <h2 className="mb-2 text-2xl font-bold text-gray-900 text-center">{steps[step].title}</h2>
-      <p className="mb-6 text-gray-600 text-center max-w-xs">{steps[step].description}</p>
-      <div className="mb-4 text-green-600 font-semibold">+{steps[step].reward} coins</div>
+      <h2 className="mb-2 text-2xl font-bold text-gray-900 text-center">
+        {steps[step].title}
+      </h2>
+      <p className="mb-6 text-gray-600 text-center max-w-xs">
+        {steps[step].description}
+      </p>
+      <div className="mb-4 text-green-600 font-semibold">
+        +{steps[step].reward} coins
+      </div>
       <button
         className="px-4 py-2 rounded bg-blue-600 text-white font-bold"
         onClick={handleNext}
@@ -57,7 +63,9 @@ export const GamifiedOnboarding: React.FC = () => {
         {steps.map((_, i) => (
           <span
             key={i}
-            className={`inline-block w-2 h-2 rounded-full ${i === step ? 'bg-blue-600' : 'bg-gray-300'}`}
+            className={`inline-block w-2 h-2 rounded-full ${
+              i === step ? 'bg-blue-600' : 'bg-gray-300'
+            }`}
           />
         ))}
       </div>

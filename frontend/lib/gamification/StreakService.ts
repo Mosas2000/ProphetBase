@@ -27,13 +27,18 @@ export class StreakService {
   static updateStreak(): StreakInfo {
     const now = Date.now();
     const streak = StreakService.getStreak();
-    const lastActiveDay = streak.lastActive ? new Date(streak.lastActive).toDateString() : '';
+    const lastActiveDay = streak.lastActive
+      ? new Date(streak.lastActive).toDateString()
+      : '';
     const today = new Date(now).toDateString();
     let currentStreak = streak.currentStreak || 0;
     if (lastActiveDay === today) {
       // Already active today
       streak.lastActive = now;
-    } else if (lastActiveDay && new Date(now - 86400000).toDateString() === lastActiveDay) {
+    } else if (
+      lastActiveDay &&
+      new Date(now - 86400000).toDateString() === lastActiveDay
+    ) {
       // Consecutive day
       currentStreak += 1;
       streak.lastActive = now;
@@ -51,7 +56,9 @@ export class StreakService {
     const streak = StreakService.getStreak();
     const now = Date.now();
     const today = new Date(now).toDateString();
-    const lastRewardDay = streak.lastReward ? new Date(streak.lastReward).toDateString() : '';
+    const lastRewardDay = streak.lastReward
+      ? new Date(streak.lastReward).toDateString()
+      : '';
     if (lastRewardDay === today) return false; // Already rewarded today
     streak.lastReward = now;
     localStorage.setItem(STREAK_KEY, JSON.stringify(streak));

@@ -27,6 +27,6 @@ export class LeaderboardService {
 
   static getUserRank(users: LeaderboardEntry[], userId: string): number {
     const leaderboard = LeaderboardService.getLeaderboard(users);
-    return leaderboard.findIndex(u => u.userId === userId) + 1;
+    return leaderboard.findIndex((u) => u.userId === userId) + 1;
   }
 }

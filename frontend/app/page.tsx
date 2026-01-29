@@ -1,48 +1,56 @@
-'use client'
+'use client';
 
-import { useState, useEffect, Suspense } from 'react'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import { QuickTrade } from '@/components/mobile'
-  // Example trade handler (replace with real logic)
-  function handleQuickTrade(side: 'buy' | 'sell', amount: number) {
-    alert(`Trade: ${side} ${amount} ETH-USD`)
-    // TODO: Integrate with buy/sell logic
-  }
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useReadContract } from 'wagmi'
-import { PREDICTION_MARKET_ADDRESS, PREDICTION_MARKET_ABI } from '@/lib/contracts'
-import MarketList from '@/components/MarketList'
-import UserPositions from '@/components/UserPositions'
-import dynamic from 'next/dynamic'
+import ErrorBoundary from '@/components/ErrorBoundary';
+import MarketList from '@/components/MarketList';
+import { QuickTrade } from '@/components/mobile';
+import Toaster from '@/components/Toaster';
+import UserPositions from '@/components/UserPositions';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+// Example trade handler (replace with real logic)
+function handleQuickTrade(side: 'buy' | 'sell', amount: number) {
+  alert(`Trade: ${side} ${amount} ETH-USD`);
+  // TODO: Integrate with buy/sell logic
+}
 
 const StatsDashboard = dynamic(() => import('@/components/StatsDashboard'), {
-  loading: () => <div className="h-32 flex items-center justify-center text-gray-400">Loading stats...</div>,
+  loading: () => (
+    <div className="h-32 flex items-center justify-center text-gray-400">
+      Loading stats...
+    </div>
+  ),
   ssr: false,
-})
+});
 const FAQ = dynamic(() => import('@/components/FAQ'), {
-  loading: () => <div className="py-8 text-center text-gray-400">Loading FAQ...</div>,
+  loading: () => (
+    <div className="py-8 text-center text-gray-400">Loading FAQ...</div>
+  ),
   ssr: false,
-})
+});
 const Footer = dynamic(() => import('@/components/Footer'), {
-  loading: () => <div className="py-8 text-center text-gray-400">Loading footer...</div>,
+  loading: () => (
+    <div className="py-8 text-center text-gray-400">Loading footer...</div>
+  ),
   ssr: false,
-})
-import ErrorBoundary from '@/components/ErrorBoundary'
-import Toaster from '@/components/Toaster'
+});
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<'markets' | 'positions'>('markets')
+  const [mounted, setMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'markets' | 'positions'>(
+    'markets'
+  );
 
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
-    setMounted(true)
+    setMounted(true);
     // Prefetch MarketList and UserPositions routes/components for faster navigation
-    router.prefetch?.('/markets')
-    router.prefetch?.('/positions')
-  }, [router])
+    router.prefetch?.('/markets');
+    router.prefetch?.('/positions');
+  }, [router]);
 
   // Prevent hydration mismatch - only render dynamic content after mount
   if (!mounted) {
@@ -55,8 +63,12 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <span className="text-3xl">🔮</span>
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900">ProphetBase</h1>
-                  <p className="text-xs text-gray-500 hidden sm:block">Crypto-Native Prediction Markets on Base</p>
+                  <h1 className="text-xl font-bold text-gray-900">
+                    ProphetBase
+                  </h1>
+                  <p className="text-xs text-gray-500 hidden sm:block">
+                    Crypto-Native Prediction Markets on Base
+                  </p>
                 </div>
               </div>
               <div className="h-10 w-32 animate-pulse rounded-lg bg-gray-200" />
@@ -74,7 +86,9 @@ export default function Home() {
               </span>
             </h2>
             <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-600">
-              Trade predictions on crypto events with ProphetBase. Buy YES or NO shares with USDC, and claim winnings when your predictions come true.
+              Trade predictions on crypto events with ProphetBase. Buy YES or NO
+              shares with USDC, and claim winnings when your predictions come
+              true.
             </p>
             <div className="flex items-center justify-center">
               <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600" />
@@ -84,7 +98,7 @@ export default function Home() {
 
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
@@ -100,8 +114,12 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <span className="text-2xl sm:text-3xl">🔮</span>
                 <div>
-                  <h1 className="text-lg sm:text-xl font-bold text-gray-900">ProphetBase</h1>
-                  <p className="text-xs text-gray-500 hidden sm:block">Crypto-Native Prediction Markets on Base</p>
+                  <h1 className="text-lg sm:text-xl font-bold text-gray-900">
+                    ProphetBase
+                  </h1>
+                  <p className="text-xs text-gray-500 hidden sm:block">
+                    Crypto-Native Prediction Markets on Base
+                  </p>
                 </div>
               </div>
 
@@ -224,13 +242,21 @@ export default function Home() {
             </div>
 
             <p className="mx-auto mb-10 max-w-2xl text-base sm:text-lg text-gray-600 px-4">
-              Trade predictions on crypto events with ProphetBase. Buy YES or NO shares with USDC, and claim winnings when your predictions come true.
+              Trade predictions on crypto events with ProphetBase. Buy YES or NO
+              shares with USDC, and claim winnings when your predictions come
+              true.
             </p>
           </div>
 
           {/* Stats Dashboard */}
           <div className="mb-12 sm:mb-16">
-            <Suspense fallback={<div className="h-32 flex items-center justify-center text-gray-400">Loading stats...</div>}>
+            <Suspense
+              fallback={
+                <div className="h-32 flex items-center justify-center text-gray-400">
+                  Loading stats...
+                </div>
+              }
+            >
               <StatsDashboard
                 totalMarkets={3}
                 activeMarkets={3}
@@ -269,12 +295,22 @@ export default function Home() {
                 )}
               </div>
               {/* Mobile Trading Interface */}
-              <QuickTrade symbol="ETH-USD" price={3200} onTrade={handleQuickTrade} />
+              <QuickTrade
+                symbol="ETH-USD"
+                price={3200}
+                onTrade={handleQuickTrade}
+              />
             </div>
 
             {/* FAQ Section */}
             <section id="faq" className="scroll-mt-20 pb-8">
-              <Suspense fallback={<div className="py-8 text-center text-gray-400">Loading FAQ...</div>}>
+              <Suspense
+                fallback={
+                  <div className="py-8 text-center text-gray-400">
+                    Loading FAQ...
+                  </div>
+                }
+              >
                 <FAQ />
               </Suspense>
             </section>
@@ -284,32 +320,74 @@ export default function Home() {
           <div className="grid gap-6 sm:gap-8 pb-16 sm:pb-20 grid-cols-1 sm:grid-cols-3">
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md">
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-600">
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                <svg
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
                 </svg>
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">Trade Predictions</h3>
-              <p className="text-gray-600">Buy YES or NO shares on crypto market predictions with USDC</p>
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                Trade Predictions
+              </h3>
+              <p className="text-gray-600">
+                Buy YES or NO shares on crypto market predictions with USDC
+              </p>
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md">
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-purple-600">
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">Earn Rewards</h3>
-              <p className="text-gray-600">Claim winnings when your predictions are correct</p>
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                Earn Rewards
+              </h3>
+              <p className="text-gray-600">
+                Claim winnings when your predictions are correct
+              </p>
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md">
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-green-600">
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                <svg
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
                 </svg>
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">Secure & Transparent</h3>
-              <p className="text-gray-600">Built on Base with verified smart contracts</p>
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                Secure & Transparent
+              </h3>
+              <p className="text-gray-600">
+                Built on Base with verified smart contracts
+              </p>
             </div>
           </div>
         </main>
@@ -319,32 +397,58 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-1 p-2">
             <button
               onClick={() => {
-                setActiveTab('markets')
-                document.getElementById('markets')?.scrollIntoView({ behavior: 'smooth' })
+                setActiveTab('markets');
+                document
+                  .getElementById('markets')
+                  ?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className={`flex flex-col items-center gap-1 rounded-lg px-4 py-3 transition-colors ${activeTab === 'markets'
-                ? 'bg-blue-50 text-blue-600'
-                : 'text-gray-600 hover:bg-gray-50'
-                }`}
+              className={`flex flex-col items-center gap-1 rounded-lg px-4 py-3 transition-colors ${
+                activeTab === 'markets'
+                  ? 'bg-blue-50 text-blue-600'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
             >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                />
               </svg>
               <span className="text-xs font-medium">Markets</span>
             </button>
 
             <button
               onClick={() => {
-                setActiveTab('positions')
-                document.getElementById('positions')?.scrollIntoView({ behavior: 'smooth' })
+                setActiveTab('positions');
+                document
+                  .getElementById('positions')
+                  ?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className={`flex flex-col items-center gap-1 rounded-lg px-4 py-3 transition-colors ${activeTab === 'positions'
-                ? 'bg-blue-50 text-blue-600'
-                : 'text-gray-600 hover:bg-gray-50'
-                }`}
+              className={`flex flex-col items-center gap-1 rounded-lg px-4 py-3 transition-colors ${
+                activeTab === 'positions'
+                  ? 'bg-blue-50 text-blue-600'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
             >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
               </svg>
               <span className="text-xs font-medium">Positions</span>
             </button>
@@ -353,11 +457,17 @@ export default function Home() {
 
         {/* Footer - with bottom padding for mobile nav */}
         <div className="pb-20 md:pb-0">
-          <Suspense fallback={<div className="py-8 text-center text-gray-400">Loading footer...</div>}>
+          <Suspense
+            fallback={
+              <div className="py-8 text-center text-gray-400">
+                Loading footer...
+              </div>
+            }
+          >
             <Footer />
           </Suspense>
         </div>
       </div>
     </ErrorBoundary>
-  )
+  );
 }

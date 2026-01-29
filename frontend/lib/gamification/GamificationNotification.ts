@@ -28,12 +28,24 @@ export class GamificationNotification {
   }
 
   static async notifyStreak(streak: number) {
-    await GamificationNotification.notifyLocal('Streak Update', `You are on a ${streak}-day streak!`);
-    await GamificationNotification.notifyPush('Streak Update', `You are on a ${streak}-day streak!`);
+    await GamificationNotification.notifyLocal(
+      'Streak Update',
+      `You are on a ${streak}-day streak!`
+    );
+    await GamificationNotification.notifyPush(
+      'Streak Update',
+      `You are on a ${streak}-day streak!`
+    );
   }
 
   static async notifyReward(amount: number) {
-    await GamificationNotification.notifyLocal('Reward Earned', `You earned ${amount} coins!`);
-    await GamificationNotification.notifyPush('Reward Earned', `You earned ${amount} coins!`);
+    await GamificationNotification.notifyLocal(
+      'Reward Earned',
+      `You earned ${amount} coins!`
+    );
+    await GamificationNotification.notifyPush(
+      'Reward Earned',
+      `You earned ${amount} coins!`
+    );
   }
 }
