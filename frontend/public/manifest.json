@@ -1,7 +1,7 @@
 {
-  "name": "ProphetBase",
+  "name": "ProphetBase: Elite Prediction Markets",
   "short_name": "ProphetBase",
-  "description": "Decentralized prediction markets on Base",
+  "description": "The world's most advanced decentralized prediction market platform on Base. Trade on politics, sports, and tech with deep insights.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0052FF",
@@ -21,35 +21,53 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["finance", "blockchain", "prediction"],
+  "categories": ["finance", "blockchain", "prediction", "social", "trading"],
   "screenshots": [
     {
-      "src": "/screenshot-mobile.png",
-      "sizes": "540x720",
+      "src": "/screenshot-mobile-home.png",
+      "sizes": "750x1334",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "ProphetBase Mobile Home"
     },
     {
-      "src": "/screenshot-desktop.png",
-      "sizes": "1280x720",
+      "src": "/screenshot-mobile-market.png",
+      "sizes": "750x1334",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "narrow",
+      "label": "Detailed Market View"
+    },
+    {
+      "src": "/screenshot-desktop-home.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "ProphetBase Desktop Dashboard"
     }
   ],
   "shortcuts": [
     {
-      "name": "Browse Markets",
+      "name": "Markets Dashboard",
       "short_name": "Markets",
-      "description": "View all prediction markets",
+      "description": "Explore active prediction markets",
       "url": "/markets",
       "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "My Portfolio",
+      "name": "Trade Portfolio",
       "short_name": "Portfolio",
-      "description": "View your positions",
+      "description": "Check your open positions and history",
       "url": "/portfolio",
       "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Global Leaderboard",
+      "short_name": "Leaderboard",
+      "description": "See how you rank against top traders",
+      "url": "/leaderboard",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
     }
-  ]
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
